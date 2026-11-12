@@ -1032,6 +1032,62 @@ html,body{overscroll-behavior:none}
 #ap .ap-sw{width:60px;height:30px;border-radius:15px;background:#3a3a3c;position:relative;transition:.2s}
 #ap .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
 #ap .ap-sr.on .ap-sw{background:#34c759}#ap .ap-sr.on .ap-sw:after{left:20px}
+#lg.on,#lg.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
+#lg .ap-x,#lg .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
+#lg .ap-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#lg.on .ap-dim{opacity:1}
+#lg:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
+#lg .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:#1c1c1e;border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
+#lg.on .ap-sheet{transform:translate3d(0,0,0)}
+#lg .ap-head{position:relative;flex:none;height:76px;display:flex;align-items:center;justify-content:center}
+#lg .ap-t{font-size:18px;font-weight:650}
+#lg .ap-x{position:absolute;top:16px;left:16px;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer;transition:transform .45s cubic-bezier(.25,.8,.25,1)}
+#lg .ap-x:active{transform:scale(1.1)}
+#lg .ap-x svg{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+#lg .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
+#lg .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:#8e8e93;letter-spacing:.02em}
+#lg .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:#2c2c2e}
+#lg .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#lg .ap-inp input::placeholder{color:#6d6d72}
+#lg .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:#8e8e93}
+#lg .ap-hint b{font-weight:650}
+#lg .ap-row{margin-top:25px;height:52px;border-radius:26px;background:#2c2c2e;display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+#lg .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:#8e8e93}
+#lg .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
+#lg:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
+#lg .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#lg .ap-go:active{transform:scale(1.04)}
+#lg .ap-go.dis{color:rgba(255,255,255,.55)}
+#lg .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
+#lg .ap-row{cursor:default;padding:0 18px}
+#lg .ap-rv{color:#8e8e93;font-weight:500}
+#lg .ap-row.ok .ap-rv{color:#fff}
+#lg .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:#8e8e93}
+#lg .ap-rv{display:flex;align-items:center;gap:5px}
+#lg .ap-rs{width:19px;height:19px;object-fit:contain;display:block}
+#lg .ap-sheet{transition:transform .48s cubic-bezier(.25,.85,.3,1)}
+#lg:not(.on) .ap-sheet{transition:transform .4s cubic-bezier(.33,0,.15,1)}
+#lg .ap-dim{transition-duration:.4s}
+#lg:not(.on) .ap-dim{transition-duration:.4s}
+#lg .ap-body{padding:22px 20px 0}
+#lg .ap-sel{position:relative}
+#lg .ap-inp{position:relative}
+#lg .ap-inp select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;border:0;margin:0;padding:0;cursor:pointer}
+#lg .ap-inp{cursor:pointer;justify-content:space-between;color:#fff;font-size:18px;font-weight:500;user-select:none;-webkit-user-select:none}
+#lg .ap-ch{flex:none;width:22px;height:22px;fill:none;stroke:#8e8e93;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease}
+#lg .ap-grp{margin-top:25px;border-radius:26px;background:#2c2c2e;overflow:hidden}
+#lg .ap-gh{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+#lg .ap-cr{stroke:#8e8e93;transition:transform .25s ease}
+#lg .ap-grp.open .ap-cr{transform:rotate(90deg)}
+#lg .ap-gb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.32,.72,0,1)}
+#lg .ap-grp.open .ap-gb{grid-template-rows:1fr}
+#lg .ap-gi{overflow:hidden;min-height:0}
+#lg .ap-sr{display:flex;align-items:center;justify-content:space-between;height:52px;margin-left:18px;padding:0 14px 0 0;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative}
+#lg .ap-sr:before{content:"";position:absolute;top:0;left:0;right:0;height:.5px;background:#4a4a4d}
+#lg .ap-sw{width:60px;height:30px;border-radius:15px;background:#3a3a3c;position:relative;transition:.2s}
+#lg .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
+#lg .ap-sr.on .ap-sw{background:#34c759}#lg .ap-sr.on .ap-sw:after{left:20px}
+#lg .ap-row2{cursor:default}
 #cx .cx-menu:has(>.cx-list){padding:0}
 #cx .cx-list{box-sizing:border-box;padding:10px 0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none}
 #cx .cx-list::-webkit-scrollbar{display:none}
@@ -1388,7 +1444,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="row" data-s="Уведомления"><div class="ic" style="background:linear-gradient(to bottom,#f2796a,#ec5b4a)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-notif"/></svg></div><span class="t">Уведомления</span></div>
     <div class="row" data-s="Конфиденциальность"><div class="ic" style="background:linear-gradient(to bottom,#acabb2,#959499)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-privacy"/></svg></div><span class="t">Конфиденциальность</span></div>
     <div class="row" id="apRow"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-appearance"/></svg></div><span class="t">Оформление</span></div>
-    <div class="row" data-s="Язык"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-lang"/></svg></div><span class="t">Язык</span><span class="v">Русский</span></div>
+    <div class="row" id="lgRow"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-lang"/></svg></div><span class="t">Язык</span><span class="v" id="lgRowV">Русский</span></div>
   </div>
   <div class="list">
     <div class="row" data-s="Premium подписка"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">Premium подписка</span></div>
@@ -1682,6 +1738,23 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       <div class="ap-note">Отключение анимаций приложения может улучшить производительность.</div>
     </div>
     <div class="ap-btnw"><button class="ap-go" id="apGo" type="button"><span>Сохранить изменения</span></button></div>
+  </div>
+</div>
+<div id="lg" aria-hidden="true">
+  <div class="ap-dim"></div>
+  <div class="ap-sheet" id="lgSheet">
+    <div class="ap-head">
+      <button class="ap-x glass" id="lgX" type="button" aria-label="Закрыть"><svg class="ico" style="--s:26px" viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
+      <div class="ap-t">Язык</div>
+    </div>
+    <div class="ap-body">
+      <div class="ap-lab">ЯЗЫК ПРИЛОЖЕНИЯ</div>
+      <div class="ap-sel"><div class="ap-inp"><span id="lgV" data-i18n-skip="1">Русский</span><select id="lgSel" aria-label="Язык приложения" data-i18n-skip="1"><option value="ru">Русский</option><option value="en">English</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
+      <div class="ap-hint">Выберите язык приложения.</div>
+      <div class="ap-grp"><div class="ap-gh"><span>Язык уведомлений</span><svg class="ap-ch ap-cr" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></div></div>
+      <div class="ap-note">Настраивайте язык для уведомлений о пополнениях и продаже уникальных подарков.</div>
+    </div>
+    <div class="ap-btnw"><button class="ap-go" id="lgGo" type="button"><span>Сохранить изменения</span></button></div>
   </div>
 </div>
 <div id="cf" aria-hidden="true">
@@ -2081,7 +2154,7 @@ function toast(t){return;const el=$('#toast');el.textContent=t;el.classList.add(
 $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 /* ===== язык: нажатие на «Русский» ↔ «English» переводит весь интерфейс ===== */
 (function(){
-  const row=document.querySelector('.row[data-s="Язык"]'),v=row&&row.querySelector('.v');if(!v)return;
+  const row=document.getElementById('lgRow'),v=row&&row.querySelector('.v');if(!v)return;
   v.setAttribute('data-i18n-skip','1');
   const CY=/[А-Яа-яЁё]/;
   const D={
@@ -2091,7 +2164,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'Купить подарок за':'Buy gift for','Купить подарок':'Buy gifts','Купить':'Buy','Редкий подарок можно превратить':'A rare gift can be turned','в коллекционный и затем подарить':'into a collectible and then given','другому пользователю.':'to another user.',
 'Коллекционные подарки скоро появятся':'Collectible gifts are coming soon','Коллекционные':'Collectibles','Коллекционный подарок можно отправить любому пользователю.':'A collectible gift can be sent to any user.',
 'Звёзды GiftCrafts нужны для покупки уникальных и коллекционных подарков, а также для прочих услуг.':'GiftCrafts Stars are used to buy unique and collectible gifts, as well as for other services.','Звезды нужны для покупки подарков, уникальных имён и номеров.':'Stars are used to buy gifts, unique usernames and numbers.','Отправить звёзды':'Send stars','Звёзды GiftCrafts':'GiftCrafts Stars','Звёзды':'Stars','Задания скоро появятся':'Tasks are coming soon','Звезды можно купить или заработать, выполняя задания.':'Stars can be bought or earned by completing tasks.','Посмотреть задания':'View tasks','Задания':'Tasks','Ваш баланс':'Your balance','Подарить звёзды друзьям':'Gift stars to friends',
-'Мой профиль':'My Profile','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Тёмная':'Dark','Светлая':'Light','Как в Telegram':'Like Telegram','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Выбранная тема':'Selected theme','Ночная тема':'Night theme','Premium подписка':'Premium subscription','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
+'Мой профиль':'My Profile','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Тёмная':'Dark','Светлая':'Light','Как в Telegram':'Like Telegram','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Выбранная тема':'Selected theme','Ночная тема':'Night theme','Premium подписка':'Premium subscription','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настраивайте язык для уведомлений о пополнениях и продаже уникальных подарков.':'Set the language for notifications about top-ups and sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
 'Коллекции скоро':'Collectibles are coming soon','Коллекции':'Collectibles','В данный момент эта функция находится в разработке.':'This feature is currently under development.','Отправка подарков':'Sending gifts','Отправка звёзд':'Sending stars','Изготовление подарка':'Craft Gift','Изготовить':'Craft','Выберите подарки':'Select gifts','Ваши подарки':'Your gifts','в продаже':'for sale','У Вас нет других подарков из этой коллекции':'You have no other gifts from this collection','Предложений пока нет':'No offers yet','Добавьте до':'Add up to',', чтобы изготовить':' to craft','В случае неудачи эти подарки пропадут.':'If crafting fails, these gifts will be lost.','Модели, которые могут выпасть':'Models you can get','Вероятность успеха':'Success chance','Справка':'Help','Изготовление':'Crafting','в сети':'online','мобильный':'mobile','имя пользователя':'username','Отправить подарки':'Send gifts','Подарки':'Gifts','Маркет':'Market','Купленный подарок':'Purchased gift','Посмотреть':'View',
 'Скрыть моё имя и сообщение от посетителей профиля.':'Hide my name and message from profile visitors.','Скрыть моё имя':'Hide my name','Когда все подарки будут проданы, вы больше не сможете их купить.':'When all gifts are sold, you will no longer be able to buy them.',
 'Подарок Вам':'Gift for you','Этот подарок можно сделать':'This gift can be made','уникальным коллекционным.':'unique and collectible.','Имя отправителя видите только Вы.':'Only you can see the sender’s name.',
@@ -2221,8 +2294,8 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
   window.I18N={tr:tr,get lang(){return lang}};
   let cur=store.get('lang','ru');if(cur!=='en')cur='ru';
   apply(cur);
-  v.style.cursor='pointer';
-  v.addEventListener('click',e=>{e.stopPropagation();cur=cur==='ru'?'en':'ru';store.set('lang',cur);apply(cur)});
+  window.getAppLang=()=>cur;
+  window.setAppLang=k=>{cur=k==='en'?'en':'ru';store.set('lang',cur);apply(cur)};
 })();
 
 /* ===== Анимации ===== */
@@ -2469,6 +2542,37 @@ applyStarAnim(store.get('starAnim','1')==='1');
     store.set('starAnim',b?'1':'0');applyStarAnim(b);
     close();
   };
+})();
+
+/* ===== Окно «Язык» ===== */
+(function(){
+  const lg=document.getElementById('lg'),row=document.getElementById('lgRow');
+  if(!lg||!row)return;
+  const sh=document.getElementById('lgSheet'),go=document.getElementById('lgGo'),
+        sel=document.getElementById('lgSel'),tv=document.getElementById('lgV');
+  const NAMES={ru:'Русский',en:'English'};
+  const setL=k=>{sel.value=k;tv.textContent=NAMES[k]};
+  function shapeSheet(){
+    if(!window.__sheetPath)return;
+    const w=sh.offsetWidth,h=sh.offsetHeight;if(!w||!h)return;
+    if(sh.__w===w&&sh.__h===h)return;sh.__w=w;sh.__h=h;
+    const v='path("'+window.__sheetPath(w,h,0,0)+'")';
+    sh.style.borderRadius='0';sh.style.webkitClipPath=v;sh.style.clipPath=v;
+  }
+  if(window.ResizeObserver)new ResizeObserver(shapeSheet).observe(sh,{box:'border-box'});
+  function open(){
+    setL(window.getAppLang?getAppLang():'ru');
+    lg.classList.add('pre');void sh.offsetWidth;
+    lg.classList.add('on');lg.setAttribute('aria-hidden','false');
+    try{window.shapeBtn&&shapeBtn(go)}catch(_){}shapeSheet();
+  }
+  function close(){lg.classList.remove('on','pre');lg.setAttribute('aria-hidden','true')}
+  row.addEventListener('click',open);
+  document.getElementById('lgX').onclick=close;
+  lg.querySelector('.ap-dim').addEventListener('click',close);
+  sel.addEventListener('change',()=>setL(sel.value));
+  lg.addEventListener('touchmove',e=>{if(!e.target.closest('.ap-body'))e.preventDefault()},{passive:false});
+  go.onclick=()=>{if(window.setAppLang)setAppLang(sel.value);close()};
 })();
 
 /* пауза анимаций во время скролла + анимация только видимых карточек */
