@@ -1455,7 +1455,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #priv .ap-sw{width:60px;height:30px;border-radius:15px;background:#3a3a3c;position:relative;transition:.2s}
 #priv .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
 #priv .ap-sr.on .ap-sw{background:#34c759}#priv .ap-sr.on .ap-sw:after{left:20px}
-#stat .ap-body,#priv .ap-body{padding:22px 20px 36px}
+#stat .ap-body,#priv .ap-body{padding:22px 20px 0}
 #stat .ap-inp{cursor:default}
 #stat .sv-r{display:flex;align-items:center;gap:5px;color:#fff}
 #stat .sv-r img{width:20px;height:20px;display:block;flex:none}
@@ -1473,7 +1473,10 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #ug .ug-x,#ug .ug-more,#ug .ug-a,#um .um-back,#um .um-var{--glass-w:.4px;--glass2-spread:.4px}
 #ug .ug-a.sm{box-shadow:none}
 /* обводка «Передать / Носить / Продать» чуть темнее; по бокам она сливается с фоном кнопки (градиент обводки там прозрачный) */
-#ug .ug-a{--glass-rgb:calc(150 + var(--ug-d)),calc(152 + var(--ug-d)),calc(162 + var(--ug-d));--glass2-rgb:calc(160 + var(--ug-d)),calc(162 + var(--ug-d)),calc(172 + var(--ug-d));--glass-strong:.3;--glass2-a:.56;--glass-side:rgba(0,0,0,0)}
+#ug .ug-a{--glass-rgb:calc(164 + var(--ug-d)),calc(166 + var(--ug-d)),calc(176 + var(--ug-d));--glass2-rgb:calc(174 + var(--ug-d)),calc(176 + var(--ug-d)),calc(186 + var(--ug-d));--glass-strong:.33;--glass2-a:.61;--glass-side:rgba(0,0,0,0)}
+/* крестик / три точки / назад: тёмная кромка идёт внутри ::after (его маска гасит её по бокам) */
+#ug .ug-x,#ug .ug-more,#um .um-back{box-shadow:none}
+#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .6px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
 #cf .glass{--menu-glass-blur:4.5px;--glass-w:.4px;--glass2-spread:.25px}
 #cf .cf-x.glass,#cf .cf-q.glass{--glass-w:.8px;--glass2-spread:.4px}
 #cf .cf-pill{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
@@ -7438,7 +7441,7 @@ renderMyGifts();
     b.style.setProperty('--sqi',sq(w-2*T,h-2*T,R-T,T));
     b.style.setProperty('--sqj',sq(w-2*T2,h-2*T2,R-T2,T2));
     /* тонкая тёмная кромка по тому же контуру (раньше была inset-тенью по прямоугольнику) */
-    const ring='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".24"/><stop offset=".22" stop-color="#000" stop-opacity=".13"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".58" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity=".13"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient><clipPath id="c"><path d="'+d+'"/></clipPath></defs><g clip-path="url(#c)"><path d="'+d+'" fill="none" stroke="url(#r)" stroke-width="1"/></g></svg>';
+    const ring='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".21"/><stop offset=".22" stop-color="#000" stop-opacity=".11"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".58" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity=".11"/><stop offset="1" stop-color="#000" stop-opacity=".21"/></linearGradient><clipPath id="c"><path d="'+d+'"/></clipPath></defs><g clip-path="url(#c)"><path d="'+d+'" fill="none" stroke="url(#r)" stroke-width="1"/></g></svg>';
     b.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(ring)+'")';b.style.backgroundSize='100% 100%';b.style.backgroundRepeat='no-repeat';
   }
   ug.querySelectorAll('.ug-a').forEach(b=>{
