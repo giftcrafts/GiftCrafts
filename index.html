@@ -37,11 +37,11 @@ h1{font-size:26px;font-weight:700;text-align:center;margin:8px 0 6px}
 
 /* gifts */
 body.nobar #bar{display:none}
-#p-gifts [hidden],#p-stars [hidden],#p-market [hidden],#p-mkg [hidden]{display:none!important}
+#gb [hidden],#p-gifts [hidden],#p-stars [hidden],#p-market [hidden],#p-mkg [hidden]{display:none!important}
 .ghead{position:relative;display:flow-root}
 #gsp,#ssp,#msp{position:absolute;left:-16px;width:calc(100% + 32px);top:calc(-1*(var(--hdr-top) + var(--hdr-h) + 8px));height:calc(100% + var(--hdr-top) + var(--hdr-h) + 28px);z-index:0;pointer-events:none}
 .gava{position:relative;z-index:1;width:var(--ava-size);height:var(--ava-size);margin:var(--ava-top) auto var(--ava-gap);border-radius:50%;background:#303033 center/cover;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700}
-#p-gifts h1,#p-stars h1,#p-market h1{position:relative;z-index:1;font-size:28px;line-height:1.3;font-weight:650;margin:0}
+#gb h1,#p-gifts h1,#p-stars h1,#p-market h1{position:relative;z-index:1;font-size:28px;line-height:1.3;font-weight:650;margin:0}
 .sava{position:relative;z-index:1;width:var(--ava-size);height:var(--ava-size);margin:var(--ava-top) auto var(--ava-gap);display:flex;align-items:center;justify-content:center}
 .sava img{width:130%;height:130%;flex:none;object-fit:contain;display:block}
 .sdesc{margin:12px auto 0;max-width:320px;text-align:center;font-size:16px;line-height:20px;font-weight:500}
@@ -1319,6 +1319,41 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #gx .mk-filters{padding-bottom:14px}
 #gx .mk-filters::-webkit-scrollbar{display:none}
 #gx .cp-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#gb{position:fixed;left:0;right:0;top:0;height:100%;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
+#gb{z-index:1900}
+#gb.on,#gb.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
+#gb .cp-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .26s ease}
+#gb.on .cp-dim{opacity:1}
+#gb:not(.on) .cp-dim{transition-duration:.4s}
+#gb .cp-sheet{position:absolute;left:6px;right:6px;bottom:6px;display:flex;flex-direction:column;border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .3s cubic-bezier(.32,.72,0,1);will-change:transform}
+#gb.on .cp-sheet{transform:translate3d(0,0,0)}
+#gb .cp-sheet{transition:transform .48s cubic-bezier(.25,.85,.3,1)}
+#gb .cp-dim{transition-duration:.4s}
+#gb:not(.on) .cp-sheet{transition:transform .4s cubic-bezier(.33,0,.15,1)}
+#gb .cp-head{position:relative;flex:none;height:76px;display:flex;align-items:center;justify-content:center}
+#gb .cp-t{font-size:17px;font-weight:650}
+#gb .cp-x{position:absolute;top:16px;z-index:3;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .45s cubic-bezier(.25,.8,.25,1)}
+#gb .cp-x{left:16px}
+#gb .cp-x.press{transform:scale(1.1)}
+.noanim #gb .cp-x.press{transform:none}
+#gb .cp-x svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+#gb .cp-sheet{height:calc(100% - env(safe-area-inset-top,0px) - var(--tg-content-safe-area-inset-top,0px) - 11px);max-height:calc(100% - env(safe-area-inset-top,0px) - var(--tg-content-safe-area-inset-top,0px) - 11px);background:#000;color:#fff}
+#gb .cp-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:82px 16px 28px}
+#gb .cp-head{position:absolute;left:0;right:0;top:0;z-index:4;pointer-events:none}
+#gb .cp-head .cp-x{pointer-events:auto}
+#gb .cp-fade{position:absolute;left:0;right:0;top:0;height:104px;z-index:-1;pointer-events:none}
+#gb .cp-fade i{position:absolute;left:0;right:0;top:0;bottom:0;display:block}
+#gb .cp-fade i:nth-child(1){-webkit-backdrop-filter:blur(1.2px);backdrop-filter:blur(1.2px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.966) 5.0%,rgba(0,0,0,0.874) 10.0%,rgba(0,0,0,0.741) 15.0%,rgba(0,0,0,0.583) 20.0%,rgba(0,0,0,0.417) 25.0%,rgba(0,0,0,0.259) 30.0%,rgba(0,0,0,0.126) 35.0%,rgba(0,0,0,0.034) 40.0%,rgba(0,0,0,0.000) 45.0%,rgba(0,0,0,0.000) 50.0%,rgba(0,0,0,0.000) 55.0%,rgba(0,0,0,0.000) 60.0%,rgba(0,0,0,0.000) 65.0%,rgba(0,0,0,0.000) 70.0%,rgba(0,0,0,0.000) 75.0%,rgba(0,0,0,0.000) 80.0%,rgba(0,0,0,0.000) 85.0%,rgba(0,0,0,0.000) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.966) 5.0%,rgba(0,0,0,0.874) 10.0%,rgba(0,0,0,0.741) 15.0%,rgba(0,0,0,0.583) 20.0%,rgba(0,0,0,0.417) 25.0%,rgba(0,0,0,0.259) 30.0%,rgba(0,0,0,0.126) 35.0%,rgba(0,0,0,0.034) 40.0%,rgba(0,0,0,0.000) 45.0%,rgba(0,0,0,0.000) 50.0%,rgba(0,0,0,0.000) 55.0%,rgba(0,0,0,0.000) 60.0%,rgba(0,0,0,0.000) 65.0%,rgba(0,0,0,0.000) 70.0%,rgba(0,0,0,0.000) 75.0%,rgba(0,0,0,0.000) 80.0%,rgba(0,0,0,0.000) 85.0%,rgba(0,0,0,0.000) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%)}
+#gb .cp-fade i:nth-child(2){-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.985) 5.0%,rgba(0,0,0,0.945) 10.0%,rgba(0,0,0,0.882) 15.0%,rgba(0,0,0,0.802) 20.0%,rgba(0,0,0,0.708) 25.0%,rgba(0,0,0,0.606) 30.0%,rgba(0,0,0,0.500) 35.0%,rgba(0,0,0,0.394) 40.0%,rgba(0,0,0,0.292) 45.0%,rgba(0,0,0,0.198) 50.0%,rgba(0,0,0,0.118) 55.0%,rgba(0,0,0,0.055) 60.0%,rgba(0,0,0,0.015) 65.0%,rgba(0,0,0,0.000) 70.0%,rgba(0,0,0,0.000) 75.0%,rgba(0,0,0,0.000) 80.0%,rgba(0,0,0,0.000) 85.0%,rgba(0,0,0,0.000) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.985) 5.0%,rgba(0,0,0,0.945) 10.0%,rgba(0,0,0,0.882) 15.0%,rgba(0,0,0,0.802) 20.0%,rgba(0,0,0,0.708) 25.0%,rgba(0,0,0,0.606) 30.0%,rgba(0,0,0,0.500) 35.0%,rgba(0,0,0,0.394) 40.0%,rgba(0,0,0,0.292) 45.0%,rgba(0,0,0,0.198) 50.0%,rgba(0,0,0,0.118) 55.0%,rgba(0,0,0,0.055) 60.0%,rgba(0,0,0,0.015) 65.0%,rgba(0,0,0,0.000) 70.0%,rgba(0,0,0,0.000) 75.0%,rgba(0,0,0,0.000) 80.0%,rgba(0,0,0,0.000) 85.0%,rgba(0,0,0,0.000) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%)}
+#gb .cp-fade i:nth-child(3){-webkit-backdrop-filter:blur(4.5px);backdrop-filter:blur(4.5px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.992) 5.0%,rgba(0,0,0,0.969) 10.0%,rgba(0,0,0,0.933) 15.0%,rgba(0,0,0,0.886) 20.0%,rgba(0,0,0,0.829) 25.0%,rgba(0,0,0,0.764) 30.0%,rgba(0,0,0,0.693) 35.0%,rgba(0,0,0,0.617) 40.0%,rgba(0,0,0,0.539) 45.0%,rgba(0,0,0,0.461) 50.0%,rgba(0,0,0,0.383) 55.0%,rgba(0,0,0,0.307) 60.0%,rgba(0,0,0,0.236) 65.0%,rgba(0,0,0,0.171) 70.0%,rgba(0,0,0,0.114) 75.0%,rgba(0,0,0,0.067) 80.0%,rgba(0,0,0,0.031) 85.0%,rgba(0,0,0,0.008) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,1.000) 0.0%,rgba(0,0,0,0.992) 5.0%,rgba(0,0,0,0.969) 10.0%,rgba(0,0,0,0.933) 15.0%,rgba(0,0,0,0.886) 20.0%,rgba(0,0,0,0.829) 25.0%,rgba(0,0,0,0.764) 30.0%,rgba(0,0,0,0.693) 35.0%,rgba(0,0,0,0.617) 40.0%,rgba(0,0,0,0.539) 45.0%,rgba(0,0,0,0.461) 50.0%,rgba(0,0,0,0.383) 55.0%,rgba(0,0,0,0.307) 60.0%,rgba(0,0,0,0.236) 65.0%,rgba(0,0,0,0.171) 70.0%,rgba(0,0,0,0.114) 75.0%,rgba(0,0,0,0.067) 80.0%,rgba(0,0,0,0.031) 85.0%,rgba(0,0,0,0.008) 90.0%,rgba(0,0,0,0.000) 95.0%,rgba(0,0,0,0.000) 100.0%)}
+#gb .cp-fade::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.950) 0.0%,rgba(0,0,0,0.950) 5.0%,rgba(0,0,0,0.950) 10.0%,rgba(0,0,0,0.950) 15.0%,rgba(0,0,0,0.941) 20.0%,rgba(0,0,0,0.914) 25.0%,rgba(0,0,0,0.872) 30.0%,rgba(0,0,0,0.817) 35.0%,rgba(0,0,0,0.752) 40.0%,rgba(0,0,0,0.679) 45.0%,rgba(0,0,0,0.599) 50.0%,rgba(0,0,0,0.517) 55.0%,rgba(0,0,0,0.433) 60.0%,rgba(0,0,0,0.351) 65.0%,rgba(0,0,0,0.271) 70.0%,rgba(0,0,0,0.198) 75.0%,rgba(0,0,0,0.133) 80.0%,rgba(0,0,0,0.078) 85.0%,rgba(0,0,0,0.036) 90.0%,rgba(0,0,0,0.009) 95.0%,rgba(0,0,0,0.000) 100.0%)}
+#gb .cp-body{padding:70px 16px 34px}
+#gb #gbsp{position:absolute;left:-16px;width:calc(100% + 32px);top:-70px;height:calc(100% + 90px);z-index:0;pointer-events:none}
+#gb .gb-bal{position:absolute;top:16px;right:16px;z-index:3;height:var(--hdr-h);display:flex;align-items:center;pointer-events:auto}
+#gb .gb-bal .hb{cursor:pointer}
+#gb .hb.press{transform:scale(1.12)}
+.noanim #gb .hb.press{transform:none}
+#gb .grid{margin-top:21px}
 #gx .cp-body{padding-bottom:118px}
 #gx .cp-x.gx-s{left:auto;right:16px}
 #gx .gx-s svg{width:32px;height:32px;fill:#fff;stroke:none;fill-rule:evenodd}
@@ -1453,7 +1488,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="row" data-go="stars"><div class="ic" style="background:linear-gradient(to bottom,#ffbd3e,#ffa50d)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-stars"/></svg></div><span class="t">Мои звёзды</span><span class="v" id="bal2">100</span></div>
     <div class="row" id="promoRow"><div class="ic" style="background:linear-gradient(to bottom,#d073fe,#b358e1)"><svg class="ico" style="--s:var(--ic-promo)"><use href="#i-sell"/></svg></div><span class="t">Промокод</span></div>
     <div class="row" data-s="Статистика"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-earnings"/></svg></div><span class="t">Статистика</span></div>
-    <div class="row" data-go="gifts"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:var(--ic-buygift)"><use href="#i-gift"/></svg></div><span class="t">Купить подарок</span></div>
+    <div class="row" id="gbRow"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:var(--ic-buygift)"><use href="#i-gift"/></svg></div><span class="t">Купить подарок</span></div>
   </div>
   <div class="list">
     <div class="row" id="helpRow"><div class="ic" style="background:linear-gradient(to bottom,#acabb2,#959499)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-warning"/></svg></div><span class="t">Помощь</span></div>
@@ -1799,6 +1834,27 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div id="gxWrap" aria-hidden="true"><button id="gxGo" type="button">Выбрать действие</button><select id="gxSel" aria-label="Выбрать действие"></select></div>
   </div>
 </div>
+<div id="gb" aria-hidden="true">
+  <div class="cp-dim"></div>
+  <div class="cp-sheet" id="gbSheet">
+    <div class="cp-head">
+      <div class="cp-fade"><i></i><i></i><i></i></div>
+      <button class="cp-x glass" id="gbX" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
+      <div class="gb-bal" id="gbBal"></div>
+    </div>
+    <div class="cp-body" id="gbBody">
+      <div class="ghead">
+        <canvas id="gbsp"></canvas>
+        <div class="gava" id="gbAva"></div>
+        <h1>Купить подарок</h1>
+      </div>
+      <p class="gdesc">Редкий подарок можно превратить<br>в коллекционный и затем подарить<br>другому пользователю.</p>
+      <div class="gtabs-wrap"><div class="gtabs" id="gbTabs"><i></i><button class="on" data-t="all">Все</button><button data-t="col">Коллекционные</button></div></div>
+      <div class="grid" id="gbGrid"></div>
+      <div class="gempty" id="gbEmpty" hidden>Коллекционные подарки скоро появятся</div>
+    </div>
+  </div>
+</div>
 <div class="mk-menu" id="mkMenu" role="menu"></div>
 <div id="toast"></div>
 <script>
@@ -1919,7 +1975,7 @@ $('#pNum').textContent = num;
 $('#pUser').textContent = u.username ? '@'+u.username : '@username';
 $('#pRate').setAttribute('href','#i-n'+rating);
 $('#uRate').setAttribute('href','#i-n'+rating);
-['#ava','#pAva','#meAva','#gAva'].forEach(s=>{
+['#ava','#pAva','#meAva','#gAva','#gbAva'].forEach(s=>{
   const el=$(s);if(!el)return;
   if (u.photo_url) el.style.backgroundImage = 'url("'+u.photo_url+'")';
   else el.textContent = name[0].toUpperCase();
@@ -2096,7 +2152,7 @@ function goBack(){
 (function(){
   const MIN=220;let el=null,t0=0;
   document.addEventListener('pointerdown',e=>{
-    const b=e.target.closest('#bm .bm-btn,#gm .gm-x,#cf .cf-x,#cf .cf-q,#cp .cp-x,#gx .cp-x,#cf .cf-go,#cf .cf-s.p');if(!b||!animOn())return;
+    const b=e.target.closest('#bm .bm-btn,#gm .gm-x,#cf .cf-x,#cf .cf-q,#cp .cp-x,#gx .cp-x,#gb .cp-x,#gb .hb,#cf .cf-go,#cf .cf-s.p');if(!b||!animOn())return;
     el=b;t0=performance.now();b.classList.add('press');
   });
   const rel=()=>{if(!el)return;const b=el;el=null;setTimeout(()=>b.classList.remove('press'),Math.max(0,MIN-(performance.now()-t0)))};
@@ -2339,7 +2395,7 @@ const PS=(function(){
     }
     x.globalAlpha=1;
   }
-  const ok=()=>!document.hidden&&($('#p-gifts').classList.contains('on')||$('#p-market').classList.contains('on'))&&!document.body.classList.contains('scrolling')&&!document.body.classList.contains('bmopen')&&!document.body.classList.contains('noanim')&&window.__sA!==false;
+  const ok=()=>!document.hidden&&($('#p-gifts').classList.contains('on')||$('#p-market').classList.contains('on')||$('#gb').classList.contains('on'))&&!document.body.classList.contains('scrolling')&&!document.body.classList.contains('bmopen')&&!document.body.classList.contains('noanim')&&window.__sA!==false;
   function loop(now){
     raf=0;for(const c of vis)if(!c.isConnected)vis.delete(c);
     if(!vis.size||!ok())return;
@@ -2359,7 +2415,7 @@ const RIB_P='M55.01 0L69.30 0Q73.30 0 76.13 2.83L97.17 23.87Q100 26.70 100 30.70
 const RIB_S='M53.78 0L68.07 0Q72.07 0 74.90 2.83L97.17 25.10Q100 27.93 100 31.93L100 46.22Q100 52.00 95.91 47.91L52.09 4.09Q48.00 0 53.78 0Z';
 const RIB_D='M54.80 0.00L65.10 0.00Q69.10 0.00 71.93 2.83L97.17 28.07Q100.00 30.90 100.00 34.90L100.00 45.20Q100.00 56.20 92.22 48.42L51.58 7.78Q43.80 0.00 54.80 0.00Z';
 function renderGifts(list){
-  $('#grid').innerHTML = list.map((g,i)=>{
+  const gridHtml = list.map((g,i)=>{
     const d = GD[g.name];
     const price = d ? d[0] : (!g.id && i<PRICES.length ? PRICES[i] : rndPrice(g.id||g.name||i));
     const sold = !!g.id && !d;   // есть в списке GD → «редкий», нет → «продан»
@@ -2367,6 +2423,8 @@ function renderGifts(list){
     (g.image?'<img loading="lazy" src="'+g.image+'" alt="" onerror="this.replaceWith(\'🎁\')">':(g.emoji||'🎁'))+
     '</div><div class="price"><canvas class="pc"></canvas><img class="pst" src="'+STAR+'" alt=""><span>'+fmt(price)+'</span></div></div>';
   }).join('');
+  $('#grid').innerHTML = gridHtml;
+  {const gb=document.getElementById('gbGrid');if(gb)gb.innerHTML=gridHtml}   /* то же самое — в окне «Купить подарок» из настроек */
   $$('.gift').forEach(el=>{ GIO.observe(el); el.onclick=()=>{const im=el.querySelector('.pic img');openBuy({price:el.dataset.p,total:+el.dataset.t,key:el.dataset.k,image:im?im.src:null,emoji:im?null:el.querySelector('.pic').textContent.trim()})}; });
 }
 renderGifts(FALLBACK);
@@ -2489,8 +2547,8 @@ function makeSP(cvSel,avaSel){
   document.addEventListener('visibilitychange',sync);
   return {start,stop,hold,sync};
 }
-const SPg=makeSP('#gsp','#gAva'), SPs=makeSP('#ssp','#sAva'), SPm=makeSP('#msp','#mAva');
-const SP={hold(b,v){SPg.hold(b,v);SPs.hold(b,v);SPm.hold(b,v)},sync(){SPg.sync();SPs.sync();SPm.sync()}};
+const SPg=makeSP('#gsp','#gAva'), SPs=makeSP('#ssp','#sAva'), SPm=makeSP('#msp','#mAva'), SPb=makeSP('#gbsp','#gbAva');
+const SP={hold(b,v){SPg.hold(b,v);SPs.hold(b,v);SPm.hold(b,v);SPb.hold(b,v)},sync(){SPg.sync();SPs.sync();SPm.sync();SPb.sync()}};
 
 /* ===== Анимация звёзд: выключает звёзды на страницах «Подарки», «Маркет», «Звёзды» и на плашках цен.
    Звёзды у закреплённых подарков в профиле и настройках работают всегда ===== */
@@ -3767,7 +3825,7 @@ renderMyGifts();
     for(let i=0;i<n;i++)MYGIFTS.unshift({image:cur.image||null,emoji:cur.emoji||null,total:total,anon:hidden,t:Date.now(),price:+cur.price,key:cur.key,msg:cmt});
     if(MYGIFTS.length>5000)MYGIFTS.length=5000;   /* раньше тут был лимит 200 — он удалял самые старые подарки снизу списка; теперь лимита по сути нет */
     const fresh=MYGIFTS.slice(0,n);
-    bm.classList.add('slow');close();   /* окно начинает закрываться сразу, до любой тяжёлой работы; скорость: .75с окно, 700мс переход */
+    bm.classList.add('slow');close();try{window.closeGiftBuy&&closeGiftBuy()}catch(_){}   /* окно начинает закрываться сразу, до любой тяжёлой работы; скорость: .75с окно, 700мс переход */
     /* всё тяжёлое (запись в хранилище, перерисовка профиля, переход) — после первого кадра анимации закрытия, иначе она «съедается» */
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       try{store.set(SOLDK,JSON.stringify(SOLDMAP))}catch(_){}
@@ -6870,6 +6928,54 @@ renderMyGifts();
   window.openGiftManager=function(){MGF.sort=MGF.u=MGF.v=null;MGF.x=false;S.clear();render(true);body.scrollTop=0;show()};
   $g('gxX').onclick=hide;gx.querySelector('.cp-dim').onclick=hide;
   $g('gxS').onclick=function(){try{openFilterMenu(this,{manager:false,F:MGF,after:()=>{if(gx.classList.contains('on'))render(true)}})}catch(_){}};
+})();
+</script>
+<script>
+/* ===== Окно «Купить подарок» (из настроек): те же подарки, что на странице «Купить подарок». Окно покупки открывается поверх него, при покупке закрываются оба ===== */
+(function(){
+  const $g=id=>document.getElementById(id);
+  const gb=$g('gb'),sh=$g('gbSheet'),body=$g('gbBody'),tabs=$g('gbTabs'),bal=$g('gbBal'),row=$g('gbRow');
+  if(!gb||!sh||!row)return;
+  /* контур окна — тот же, что у остальных модальных окон */
+  const shape=()=>{if(!window.__sheetPath)return;const w=sh.offsetWidth,h=sh.offsetHeight;if(!w||!h)return;const v='path("'+window.__sheetPath(w,h,0,0)+'")';sh.style.borderRadius='0';sh.style.webkitClipPath=v;sh.style.clipPath=v};
+  const keep=()=>{const t0=performance.now(),f=()=>{shape();if(performance.now()-t0<1000)requestAnimationFrame(f)};f()};
+  if(window.ResizeObserver)new ResizeObserver(shape).observe(sh,{box:'border-box'});
+  window.addEventListener('resize',shape);
+  if(window.ResizeObserver)new ResizeObserver(()=>{try{placeTab(tabs,true)}catch(_){}}).observe(body);
+
+  function show(){
+    if(gb.classList.contains('on'))return;
+    try{bal.innerHTML=BAL()}catch(_){}
+    tabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t==='all'));
+    $g('gbGrid').hidden=false;$g('gbEmpty').hidden=true;
+    body.scrollTop=0;
+    gb.classList.add('pre');void sh.offsetWidth;gb.classList.add('on');gb.setAttribute('aria-hidden','false');
+    keep();
+    try{SPb.start()}catch(_){}
+    try{PS.kick()}catch(_){}
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{try{placeTab(tabs,true)}catch(_){}}));
+  }
+  function hide(){
+    gb.classList.remove('on','pre');gb.setAttribute('aria-hidden','true');
+    try{SPb.stop()}catch(_){}
+  }
+  window.openGiftBuy=show;
+  window.closeGiftBuy=hide;
+
+  row.onclick=show;
+  $g('gbX').onclick=hide;
+  gb.querySelector('.cp-dim').onclick=hide;
+  /* баланс — как в шапке страниц: нажатие ведёт на страницу «Звёзды» */
+  bal.addEventListener('click',e=>{
+    if(!e.target.closest('.gbtn'))return;
+    hide();
+    try{go('stars')}catch(_){}
+  });
+  /* вкладки «Все / Коллекционные»: пока показывают те же подарки */
+  tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    try{pickTab(tabs,b)}catch(_){}
+    $g('gbGrid').hidden=false;$g('gbEmpty').hidden=true;
+  });
 })();
 </script>
 <script>
