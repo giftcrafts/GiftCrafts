@@ -3471,7 +3471,14 @@ function pgCull(g,from){
   },{root:root,rootMargin:'120% 0px 120% 0px'});
   Array.prototype.slice.call(g.children,from||0).forEach(c=>PG_CULL.observe(c));
 }
-function pgPaint(g,from){try{pgCull(g,from)}catch(_){}const els=from?Array.prototype.slice.call(g.children,from):[g];els.forEach(el=>el.querySelectorAll('canvas.pu-pat').forEach(cv=>{if(PG_RO)PG_RO.observe(cv);pgDraw(cv)}))}
+/* плашка с ценой в карточке подарка: небольшое сглаживание углов (squircle) */
+const PPR_RO=window.ResizeObserver?new ResizeObserver(es=>es.forEach(e=>pgShapePpr(e.target))):null;
+function pgShapePpr(b){
+  if(!window.squircle||!b.isConnected)return;
+  const w=b.offsetWidth,h=b.offsetHeight;if(!w||!h||(b.__pw===w&&b.__ph===h))return;b.__pw=w;b.__ph=h;
+  try{b.style.borderRadius='0';b.style.webkitClipPath=b.style.clipPath='path("'+squircle(w,h,h/2,.28)+'")'}catch(_){}
+}
+function pgPaint(g,from){try{pgCull(g,from)}catch(_){}const els=from?Array.prototype.slice.call(g.children,from):[g];els.forEach(el=>{el.querySelectorAll('.ppr').forEach(b=>{if(b.__pro)return;b.__pro=1;if(PPR_RO)PPR_RO.observe(b);pgShapePpr(b)})});els.forEach(el=>el.querySelectorAll('canvas.pu-pat').forEach(cv=>{if(PG_RO)PG_RO.observe(cv);pgDraw(cv)}))}
 function pgUpg(x,i){
   const d=x.upg,c=d.c||{},c1=pgCol(c.c1)||'#7b72ea',c2=pgCol(c.c2)||'#5b3fb8',c3=pgCol(c.c3)||'#ffffff',rb=pgShade(c2,.72)||'rgba(0,0,0,.3)',num='#'+d.n;
   return '<div class="pg pgu" data-i="'+i+'" style="--pc1:'+c1+';--pc2:'+c2+'"><div class="pu-bg">'+(d.si?'<canvas class="pu-pat" data-si="'+d.si+'" data-c="'+c3+'"></canvas>':'')+'</div>'+
@@ -4550,7 +4557,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),OPEN_MS=260,CLOSE_MS=240;
+  const EASE=bez(.35,.3,.15,1),OPEN_MS=310,CLOSE_MS=250;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
