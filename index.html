@@ -682,7 +682,7 @@ html,body{overscroll-behavior:none}
 #ug .ug-title i{font-style:normal;margin-left:6px;color:rgba(255,255,255,.62)}
 #ug .ug-sub{position:relative;z-index:1;margin-top:3px;font-size:14px;color:rgba(255,255,255,.66);min-height:17px}
 #ug .ug-acts{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:16px}
-#ug .ug-a{height:58px;border:0;border-radius:19px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font:inherit;font-size:12.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+#ug .ug-a{height:58px;border:0;border-radius:16px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font:inherit;font-size:12.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 #ug .ug-a:active{transform:scale(1.05)}
 #ug .ug-a svg{width:26px;height:26px;fill:#fff;fill-rule:evenodd}
 #ug .ug-tbl{flex:none;margin:16px 16px 0;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}
@@ -1470,13 +1470,14 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #ug .ug-x,#ug .ug-more,#um .um-back{-webkit-backdrop-filter:blur(6px) brightness(.86);backdrop-filter:blur(6px) brightness(.86);box-shadow:inset 0 0 0 .5px rgba(0,0,0,calc(.18 - .12*(var(--ug-l) - .4)))}
 #ug .ug-a{-webkit-backdrop-filter:blur(6px) brightness(.86);backdrop-filter:blur(6px) brightness(.86);box-shadow:inset 0 0 0 .5px rgba(0,0,0,calc(.18 - .12*(var(--ug-l) - .4)))}
 #ug .mk-sale{-webkit-backdrop-filter:blur(6px) brightness(.8);backdrop-filter:blur(6px) brightness(.8)}
-#ug .ug-x,#ug .ug-more,#ug .ug-a,#um .um-back,#um .um-var{--glass-w:.4px;--glass2-spread:.4px}
+#ug .ug-a,#um .um-var{--glass-w:.4px;--glass2-spread:.4px}
+#ug .ug-x,#ug .ug-more,#um .um-back{--glass-w:.7px;--glass2-spread:.7px}   /* обводка крестика / «назад» / трёх точек чуть толще */
 #ug .ug-a.sm{box-shadow:none}
 /* обводка «Передать / Носить / Продать» чуть темнее; по бокам она сливается с фоном кнопки (градиент обводки там прозрачный) */
 #ug .ug-a{--glass-rgb:calc(164 + var(--ug-d)),calc(166 + var(--ug-d)),calc(176 + var(--ug-d));--glass2-rgb:calc(174 + var(--ug-d)),calc(176 + var(--ug-d)),calc(186 + var(--ug-d));--glass-strong:.33;--glass2-a:.61;--glass-side:rgba(0,0,0,0)}
 /* крестик / три точки / назад: тёмная кромка идёт внутри ::after (его маска гасит её по бокам) */
 #ug .ug-x,#ug .ug-more,#um .um-back{box-shadow:none}
-#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .6px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
+#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
 #cf .glass{--menu-glass-blur:4.5px;--glass-w:.4px;--glass2-spread:.25px}
 #cf .cf-x.glass,#cf .cf-q.glass{--glass-w:.8px;--glass2-spread:.4px}
 #cf .cf-pill{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
@@ -7426,7 +7427,7 @@ renderMyGifts();
 /* кнопки «Передать / Носить / Продать» в окне подарка: слабое сглаживание углов (squircle), обводка и свечение идут по тому же контуру */
 (function(){
   const ug=document.getElementById('ug');if(!ug)return;
-  const R=19,SM=.22,T=.4,T2=.72;
+  const R=16,SM=.38,T=.4,T2=.72;
   function shape(b){
     if(!window.squircle)return;
     const cs=getComputedStyle(b);let w=parseFloat(cs.width),h=parseFloat(cs.height);
