@@ -23,7 +23,7 @@
 --hdr-top:calc(env(safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + 6px);--hdr-h:45px;--shd:calc(var(--hdr-h)/2 + 36px);--ic-hdr:25px;--ic-hdr-gift:31px;--ic-hdr-qr:28px;
 --ic-gram:28px;--ic-profile:29px;--ic-buygift:27px;--ic-stars:26px;--ic-promo:29px;
 --ic-lang:29px;--ic-theme:24px;--ic-anim:27px;              /* профиль */
---bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--gold:#ffc83d;--r:22px}
+--bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--dim:rgba(0,0,0,.55);--dim-cx:rgba(0,0,0,.52);--bar-bg:rgba(40,40,41,.84);--bar-ink:#fff;--slider-bg:rgba(16,16,18,.54);--hdr-bg:rgba(53,53,54,.58);--hdr-ink:#fff;--hdr-press:rgba(255,255,255,.6);--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--gold:#ffc83d;--r:22px}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{display:none;width:0;height:0}
 html,body{height:100%;width:100%;overflow:hidden;touch-action:pan-y;background:var(--bg);color:var(--text);font:16px/1.3 -apple-system,"SF Pro Text",system-ui,sans-serif;overscroll-behavior:none}
@@ -208,7 +208,7 @@ body.nostars .sp{animation:none!important}
 /* меню: оригинальный liquid glass */
 :root{--glass-rgb:104,106,114;--glass-strong:.135;--glass-side:rgba(115,117,126,0);--glass-w:.5px;--glass-h:100%;--glass-v:min(28px,55%);
 --glass2-rgb:120,122,130;--glass2-a:.385;--glass2-blur:1px;--glass2-spread:.5px;
---menu-glass-bg:rgba(53,53,54,.7);--menu-glass-blur:6px;--menu-inactive:#fff;--menu-slider-bg:rgba(16,16,18,.54)}
+--menu-glass-bg:rgba(53,53,54,.7);--menu-glass-blur:6px;--menu-inactive:#fff;--menu-slider-bg:var(--slider-bg)}
 .glass{position:relative;border:0;background:var(--menu-glass-bg);
 -webkit-backdrop-filter:blur(var(--menu-glass-blur));backdrop-filter:blur(var(--menu-glass-blur))}
 .glass::before,.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
@@ -219,7 +219,7 @@ background:linear-gradient(to bottom,rgba(var(--glass-rgb),calc(var(--glass-stro
 -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 8%,rgba(0,0,0,0.5) 16%,rgba(0,0,0,0.28) 24%,rgba(0,0,0,0.12) 32%,rgba(0,0,0,0) 42%,rgba(0,0,0,0) 58%,rgba(0,0,0,0.12) 68%,rgba(0,0,0,0.28) 76%,rgba(0,0,0,0.5) 84%,rgba(0,0,0,0.8) 92%,rgba(0,0,0,1) 100%);
 mask-image:linear-gradient(to bottom,rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 8%,rgba(0,0,0,0.5) 16%,rgba(0,0,0,0.28) 24%,rgba(0,0,0,0.12) 32%,rgba(0,0,0,0) 42%,rgba(0,0,0,0) 58%,rgba(0,0,0,0.12) 68%,rgba(0,0,0,0.28) 76%,rgba(0,0,0,0.5) 84%,rgba(0,0,0,0.8) 92%,rgba(0,0,0,1) 100%)}
 #bar{position:fixed;left:21px;right:21px;bottom:16px;z-index:1001;display:flex;justify-content:center;gap:10px;align-items:center}
-#bar{--glass-w:.75px;--glass2-spread:1px;--menu-glass-bg:rgba(40,40,41,.84);--menu-inactive:#fff;--menu-y:-2px}
+#bar{--glass-w:.75px;--glass2-spread:1px;--menu-glass-bg:var(--bar-bg);--menu-inactive:var(--bar-ink);--menu-y:-2px}
 #bar::before{content:"";position:absolute;left:-21px;right:-21px;bottom:-16px;height:calc(64px + 16px + 22px);z-index:-1;pointer-events:none;background:var(--bg);opacity:.5;
 -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.04) 12%,rgba(0,0,0,.15) 28%,rgba(0,0,0,.38) 48%,rgba(0,0,0,.66) 70%,rgba(0,0,0,.88) 88%,#000 100%);
 mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.04) 12%,rgba(0,0,0,.15) 28%,rgba(0,0,0,.38) 48%,rgba(0,0,0,.66) 70%,rgba(0,0,0,.88) 88%,#000 100%)}
@@ -303,24 +303,26 @@ mask-image:radial-gradient(ellipse 70vw 190px at 50% calc(320px + var(--ava-top)
 /* хедер: закреплённые кнопки поверх контента, стекло как у меню */
 #hdr{position:fixed;left:16px;right:16px;top:var(--hdr-top);z-index:1000;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
 #hdr:empty{display:none}
-.hb{pointer-events:auto;height:calc(var(--hdr-h) - 1px);border-radius:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font:inherit;font-size:18px;font-weight:550;white-space:nowrap;padding:0;-webkit-appearance:none;appearance:none}
+.hb{pointer-events:auto;height:calc(var(--hdr-h) - 1px);border-radius:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--hdr-ink);font:inherit;font-size:18px;font-weight:550;white-space:nowrap;padding:0;-webkit-appearance:none;appearance:none}
 .hb-txt{padding:0 12px}
 .hb-round{width:calc(var(--hdr-h) - 1px)}
 .hb{transition:transform .45s cubic-bezier(.25,.8,.25,1)}
 .hb.press{transform:scale(1.12)}
 .hb{touch-action:none}
-#hdr .hb,.mtabs{--glass-w:.6px;--glass2-spread:.65px;--menu-glass-bg:rgba(53,53,54,.58);--glass-strong:.11;--glass2-a:.32}
+#hdr .hb,.mtabs{--glass-w:.6px;--glass2-spread:.65px;--menu-glass-bg:var(--hdr-bg);--glass-strong:.11;--glass2-a:.32}
 .mtabs{--glass-w:.3px;--glass2-a:.19;--glass-strong:.07}   /* обводка слайдера в профиле чуть тоньше и мягче, чем у кнопок хедера */
 #menuSlider.press,#mtI.press{transform:scale(1.1)}
 .noanim .hb.press,.noanim #menuSlider.press,.noanim #mtI.press{transform:none}
-.hb:not(.hb-dbl).press,.hb:not(.hb-dbl).press .gbl{color:rgba(255,255,255,.6)}
-.hb:not(.hb-dbl).press svg,.hb-dbl span.press svg{fill:rgba(255,255,255,.6)}
-.hb:not(.hb-dbl).press svg.hs{fill:none;stroke:rgba(255,255,255,.6)}
+.hb:not(.hb-dbl).press,.hb:not(.hb-dbl).press .gbl{color:var(--hdr-press)}
+.hb:not(.hb-dbl).press svg,.hb-dbl span.press svg{fill:var(--hdr-press)}
+.hb:not(.hb-dbl).press svg.hs{fill:none;stroke:var(--hdr-press)}
 .hb:not(.hb-dbl).press img{opacity:.6}
 .noanim .gift:active{transform:none}
 #hdr .hb[data-a="save"]{background:#4BB6EE;--menu-glass-bg:#4BB6EE;--glass-rgb:170,222,250;--glass-strong:.4;--glass2-rgb:180,226,250;--glass2-a:.4}
-.hb svg{fill:#fff;fill-rule:evenodd}
-.hb svg.hs{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+.hb svg{fill:var(--hdr-ink);fill-rule:evenodd}
+.hb .gbl{color:var(--hdr-ink)}
+#hdr .hb[data-a="save"],#hdr .hb[data-a="save"] .gbl{color:#fff}#hdr .hb[data-a="save"] svg{fill:#fff}#hdr .hb[data-a="save"] svg.hs{fill:none;stroke:#fff}
+.hb svg.hs{fill:none;stroke:var(--hdr-ink);stroke-linecap:round;stroke-linejoin:round}
 
 /* переходы между страницами как в Telegram */
 .page.tr{position:absolute;left:0;top:0;width:100%;background:var(--bg);will-change:transform,opacity}
@@ -362,8 +364,8 @@ body.navanim #bar{z-index:1}
 /* слайдер на странице профиля: стекло и ползунок как у меню */
 .mtabs{margin:16px auto 0;width:fit-content;max-width:100%;box-sizing:border-box;height:40px;border-radius:21.2px/20px;display:flex;align-items:stretch;padding:3px}
 .mtabs i{position:absolute;top:3px;bottom:3px;left:0;width:0;background:var(--menu-slider-bg);border-radius:18.05px/17px;pointer-events:none;z-index:1;transition:left .22s cubic-bezier(.25,.9,.3,1),width .22s cubic-bezier(.25,.9,.3,1)}
-.mtabs button{position:relative;z-index:2;flex:none;border:0;background:none;color:#fff;font:inherit;font-size:16px;font-weight:550;cursor:pointer;padding:0 15.75px}
-.mtabs button.on{color:#fff}
+.mtabs button{position:relative;z-index:2;flex:none;border:0;background:none;color:var(--hdr-ink);font:inherit;font-size:16px;font-weight:550;cursor:pointer;padding:0 15.75px}
+.mtabs button.on{color:var(--hdr-ink)}
 .mtabs button{display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
 /* слайдер «Подарки» в профиле: ниже на 1px, скругление меньше, а углы сглажены сильнее (горизонтальный радиус больше вертикального) */
 #mtabs,#otabs{height:39px;border-radius:21px/18.5px}
@@ -425,7 +427,7 @@ body.navanim #bar{z-index:1}
 .pg.pressing{transform:scale(.94)}
 #cx{position:fixed;inset:0;z-index:3000;visibility:hidden;pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #cx.on{visibility:visible;pointer-events:auto}
-#cx .cx-dim{position:absolute;inset:0;background:rgba(0,0,0,.52);-webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5);opacity:0;transition:opacity .28s ease}
+#cx .cx-dim{position:absolute;inset:0;background:var(--dim-cx);-webkit-backdrop-filter:blur(26px) saturate(1.5);backdrop-filter:blur(26px) saturate(1.5);opacity:0;transition:opacity .28s ease}
 #cx.on .cx-dim{opacity:1}
 #cx.on.out{pointer-events:none}
 #cx.on.out .cx-dim{opacity:0;transition-duration:.3s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
@@ -459,7 +461,7 @@ background:rgba(66,66,70,.58);-webkit-backdrop-filter:blur(30px) saturate(1.5);b
 #bm.on,#bm.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #bm.slow .bm-sheet{transition-duration:.75s}
 #bm.slow .bm-dim{transition-duration:.6s}
-#bm .bm-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .45s}
+#bm .bm-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .45s}
 #bm.on .bm-dim{opacity:1}
 #bm .bm-sheet{position:absolute;left:6px;right:6px;bottom:6px;max-height:calc(100% - env(safe-area-inset-top,0px) - var(--tg-content-safe-area-inset-top,0px) - 22px);display:flex;flex-direction:column;background:transparent;border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;transform:translateY(calc(100% + 6px));transition:transform .55s cubic-bezier(.25,.8,.25,1);will-change:transform}
 #bm.on .bm-sheet{transform:translateY(0)}
@@ -497,7 +499,7 @@ background:rgba(66,66,70,.58);-webkit-backdrop-filter:blur(30px) saturate(1.5);b
 #bm .bm-card{position:relative;width:min(100%,224px);max-height:100%;min-height:0;border-radius:25px;padding:16px 14px 21px;display:flex;flex-direction:column;align-items:center;text-align:center;isolation:isolate}
 #gm{position:fixed;left:0;right:0;top:0;height:100%;z-index:2000;visibility:hidden;pointer-events:none;transition:visibility 0s linear .85s}
 #gm.on,#gm.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
-#gm .gm-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .45s}
+#gm .gm-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .45s}
 #gm.on .gm-dim{opacity:1}
 #gm:not(.on) .gm-dim{transition-duration:.62s}   /* при закрытии затемнение гаснет медленнее */
 #gm .gm-sheet{position:absolute;left:6px;right:6px;bottom:6px;max-height:calc(100% - env(safe-area-inset-top,0px) - var(--tg-content-safe-area-inset-top,0px) - 22px);display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;transform:translateY(calc(100% + 6px));transition:transform .55s cubic-bezier(.25,.8,.25,1);will-change:transform;touch-action:none;isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black)}
@@ -657,7 +659,7 @@ html,body{overscroll-behavior:none}
 /* ===== окно «Подарок улучшен» ===== */
 #ug{position:fixed;left:0;right:0;top:0;height:100%;z-index:2200;visibility:hidden;pointer-events:none;transition:visibility 0s linear .4s}
 #ug.on{visibility:visible;pointer-events:auto;transition-delay:0s}
-#ug .ug-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .35s}
+#ug .ug-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .35s}
 #ug.on .ug-dim{opacity:1}
 #ug .ug-sheet{position:absolute;left:6px;right:6px;bottom:6px;max-height:calc(100% - env(safe-area-inset-top,0px) - var(--tg-content-safe-area-inset-top,0px) - 8px);display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;opacity:0;transform:translateY(26px) scale(.97);transition:opacity .3s ease,transform .5s cubic-bezier(.25,.8,.25,1)}
 #ug.on .ug-sheet{opacity:1;transform:none}
@@ -893,7 +895,7 @@ html,body{overscroll-behavior:none}
 #sl{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .8s}
 #sl.on,#sl.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #sl .sl-x,#sl .sl-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#sl .sl-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#sl .sl-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #sl.on .sl-dim{opacity:1}
 #sl:not(.on) .sl-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #sl .sl-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - var(--ext,0px));margin-bottom:6px;max-height:calc(100% - 12px + var(--ext,0px));padding-bottom:var(--kb,0px);display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -932,7 +934,7 @@ html,body{overscroll-behavior:none}
 #pm{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .8s}
 #pm.on,#pm.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #pm .pm-x,#pm .pm-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#pm .pm-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#pm .pm-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #pm.on .pm-dim{opacity:1}
 #pm:not(.on) .pm-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #pm .pm-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - var(--ext,0px));margin-bottom:6px;max-height:calc(100% - 12px + var(--ext,0px));padding-bottom:var(--kb,0px);display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -974,7 +976,7 @@ html,body{overscroll-behavior:none}
 #ap{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #ap.on,#ap.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #ap .ap-x,#ap .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#ap .ap-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#ap .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #ap.on .ap-dim{opacity:1}
 #ap:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #ap .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -1034,7 +1036,7 @@ html,body{overscroll-behavior:none}
 #ap .ap-sr.on .ap-sw{background:#34c759}#ap .ap-sr.on .ap-sw:after{left:20px}
 #lg.on,#lg.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #lg .ap-x,#lg .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#lg .ap-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#lg .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #lg.on .ap-dim{opacity:1}
 #lg:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #lg .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -1114,7 +1116,7 @@ html,body{overscroll-behavior:none}
 #cf,#cp{position:fixed;left:0;right:0;top:0;height:100%;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #cf{z-index:2450}#cp{z-index:2500}
 #cf.on,#cf.pre,#cp.on,#cp.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
-#cf .cf-dim,#cp .cp-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .26s ease}
+#cf .cf-dim,#cp .cp-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .26s ease}
 #cf.on .cf-dim,#cp.on .cp-dim{opacity:1}
 #cf:not(.on) .cf-dim,#cp:not(.on) .cp-dim{transition-duration:.4s}
 #cf .cf-sheet,#cp .cp-sheet{position:absolute;left:6px;right:6px;bottom:6px;display:flex;flex-direction:column;border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .3s cubic-bezier(.32,.72,0,1);will-change:transform}   /* то же выезжающее окно, но быстрее обычного */
@@ -1288,7 +1290,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #gx{position:fixed;left:0;right:0;top:0;height:100%;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #gx{z-index:2500}
 #gx.on,#gx.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
-#gx .cp-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .26s ease}
+#gx .cp-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .26s ease}
 #gx.on .cp-dim{opacity:1}
 #gx:not(.on) .cp-dim{transition-duration:.4s}
 #gx .cp-sheet{position:absolute;left:6px;right:6px;bottom:6px;display:flex;flex-direction:column;border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .3s cubic-bezier(.32,.72,0,1);will-change:transform}
@@ -1346,7 +1348,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #stat{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #stat.on,#stat.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #stat .ap-x,#stat .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#stat .ap-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#stat .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #stat.on .ap-dim{opacity:1}
 #stat:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #stat .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -1402,7 +1404,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #priv{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #priv.on,#priv.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #priv .ap-x,#priv .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
-#priv .ap-dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;transition:opacity .38s ease}
+#priv .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #priv.on .ap-dim{opacity:1}
 #priv:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #priv .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
@@ -2111,9 +2113,9 @@ const store = {
 
 /* ===== темы: 0 «По умолчанию» (как в Telegram), 1 «Ночная», 2 «Тёмная», 3 «Светлая» ===== */
 (function(){
-  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e'};
-  const DARK={bg:'#18232e',card:'#213040',text:'#ffffff',hint:'#8d9bab',hint2:'#8d9bab',el:'#2b3d52',el2:'#3b4f66',line:'#2d4055',sheet:'#213040'};
-  const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#e5e5ea',sheet:'#ffffff'};
+  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(16,16,18,.54)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)'};
+  const DARK={bg:'#18232e',card:'#213040',text:'#ffffff',hint:'#8d9bab',hint2:'#8d9bab',el:'#2b3d52',el2:'#3b4f66',line:'#2d4055',sheet:'#213040',dim:'rgba(5,11,19,.62)',dimcx:'rgba(5,11,19,.58)',barbg:'rgba(38,55,74,.86)',barink:'#ffffff',slider:'rgba(11,19,29,.52)',hdrbg:'rgba(46,65,87,.62)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)'};
+  const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#e5e5ea',sheet:'#ffffff',dim:'rgba(0,0,0,.32)',dimcx:'rgba(0,0,0,.3)',barbg:'rgba(255,255,255,.84)',barink:'#6d6d72',slider:'rgba(118,118,128,.16)',hdrbg:'rgba(255,255,255,.74)',hdrink:'#000000',hdrpress:'rgba(0,0,0,.5)'};
   const rgb=h=>{h=String(h).replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');const n=parseInt(h,16);return isNaN(n)?'28,28,30':[n>>16&255,n>>8&255,n&255].join(',')};
   const isLightHex=h=>{const q=rgb(h).split(',').map(Number);return (q[0]*299+q[1]*587+q[2]*114)/1000>150};
   function tgTheme(){   /* «По умолчанию»: цвета берём из темы Telegram */
@@ -2132,6 +2134,7 @@ const store = {
     const c=k===1?NIGHT:k===2?DARK:k===3?LIGHT:tgTheme();
     const light=k===3||(k===0&&!!c.light),r=document.documentElement,S=r.style;
     S.setProperty('--bg',c.bg);S.setProperty('--card',c.card);S.setProperty('--text',c.text);S.setProperty('--hint',c.hint);S.setProperty('--hint2',c.hint2);
+    S.setProperty('--dim',c.dim);S.setProperty('--dim-cx',c.dimcx);S.setProperty('--bar-bg',c.barbg);S.setProperty('--bar-ink',c.barink);S.setProperty('--slider-bg',c.slider);S.setProperty('--hdr-bg',c.hdrbg);S.setProperty('--hdr-ink',c.hdrink);S.setProperty('--hdr-press',c.hdrpress);
     S.setProperty('--el',c.el);S.setProperty('--el2',c.el2);S.setProperty('--line',c.line);S.setProperty('--sheet',c.sheet);S.setProperty('--sheet-rgb',rgb(c.sheet));
     r.setAttribute('data-theme',light?'light':'dark');
     window.__th={bg:c.bg,sheet:c.sheet,light};
