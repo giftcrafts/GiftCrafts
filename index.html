@@ -1491,6 +1491,10 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #cf .glass{--menu-glass-blur:4.5px;--glass-w:.4px;--glass2-spread:.25px}
 #cf .cf-x.glass,#cf .cf-q.glass{--glass-w:.8px;--glass2-spread:.4px}
 #cf .cf-pill{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+/* засвет рядом с обводкой у кнопок окон улучшения и уникального подарка: полоса --glw сразу внутри обводки, светлее фона, слабее обводки; сходит на нет к бокам (маска ::after) */
+#ug,#um{--glw:.7px;--glc:rgba(180,182,194,.2)}
+#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4))),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
+#um .um-var::after,#ug .mk-sale::after,#um .um-xc::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
 /* «В продаже за»: на 1px ниже по высоте, отступ сверху +1px, текст на 1px меньше */
 #ug .mk-sale{height:20px;margin-top:1px;font-size:13px;border-radius:10px}
 </style>
@@ -7449,6 +7453,8 @@ renderMyGifts();
 (function(){
   const ug=document.getElementById('ug');if(!ug)return;
   const R=18,SM=.5,T=.4,T2=.72;
+  /* засвет рядом с обводкой: полоса GW px сразу внутри обводки (после T px), цвет GC темнее обводки, GA — насыщенность */
+  const GW=.7,GC='#b4b6c2',GA=.2,GM=T+GW/2;
   function shape(b){
     if(!window.squircle)return;
     const cs=getComputedStyle(b);let w=parseFloat(cs.width),h=parseFloat(cs.height);
@@ -7463,7 +7469,7 @@ renderMyGifts();
     b.style.setProperty('--sqi',sq(w-2*T,h-2*T,R-T,T));
     b.style.setProperty('--sqj',sq(w-2*T2,h-2*T2,R-T2,T2));
     /* тонкая тёмная кромка по тому же контуру (раньше была inset-тенью по прямоугольнику) */
-    const ring='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".21"/><stop offset=".22" stop-color="#000" stop-opacity=".11"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".58" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity=".11"/><stop offset="1" stop-color="#000" stop-opacity=".21"/></linearGradient><clipPath id="c"><path d="'+d+'"/></clipPath></defs><g clip-path="url(#c)"><path d="'+d+'" fill="none" stroke="url(#r)" stroke-width="1"/></g></svg>';
+    const ring='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".21"/><stop offset=".22" stop-color="#000" stop-opacity=".11"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".58" stop-color="#000" stop-opacity="0"/><stop offset=".78" stop-color="#000" stop-opacity=".11"/><stop offset="1" stop-color="#000" stop-opacity=".21"/></linearGradient><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+GC+'" stop-opacity="'+GA+'"/><stop offset=".22" stop-color="'+GC+'" stop-opacity="'+(GA*.55)+'"/><stop offset=".42" stop-color="'+GC+'" stop-opacity="0"/><stop offset=".58" stop-color="'+GC+'" stop-opacity="0"/><stop offset=".78" stop-color="'+GC+'" stop-opacity="'+(GA*.55)+'"/><stop offset="1" stop-color="'+GC+'" stop-opacity="'+GA+'"/></linearGradient><clipPath id="c"><path d="'+d+'"/></clipPath></defs><g clip-path="url(#c)"><path d="'+d+'" fill="none" stroke="url(#r)" stroke-width="1"/><path transform="translate('+GM+','+GM+')" d="'+squircle(w-2*GM,h-2*GM,R-GM,SM)+'" fill="none" stroke="url(#g)" stroke-width="'+GW+'"/></g></svg>';
     b.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(ring)+'")';b.style.backgroundSize='100% 100%';b.style.backgroundRepeat='no-repeat';
   }
   ug.querySelectorAll('.ug-a').forEach(b=>{
