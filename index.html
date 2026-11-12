@@ -1482,6 +1482,9 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 /* крестик / «назад» / три точки и плашка «В продаже за» — чуть темнее трёх кнопок */
 #ug .mk-sale.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.215);-webkit-backdrop-filter:blur(7px) brightness(.875);backdrop-filter:blur(7px) brightness(.875)}
 /* на очень светлом фоне (--ug-l выше .45) обводка кнопок светлее и ярче, чтобы не сливалась с фоном */
+/* пока меняется фон окна, размытие подложки у кнопок выключено (иначе браузер на время оставляет под кнопками старый фон); цвет подкрашен так, чтобы кнопки не светлели */
+#ug.ugsw .ug-a.glass{background-color:rgba(214,214,214,.27);-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+#ug.ugsw .mk-sale.glass,#ug.ugsw .ug-x.glass,#ug.ugsw .ug-more.glass,#um.ugsw .um-back.glass{background-color:rgba(200,200,200,.24);-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 #ug .ug-a.glass{--ug-w:calc(80*max(0,var(--ug-l) - .45));--glass-rgb:calc(164 + var(--ug-d) + var(--ug-w)),calc(166 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(174 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w)),calc(186 + var(--ug-d) + var(--ug-w));--glass-strong:calc(.33 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.61 + .25*max(0,var(--ug-l) - .45))}
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--ug-w:calc(80*max(0,var(--ug-l) - .45));--glass-rgb:calc(176 + var(--ug-d) + var(--ug-w)),calc(178 + var(--ug-d) + var(--ug-w)),calc(188 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(188 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w)),calc(200 + var(--ug-d) + var(--ug-w));--glass-strong:calc(.34 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.64 + .25*max(0,var(--ug-l) - .45))}
 #ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
@@ -2038,7 +2041,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
   }
   /* при включённых анимациях подарок играет сам; при выключенных — только по нажатию (один раз, повтор после окончания) */
   window.giftAnim=function(el,url,opts){
-    if(!el||!url)return;
+    if(!el||!url||window.__swNoAnim)return;   /* при перелистывании свайпом подарки без анимации */
     if(!window.lottie){console.warn('[giftAnim] lottie-web не загрузился (cdnjs заблокирован?)');return}
     if(window.__gA===false){
       if(opts&&(opts.once||opts.onComplete))return;
@@ -4804,7 +4807,7 @@ renderMyGifts();
     return .25*f(px(c.c1))+.75*f(px(c.c2));
   }
   window.__ugLumOf=ugLumOf;
-  function ugRim(c,ms){try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3))}catch(_){}
+  function ugRim(c,ms){try{UG.classList.add('ugsw');clearTimeout(window.__ugswT);window.__ugswT=setTimeout(()=>UG.classList.remove('ugsw'),(ms||0)+220)}catch(_){}try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3))}catch(_){}
     /* плашка «В продаже за» перерисовывает обводку вместе с плавной сменой яркости фона */
     try{const t1=performance.now(),dur=(ms||0)+80,loop=()=>{UG.querySelectorAll('.mk-sale').forEach(b=>{try{b.__draw&&b.__draw()}catch(_){}});if(performance.now()-t1<dur)requestAnimationFrame(loop)};loop()}catch(_){}}
   let bgTo=null;
@@ -5548,7 +5551,7 @@ renderMyGifts();
     const t=e.touches[0],dx=t.clientX-st.x,dy=t.clientY-st.y;
     if(!st.axis){
       if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
-      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;st.box.style.overflow='hidden'}else{st=null;return}
+      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;window.__swNoAnim=true;clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},4000);st.box.style.overflow='hidden'}else{st=null;return}
     }
     st.dx=dx;
     const has=!!ord()[st.i+(dx<0?1:-1)],lim=Wd()+20;
@@ -5560,7 +5563,8 @@ renderMyGifts();
       if(ord()[s.i+n]&&Math.abs(s.dx)>=8)preview(s,n);else if(s.pv)revert(s);
       place(s)})}
   }
-  function finish(s){s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120}
+  const swOff=()=>{clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},80)};
+  function finish(s){s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
   function up(e){
     if(!st)return;const s=st;st=null;
     if(s.tg&&s.tg!==s.sheet){s.tg.removeEventListener('touchmove',move);s.tg.removeEventListener('touchend',up);s.tg.removeEventListener('touchcancel',up)}
@@ -5573,7 +5577,7 @@ renderMyGifts();
     if(commit&&s.pv&&s.pv.n===n){
       const pv=s.pv,D=pv.D;
       glide([{el:pv.gh,from:s.tx},{el:pv.ns,from:s.tx+D}],-D-s.tx,v,()=>{
-        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';anim=false;until=performance.now()+120;
+        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';anim=false;until=performance.now()+120;swOff();
       });
       return;
     }
