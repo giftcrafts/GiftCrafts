@@ -682,7 +682,7 @@ html,body{overscroll-behavior:none}
 #ug .ug-title i{font-style:normal;margin-left:6px;color:rgba(255,255,255,.62)}
 #ug .ug-sub{position:relative;z-index:1;margin-top:3px;font-size:14px;color:rgba(255,255,255,.66);min-height:17px}
 #ug .ug-acts{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:16px}
-#ug .ug-a{height:58px;border:0;border-radius:17px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font:inherit;font-size:12.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+#ug .ug-a{height:58px;border:0;border-radius:18px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font:inherit;font-size:12.5px;font-weight:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 #ug .ug-a:active{transform:scale(1.05)}
 #ug .ug-a svg{width:26px;height:26px;fill:#fff;fill-rule:evenodd}
 #ug .ug-tbl{flex:none;margin:16px 16px 0;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}
@@ -1614,7 +1614,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="pstat"><svg class="ico" style="--s:var(--ic-rating-badge)"><use id="pRate" href="#i-n1"/></svg><span>в сети</span></div>
   </div>
   <div class="list pcard">
-    <div class="pf"><b>коллекционный номер</b><span id="pNum"></span></div>
+    <div class="pf"><b>мобильный</b><span id="pNum"></span></div>
     <div class="pf pf-user"><div><b>имя пользователя</b><span class="lnk" id="pUser"></span></div><svg class="ico" style="--s:var(--ic-pf-qr)"><use href="#i-qr"/></svg></div>
     <div class="pf" id="pfBd" hidden><b>день рождения</b><span class="w" id="pBd"></span></div>
     <div class="pf" id="pfAbout" hidden><b>о себе</b><span class="w" id="pAbout"></span></div>
@@ -7427,7 +7427,7 @@ renderMyGifts();
 /* кнопки «Передать / Носить / Продать» в окне подарка: слабое сглаживание углов (squircle), обводка и свечение идут по тому же контуру */
 (function(){
   const ug=document.getElementById('ug');if(!ug)return;
-  const R=17,SM=.44,T=.4,T2=.72;
+  const R=18,SM=.5,T=.4,T2=.72;
   function shape(b){
     if(!window.squircle)return;
     const cs=getComputedStyle(b);let w=parseFloat(cs.width),h=parseFloat(cs.height);
