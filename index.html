@@ -1103,7 +1103,7 @@ html,body{overscroll-behavior:none}
 
 /* ---------- крафт: иконка в «пилюле» окна подарка, окно изготовления и окно выбора подарков ---------- */
 #ug .ug-more .ug-cr{display:none;width:30px;height:30px;flex:none;fill:#fff;fill-rule:evenodd}
-#ug .ug-more.cr{width:auto;min-width:var(--hdr-h);padding:0 5px 0 7px;gap:15px;border-radius:calc(var(--hdr-h)/2*1.06)/calc(var(--hdr-h)/2)}
+#ug .ug-more.cr{width:auto;min-width:var(--hdr-h);padding:0 5px 0 7px;gap:15px;border-radius:calc(var(--hdr-h)/2*1.06 - 1px)/calc(var(--hdr-h)/2 - 1px)}
 #ug .ug-more.cr .ug-cr{display:block}
 #ug .ug-more .ug-dt{flex:none}
 /* боковые кнопки окон — тот же адаптивный цвет, что у «Отправить / Носить / Продать» */
@@ -4917,14 +4917,7 @@ renderMyGifts();
     /* маска: наклон в 3D → разворот анфас → лёгкое покачивание */
     const P='perspective(520px) ';
     /* у статичной картинки (png, не Lottie) ни тряски, ни увеличения: она стоит на месте и быстро исчезает, когда начинает открываться окно улучшения (см. ugShow) */
-    const isLot=!!(md.__box&&md.contains(md.__box));
-    if(isLot)fxA.push(md.animate([
-      {transform:P+'rotateY(-38deg) scale(1) translateY(5px)',offset:0,easing:'cubic-bezier(.2,.9,.3,1.2)'},
-      {transform:P+'rotateY(6deg) scale(1) translateY(-2px)',offset:.3,easing:'ease-in-out'},
-      {transform:P+'rotateY(-3.5deg) scale(1) rotate(-1.2deg)',offset:.55,easing:'ease-in-out'},
-      {transform:P+'rotateY(3deg) scale(1) rotate(1deg) translateY(-1px)',offset:.8,easing:'ease-in-out'},
-      {transform:P+'rotateY(0deg) scale(1)',offset:1}
-    ],{duration:CHG,fill:'forwards'}));
+    /* тряска модели убрана полностью */
     /* свечение за маской нарастает */
     gl.style.left=cx+'px';gl.style.top=cy+'px';
     /* свечение за маской убрано: фон под подарком в начале не подсвечивается */
