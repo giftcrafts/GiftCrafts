@@ -1478,9 +1478,9 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 /* крестик / три точки / назад: тёмная кромка идёт внутри ::after (его маска гасит её по бокам) */
 #ug .ug-x,#ug .ug-more,#um .um-back{box-shadow:none}
 /* цвет стеклянных кнопок чуть светлее */
-#ug .mk-sale.glass{--glass-rgb:calc(164 + var(--ug-d)),calc(166 + var(--ug-d)),calc(176 + var(--ug-d));--glass2-rgb:calc(174 + var(--ug-d)),calc(176 + var(--ug-d)),calc(186 + var(--ug-d));--glass-strong:.33;--glass2-a:.61}
-/* яркость фона --ug-l (0 тёмный … 1 светлый, .4 = обычный): на тёмном фоне кнопки темнее, на светлом светлее */
-#ug .ug-a.glass,#ug .mk-sale.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,calc(.235 + .3*(var(--ug-l) - .4)));-webkit-backdrop-filter:blur(7px) brightness(.9);backdrop-filter:blur(7px) brightness(.9)}
+#ug .ug-a.glass{background-color:rgba(255,255,255,.235);-webkit-backdrop-filter:blur(7px) brightness(.9);backdrop-filter:blur(7px) brightness(.9)}
+/* крестик / «назад» / три точки и плашка «В продаже за» — чуть темнее трёх кнопок */
+#ug .mk-sale.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(7px) brightness(.86);backdrop-filter:blur(7px) brightness(.86)}
 #ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
 #cf .glass{--menu-glass-blur:4.5px;--glass-w:.4px;--glass2-spread:.25px}
 #cf .cf-x.glass,#cf .cf-q.glass{--glass-w:.8px;--glass2-spread:.4px}
@@ -4801,7 +4801,7 @@ renderMyGifts();
     return .25*f(px(c.c1))+.75*f(px(c.c2));
   }
   window.__ugLumOf=ugLumOf;
-  function ugRim(c,ms){try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3))}catch(_){}try{UG.querySelectorAll('.mk-sale').forEach(b=>{if(b.__draw){b.__draw();setTimeout(()=>{try{b.__draw()}catch(_){}},(ms||0)+60)}})}catch(_){}}
+  function ugRim(c,ms){try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3))}catch(_){}}
   let bgTo=null;
   function ugBgSet(c){ugRim(c,0);const a=$u('ugT1'),b=$u('ugT2');clearTimeout(ugBg);b.style.transition='none';b.style.opacity=0;a.style.setProperty('--c1',c.c1);a.style.setProperty('--c2',c.c2);bgTo=null}
   function ugBgTo(c,ms){
@@ -6031,13 +6031,11 @@ renderMyGifts();
       if(!(w>0)||!(h>0)){w=b.offsetWidth;h=b.offsetHeight}if(!(w>0)||!(h>0))return;
       const f=n=>+n.toFixed(2),r=h/2,px=Math.min(1.09*r,w/2),hx=px*.57,vy=r*.57;
       const d='M'+f(px)+' 0L'+f(w-px)+' 0C'+f(w-px+hx)+' 0 '+f(w)+' '+f(r-vy)+' '+f(w)+' '+f(r)+'C'+f(w)+' '+f(r+vy)+' '+f(w-px+hx)+' '+f(h)+' '+f(w-px)+' '+f(h)+'L'+f(px)+' '+f(h)+'C'+f(px-hx)+' '+f(h)+' 0 '+f(r+vy)+' 0 '+f(r)+'C0 '+f(r-vy)+' '+f(px-hx)+' 0 '+f(px)+' 0Z';
-      let _l=.4;try{_l=parseFloat(getComputedStyle(document.getElementById('ug')).getPropertyValue('--ug-l'));if(!isFinite(_l))_l=.4}catch(_){}
-      const _k=Math.max(.45,Math.min(1.5,1+1.3*(_l-.4)));   /* обводка адаптивна к яркости фона, как у кнопок */
-      const st=(o,a)=>'<stop offset="'+o+'" stop-color="#b6b8bf" stop-opacity="'+Math.min(1,a*_k).toFixed(3)+'"/>',hs=(o,a)=>'<stop offset="'+o+'" stop-color="#fff" stop-opacity="'+a+'"/>';
+      const st=(o,a)=>'<stop offset="'+o+'" stop-color="#b6b8bf" stop-opacity="'+a+'"/>',hs=(o,a)=>'<stop offset="'+o+'" stop-color="#fff" stop-opacity="'+a+'"/>';
       const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">'+st(0,.55)+st(.14,.3)+st(.32,.07)+st(.5,0)+st(.68,.07)+st(.86,.3)+st(1,.55)+'</linearGradient><linearGradient id="h" x1="0" y1="0" x2="0" y2="1">'+hs(0,.17)+hs(.3,.045)+hs(.5,0)+hs(.7,.045)+hs(1,.17)+'</linearGradient><clipPath id="c"><path d="'+d+'"/></clipPath><filter id="b" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="0.4"/></filter></defs><g clip-path="url(#c)"><path d="'+d+'" fill="none" stroke="url(#h)" stroke-width="1.6" filter="url(#b)"/></g><path d="'+d+'" fill="#c9cbd3" fill-opacity="0"/><path d="'+d+'" fill="none" stroke="url(#g)" stroke-width="1"/></svg>';
       b.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';b.style.backgroundSize='100% 100%';   /* цвет фона не трогаем: он общий с кнопками (CSS) */
     };
-    draw();b.__draw=draw;
+    draw();
     if(window.ResizeObserver)new ResizeObserver(draw).observe(b);
   }
   function cardHtml(o,i){
