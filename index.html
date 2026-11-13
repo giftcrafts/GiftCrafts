@@ -1581,12 +1581,13 @@ html[data-theme=light] #nc .sl-inp input{color:var(--text)}
 html[data-theme=light] #nc .nc-r b{color:#8d8d8f}
 html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
 /* слайдер коллекций в профиле */
-#colRow{display:flex;gap:4px;margin:14px -16px 0;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#colRow{position:relative;display:flex;gap:4px;margin:14px -16px 0;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 #colRow::-webkit-scrollbar{display:none}
 #colRow[hidden]{display:none}
 #colRow .cc{flex:none;height:34px;padding:0 15px;border:0;border-radius:17px;background:none;color:var(--text);font:inherit;font-size:15px;font-weight:550;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .cx-chip{box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0 15px;border-radius:17px;background:#1c1c1e;color:#fff;font-size:15px;font-weight:550;white-space:nowrap;overflow:hidden}
-#colRow .cc.on{background:var(--card)}
+#colRow i{position:absolute;top:0;left:0;width:0;height:34px;border-radius:17px;background:var(--card);pointer-events:none;transition:left .22s cubic-bezier(.25,.9,.3,1),width .22s cubic-bezier(.25,.9,.3,1)}
+#colRow .cc{position:relative;z-index:1}
 #colRow .cc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
 /* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
 #gx.gx-pick #gxSel{display:none}
@@ -3937,6 +3938,9 @@ function myOrder(){
   else if(F.sort==='date')rest=rest.map((x,i)=>[x,i]).sort((a,b)=>((b[0].t||0)-(a[0].t||0))||(a[1]-b[1])).map(a=>a[0]);
   return top.concat(rest);
 }
+/* карточки подарков запоминаются: при смене коллекции уже нарисованные карточки просто возвращаются в сетку, а не создаются заново */
+const PGC=new WeakMap();
+const gSig=x=>[x.t,x.image||x.emoji,x.total,x.anon?1:0,x.hid?1:0,x.pin!=null?'p'+x.pin:'',x.sale?'s'+x.sale.p:'',x.upg?(x.upg.n+'/'+x.upg.mi+'/'+(x.upg.c?x.upg.c.c1:'')):''].join(':');
 function renderMyGifts(reset){
   const g=$('#pGrid'),e=$('#pEmpty');if(!g||!e)return;
   /* закреплённые — в самом верху (новые закрепы выше); data-i остаётся индексом в MYGIFTS */
@@ -3947,9 +3951,14 @@ function renderMyGifts(reset){
   g.__list=list;
   if(g.__sig!==sig){
     g.__sig=sig;try{PG_RO&&PG_RO.disconnect()}catch(_){}try{PG_CULL&&PG_CULL.disconnect()}catch(_){}
-    const n=Math.min(list.length,reset?PG_BATCH:Math.max(PG_BATCH,g.__n||0));let h='';
-    for(let i=0;i<n;i++)h+=pgCard(list[i],g.__ix?g.__ix[i]:i);
-    g.innerHTML=h;g.__n=n;
+    const n=Math.min(list.length,reset?PG_BATCH:Math.max(PG_BATCH,g.__n||0));
+    const fr=document.createDocumentFragment();
+    for(let i=0;i<n;i++){
+      const x=list[i],ix=g.__ix?g.__ix[i]:i,sg=gSig(x);let el=PGC.get(x);
+      if(!el||el.__s!==sg){const t=document.createElement('div');t.innerHTML=pgCard(x,ix);el=t.firstElementChild;el.__s=sg;PGC.set(x,el)}
+      el.dataset.i=ix;fr.appendChild(el);
+    }
+    g.textContent='';g.appendChild(fr);g.__n=n;
     try{pgPaint(g)}catch(_){}
   }else if(reset&&(g.__n||0)>PG_BATCH){
     const n=Math.min(list.length,PG_BATCH);
@@ -7355,14 +7364,36 @@ renderMyGifts();
   window.__colFilter=list=>{const c=COLS.find(c=>c.id===window.MYCOL);if(!c)return list;const s=new Set(c.g);return list.filter(x=>x.gid&&s.has(x.gid))};
 
   const row=$i('colRow');
-  function renderCols(){
+  /* ползунок под выбранной коллекцией: плавно переезжает (как в слайдере «Подарки / Коллекции») */
+  function placeI(instant){
+    const b=row&&row.querySelector('.cc.on'),i=row&&row.querySelector('i');if(!b||!i)return;
+    if(instant)i.style.transition='none';
+    i.style.left=b.offsetLeft+'px';i.style.width=b.offsetWidth+'px';
+    if(instant){void i.offsetWidth;i.style.transition=''}
+  }
+  function renderCols(anim){
     if(!row)return;
     if(!COLS.some(c=>c.id===window.MYCOL))window.MYCOL='all';
+    const old=row.querySelector('i'),ol=old?old.style.left:'',ow=old?old.style.width:'';
     row.hidden=!COLS.length;
     if(!COLS.length){row.innerHTML='';return}
-    row.innerHTML='<button type="button" class="cc'+(window.MYCOL==='all'?' on':'')+'" data-c="all">Все подарки</button>'
+    row.innerHTML='<i></i><button type="button" class="cc'+(window.MYCOL==='all'?' on':'')+'" data-c="all">Все подарки</button>'
       +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'">'+esc(c.n)+'</button>').join('')
       +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
+    const i=row.querySelector('i');
+    if(anim&&ol){   /* ползунок стартует со старого места и переезжает на новое */
+      i.style.transition='none';i.style.left=ol;i.style.width=ow;void i.offsetWidth;i.style.transition='';
+      placeI(false);
+    }else placeI(true);
+    requestAnimationFrame(()=>{if(!anim)placeI(true)});
+  }
+  if(row&&window.ResizeObserver)new ResizeObserver(()=>placeI(true)).observe(row);
+  /* выбор коллекции без перерисовки слайдера: меняется только подсветка и положение ползунка */
+  function selCol(c){
+    window.MYCOL=c;
+    row.querySelectorAll('.cc').forEach(b=>b.classList.toggle('on',b.dataset.c===c));
+    placeI(false);
+    try{const b=row.querySelector('.cc.on');b&&b.scrollIntoView&&b.scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
   }
   /* долгое нажатие на коллекцию (кроме «Все подарки») открывает меню коллекции */
   let lpT=0,lpP=null,lpSup=0;
@@ -7385,11 +7416,10 @@ renderMyGifts();
     if(performance.now()<lpSup){e.preventDefault();return}
     const b=e.target.closest&&e.target.closest('.cc');if(!b)return;
     const c=b.dataset.c;
-    if(c==='+'){hap('light');window.openNewCol&&openNewCol([]);return}
+    if(c==='+'){window.openNewCol&&openNewCol([]);return}
     if(c===window.MYCOL)return;
-    hap('sel');window.MYCOL=c;renderCols();
+    selCol(c);
     try{renderMyGifts(true)}catch(_){}
-    try{b.scrollIntoView&&row.querySelector('.cc.on')&&row.querySelector('.cc.on').scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
   });
   window.__cols=()=>COLS;
   /* новая коллекция сразу открывается */
@@ -7398,7 +7428,7 @@ renderMyGifts();
     const id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     COLS.push({id:id,n:name,g:g});
     window.MYCOL=id;
-    saveCols();renderCols();try{renderMyGifts(true)}catch(_){}
+    saveCols();renderCols(true);try{renderMyGifts(true)}catch(_){}
     try{const b=row.querySelector('.cc.on');b&&b.scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
   };
   const members=c=>MYGIFTS.filter(x=>x.gid&&c.g.indexOf(x.gid)>=0);
