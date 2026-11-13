@@ -1582,14 +1582,15 @@ html[data-theme=light] #nc .sl-inp input{color:var(--text)}
 html[data-theme=light] #nc .nc-r b{color:#8d8d8f}
 html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
 /* слайдер коллекций в профиле */
-#colRow{position:relative;display:flex;gap:4px;margin:14px -16px 0;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#colRow{position:relative;display:flex;gap:4px;margin:14px -16px 0;padding:0 19px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 #colRow::-webkit-scrollbar{display:none}
 #colRow[hidden]{display:none}
-#colRow .cc{flex:none;height:34px;padding:0 13px;border:0;border-radius:17px;background:none;color:var(--text);font:inherit;font-size:15px;font-weight:550;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#colRow .cc{flex:none;height:34px;padding:0 10px;border:0;border-radius:17px;background:none;color:var(--text);font:inherit;font-size:15px;font-weight:550;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .cx-chip{box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0 13px;border-radius:17px;background:#1c1c1e;color:#fff;font-size:15px;font-weight:550;white-space:nowrap;overflow:hidden}
 #colRow i{position:absolute;top:0;left:0;width:0;height:34px;border-radius:17px;background:var(--card);pointer-events:none;transition:left .22s cubic-bezier(.25,.9,.3,1),width .22s cubic-bezier(.25,.9,.3,1)}
 #colRow .cc{position:relative;z-index:1}
-#colRow .cc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+#colRow .cc[data-c="+"]{gap:4px}
+#colRow .cc svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
 /* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
 #gx.gx-pick #gxSel{display:none}
 /* возврат из окна улучшения: крестик сразу того же вида, что у кнопки окна подарка (без «светлого» мигания) */
@@ -4563,7 +4564,7 @@ renderMyGifts();
     return 'M'+f(q.p)+' 0L'+f(w-q.p)+' 0'+seg(q,0)+'L'+f(w)+' '+f(h-q.p)+seg(q,1)+'L'+f(q.p)+' '+f(h)+seg(q,2)+'L0 '+f(q.p)+seg(q,3)+'Z'}
   /* кнопка-«таблетка»: кривая начинается раньше по горизонтали (PX×радиус) и круче заворачивает — PX/HF/VF = сила сглаживания */
   const PX=1.09,HF=0.57,VF=0.57;
-  function pillPath(w,h){const r=h/2,px=Math.min(PX*r,w/2),hx=px*HF,vy=r*VF;
+  function pillPath(w,h,k){k=k==null?1:k;const r=h/2,px=Math.min((1+(PX-1)*k)*r,w/2),hx=px*HF,vy=r*VF;
     return 'M'+f(px)+' 0L'+f(w-px)+' 0C'+f(w-px+hx)+' 0 '+f(w)+' '+f(r-vy)+' '+f(w)+' '+f(r)+
       'C'+f(w)+' '+f(r+vy)+' '+f(w-px+hx)+' '+f(h)+' '+f(w-px)+' '+f(h)+'L'+f(px)+' '+f(h)+
       'C'+f(px-hx)+' '+f(h)+' 0 '+f(r+vy)+' 0 '+f(r)+'C0 '+f(r-vy)+' '+f(px-hx)+' 0 '+f(px)+' 0Z'}
@@ -4573,7 +4574,7 @@ renderMyGifts();
       const cs=getComputedStyle(el);let w=parseFloat(cs.width),h=parseFloat(cs.height);
       if(cs.boxSizing==='content-box'){w+=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)+parseFloat(cs.borderLeftWidth)+parseFloat(cs.borderRightWidth);h+=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)+parseFloat(cs.borderTopWidth)+parseFloat(cs.borderBottomWidth)}
       if(!(w>0)||!(h>0)){w=el.offsetWidth;h=el.offsetHeight}if(!w||!h)return;
-      const rr=r==='pill'?h/2:r,v='path("'+(r==='pill'?pillPath(w,h):smoothPath(w,h,rr,sm))+'")';
+      const rr=r==='pill'?h/2:r,v='path("'+(r==='pill'?pillPath(w,h,sm):smoothPath(w,h,rr,sm))+'")';
       if(own){el.style.borderRadius='0';el.style.webkitClipPath=v;el.style.clipPath=v}
       else{el.style.setProperty('--sq',v);el.style.setProperty('--sqr','0px')}};
     if(window.ResizeObserver)new ResizeObserver(run).observe(el);run();
@@ -4733,7 +4734,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=430;
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -7408,7 +7409,7 @@ renderMyGifts();
       +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'">'+esc(c.n)+'</button>').join('')
       +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
     const i=row.querySelector('i');
-    try{smoothFit(i,'pill',true,1)}catch(_){}   /* сглаженные углы ползунка */
+    try{smoothFit(i,'pill',true,.45)}catch(_){}   /* сглаженные углы ползунка (слабее, чем у остальных кнопок) */
     if(anim&&ol){   /* ползунок стартует со старого места и переезжает на новое */
       i.style.transition='none';i.style.left=ol;i.style.width=ow;void i.offsetWidth;i.style.transition='';
       placeI(false);
