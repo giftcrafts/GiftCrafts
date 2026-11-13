@@ -1515,6 +1515,7 @@ html[data-theme=light] :is(#cp,#gx) .cp-sheet{color:var(--text)}
 #cp .glass,#gx .glass,#cp .mk-chip{--menu-glass-bg:var(--gl-bg)}
 #cp .cp-x,#gx .cp-x,#cp .mk-chip,#cp .mk-chip.on{color:var(--gl-ink)}
 #cp .cp-x svg,#gx .cp-x svg{stroke:var(--gl-ink)}
+#gx .cp-x.gx-s svg{width:32px;height:32px;fill:var(--gl-ink);stroke:none;fill-rule:evenodd}
 html[data-theme=light] :is(#cp,#gx) .glass{--glass-rgb:60,60,67;--glass2-rgb:60,60,67}
 
 /* ===== светлая тема: уточнения ===== */
@@ -3165,7 +3166,7 @@ function clearAppCache(){ location.reload(); }
   /* отклик на нажатие — тот же «слайм», что у кнопки «Купить» */
   (function(){
     const MIN=160,R=60;let st=null,t0=0;
-    sb.addEventListener('click',()=>{if(performance.now()<(window.__ckShield||0))return;soon('Отправка подарков')});
+    sb.addEventListener('click',()=>{if(performance.now()<(window.__ckShield||0))return;if(window.MYCOL&&window.MYCOL!=='all'&&window.__colAct){window.__colAct('colAdd',window.MYCOL);return}soon('Отправка подарков')});
     sb.addEventListener('pointerdown',e=>{
       st={x:e.clientX,y:e.clientY,id:e.pointerId,drag:false};t0=performance.now();
       sb.classList.add('press');try{sb.setPointerCapture(e.pointerId)}catch(_){}
@@ -3669,7 +3670,7 @@ function meFillSpace(){
     /* высота содержимого считаем по месту, где начинается запас (scrollHeight не бывает меньше высоты экрана) */
     const cb=sp.getBoundingClientRect().top-pg.getBoundingClientRect().top+pg.scrollTop+(parseFloat(getComputedStyle(pg).paddingBottom)||0);
     const extra=Math.max(0,i.T+pg.clientHeight-(cb+(i.off||0)));
-    const hv=Math.ceil(extra)+'px';if(sp.style.height!==hv)sp.style.height=hv;
+    const hv=Math.ceil(Math.max(extra,parseFloat(sp.dataset.hold)||0))+'px';if(sp.style.height!==hv)sp.style.height=hv;
   }catch(_){}
 }
 (function(){
@@ -3996,7 +3997,7 @@ function sendLabel(t){
   if(vis&&nu.animate)nu.animate([{transform:'translateY(-9px) scale(.78)',opacity:0},{transform:'none',opacity:1}],{duration:280,easing:'cubic-bezier(.3,.8,.3,1)'});
 }
 /* подпись кнопки внизу зависит от вкладки */
-function syncSendLabel(){sendLabel('Отправить подарки')}
+function syncSendLabel(){sendLabel(window.MYCOL&&window.MYCOL!=='all'?'Добавить подарки':'Отправить подарки')}
 renderMyGifts();
 
 
@@ -6051,11 +6052,15 @@ renderMyGifts();
     clearTimeout(closeT);root.classList.remove('out','flt');
     mn.querySelectorAll('.hot').forEach(n=>n.classList.remove('hot'));try{window.__cxReset&&window.__cxReset()}catch(_){}
     root.classList.add('on');root.setAttribute('aria-hidden','false');
-    const mh=mn.offsetHeight;let mt=Math.round(rect.bottom+10);
-    if(mt+mh>vh-16)mt=Math.max(16,Math.round(rect.top-10-mh));
-    mn.style.top=mt+'px';
+    /* меню не уменьшается и всегда стоит под плашкой; если снизу не помещается — поднимается сама плашка */
+    const mh=mn.offsetHeight,ph=Math.round(rect.height);let pt=Math.round(rect.top);
+    const over=pt+ph+10+mh-(vh-16);
+    if(over>0)pt=Math.max(16,pt-over);
+    const dy=Math.round(rect.top)-pt;
+    pv.style.top=pt+'px';
+    mn.style.top=(pt+ph+10)+'px';
     shapeMenu(mn);
-    try{pv.animate([{opacity:.6,transform:'scale(.92)'},{opacity:1,transform:'none'}],{duration:300,easing:'cubic-bezier(.2,.9,.25,1.08)'})}catch(_){}
+    try{pv.animate(dy>0?[{opacity:1,transform:'translateY('+dy+'px)'},{opacity:1,transform:'none'}]:[{opacity:.6,transform:'scale(.92)'},{opacity:1,transform:'none'}],{duration:dy>0?340:300,easing:'cubic-bezier(.2,.9,.25,1.08)'})}catch(_){}
     try{mn.animate([{opacity:0,transform:'scale(.55)'},{opacity:1,transform:'none'}],{duration:380,delay:60,easing:'cubic-bezier(.2,.9,.25,1.05)',fill:'backwards'})}catch(_){}
     try{window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback&&Telegram.WebApp.HapticFeedback.impactOccurred('medium')}catch(_){}
     setTimeout(()=>{busy=false},200);
@@ -7389,11 +7394,18 @@ renderMyGifts();
   }
   if(row&&window.ResizeObserver)new ResizeObserver(()=>placeI(true)).observe(row);
   /* выбор коллекции без перерисовки слайдера: меняется только подсветка и положение ползунка */
+  /* выбранная коллекция остаётся видна в слайдере — прокручивается только сам слайдер, не страница */
+  function rowVis(){
+    try{const b=row.querySelector('.cc.on');if(!b)return;
+      const l=b.offsetLeft-16,r=b.offsetLeft+b.offsetWidth+16;
+      if(l<row.scrollLeft)row.scrollLeft=Math.max(0,l);
+      else if(r>row.scrollLeft+row.clientWidth)row.scrollLeft=r-row.clientWidth}catch(_){}
+  }
   function selCol(c){
     window.MYCOL=c;
     row.querySelectorAll('.cc').forEach(b=>b.classList.toggle('on',b.dataset.c===c));
     placeI(false);
-    try{const b=row.querySelector('.cc.on');b&&b.scrollIntoView&&b.scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
+    rowVis();
   }
   /* долгое нажатие на коллекцию (кроме «Все подарки») открывает меню коллекции */
   let lpT=0,lpP=null,lpSup=0;
@@ -7418,9 +7430,20 @@ renderMyGifts();
     const c=b.dataset.c;
     if(c==='+'){window.openNewCol&&openNewCol([]);return}
     if(c===window.MYCOL)return;
+    const pg=document.getElementById('p-me'),sp=document.getElementById('pSpace');
+    const st=pg?pg.scrollTop:0,H0=pg?pg.scrollHeight:0;
+    if(sp)delete sp.dataset.hold;
     selCol(c);
     try{renderMyGifts(true)}catch(_){}
+    /* если новая коллекция короче — добавляем запас снизу, чтобы страница осталась на месте */
+    try{if(pg&&sp){const d=H0-pg.scrollHeight;if(d>0){sp.dataset.hold=String((parseFloat(sp.style.height)||0)+d);meFillSpace()}
+      if(pg.scrollTop!==st)pg.scrollTop=st}}catch(_){}
   });
+  /* запас снимается, когда страница прокручена выше и запас больше не нужен (без скачка) */
+  (function(){const pg=document.getElementById('p-me'),sp=document.getElementById('pSpace');if(!pg||!sp)return;let t=0;
+    pg.addEventListener('scroll',()=>{if(!sp.dataset.hold)return;clearTimeout(t);t=setTimeout(()=>{
+      try{const h=parseFloat(sp.style.height)||0,nat=pg.scrollHeight-h;
+        if(sp.dataset.hold&&pg.scrollTop+pg.clientHeight<=nat+1){delete sp.dataset.hold;meFillSpace()}}catch(_){}},200)},{passive:true})})();
   window.__cols=()=>COLS;
   /* новая коллекция сразу открывается */
   window.__addCol=function(name,gifts){
@@ -7429,7 +7452,7 @@ renderMyGifts();
     COLS.push({id:id,n:name,g:g});
     window.MYCOL=id;
     saveCols();renderCols(true);try{renderMyGifts(true)}catch(_){}
-    try{const b=row.querySelector('.cc.on');b&&b.scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
+    rowVis();
   };
   const members=c=>MYGIFTS.filter(x=>x.gid&&c.g.indexOf(x.gid)>=0);
   /* сохранение изменений в окне «Переименовать» */
@@ -7448,9 +7471,9 @@ renderMyGifts();
     const c=COLS.find(c=>c.id===id);if(!c)return;
     if(k==='colAdd'){
       if(!window.openGiftPicker)return;
-      openGiftPicker({title:'Добавить подарки',sel:[],done:a=>{
+      openGiftPicker({title:'Добавить в коллекцию',sel:members(c),done:a=>{
         const cc=COLS.find(q=>q.id===id);if(!cc)return;
-        a.forEach(x=>{const g=gid(x);if(cc.g.indexOf(g)<0)cc.g.push(g)});
+        cc.g=a.map(gid);   /* выбор = состав коллекции: снятые подарки уходят из коллекции, подарки остаются в профиле */
         saveG();saveCols();try{renderMyGifts()}catch(_){}
       }});
     }else if(k==='colRen'){
@@ -7491,13 +7514,13 @@ renderMyGifts();
     if(!H0)H0=baseH();
     const vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
     let shrink=Math.max(0,H0-vb);if(shrink<80)shrink=0;
+    if(nc.__off){if(foc||shrink===0)nc.__off=false;else shrink=0}   /* клавиатуру закрыли — блок под ней убирается сразу, не ждём системное событие */
     const nt=(vv&&(foc||shrink>0))?Math.round(vv.offsetTop)+'px':'',nh=(vv&&(foc||shrink>0))?Math.round(vv.height)+'px':'';
-    const hold=!!(nc.__fold&&!foc&&shrink>0);
+    const hold=false;
     if(!hold){if(nc.style.top!==nt)nc.style.top=nt;if(nc.style.height!==nh)nc.style.height=nh}
     let kb=0;
     if(shrink>0){kb=shrink;if(foc&&shrink>120&&shrink!==KBH){KBH=shrink;try{localStorage.setItem('slKbh',String(shrink))}catch(_){}}}
     else if(foc)kb=KBH||Math.round(H0*.35);
-    if(nc.__fold){if(foc||shrink===0)nc.__fold=false;if(nc.__fold)kb=0}
     if(nc.__kb!==kb){nc.__kb=kb;nc.style.setProperty('--kb',kb+'px')}
     if(!hold&&nc.__ext!==shrink){nc.__ext=shrink;nc.style.setProperty('--ext',shrink+'px')}
     if(nc.classList.contains('kb')!==foc)nc.classList.toggle('kb',foc);
@@ -7510,10 +7533,10 @@ renderMyGifts();
     requestAnimationFrame(f);
   }
   if(window.visualViewport){visualViewport.addEventListener('resize',()=>{fit();loop(500)});visualViewport.addEventListener('scroll',fit)}
-  inp.addEventListener('focus',()=>{nc.__fold=false;fit();loop(1000)});
+  inp.addEventListener('focus',()=>{nc.__off=false;fit();loop(1000)});
   inp.addEventListener('blur',()=>{
-    if(nc.classList.contains('on')){nc.__fold=true;clearTimeout(nc.__foldT);nc.__foldT=setTimeout(()=>{nc.__fold=false;fit()},1000)}
-    fit();loop(1000);setTimeout(fit,120)});
+    if(nc.classList.contains('on'))nc.__off=true;
+    fit();loop(600);setTimeout(fit,120)});
   function shapeSheet(){
     if(!window.__sheetPath)return;
     const w=sh.offsetWidth,h=sh.offsetHeight;if(!w||!h)return;
@@ -7543,7 +7566,7 @@ renderMyGifts();
     clearTimeout(nc.__kbt);nc.__kbt=setTimeout(()=>{if(nc.classList.contains('on'))nc.classList.add('kbt')},90);
   };
   function closeNc(){
-    clearTimeout(nc.__kbt);clearTimeout(nc.__foldT);nc.__fold=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
+    clearTimeout(nc.__kbt);nc.__off=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
     try{inp.blur()}catch(_){}
     setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre'))setTgBg(window.__th?__th.bg:'#000000')},640);
     clearTimeout(closeT);closeT=setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre')){nc.style.top='';nc.style.height='';nc.style.removeProperty('--kb');nc.style.removeProperty('--ext');nc.__kb=nc.__ext=undefined;nc.classList.remove('kbt');H0=0}},900);
