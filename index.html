@@ -8284,6 +8284,8 @@ renderMyGifts();
    иначе браузер на время оставляет под ними старый фон. Раньше это отключение перебивалось более поздним правилом .glass;
    затемнение brightness заменено эквивалентной полупрозрачной подложкой, чтобы цвет кнопок не скакал при возврате блюра */
 #ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(192,192,192,.3115)}
+/* без backdrop-filter Safari перестаёт обрезать фон кнопки по clip-path (squircle) — фон становился прямоугольным; форму держит маска по тому же контуру */
+#ug.fxon .ug-a.glass.sm,#ug.ugsw .ug-a.glass.sm{-webkit-mask:var(--sqo) 0 0/100% 100% no-repeat;mask:var(--sqo) 0 0/100% 100% no-repeat}
 #ug.fxon .ug-x.glass,#ug.fxon .ug-more.glass,#ug.fxon .mk-sale.glass,#ug.ugsw .ug-x.glass,#ug.ugsw .ug-more.glass,#ug.ugsw .mk-sale.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(175,175,175,.313)}
 </style>
 </body>
