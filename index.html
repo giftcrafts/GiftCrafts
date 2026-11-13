@@ -2136,22 +2136,16 @@ const store = {
   set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}
 };
 
-/* ===== темы: 0 «По умолчанию» (как в Telegram), 1 «Ночная», 2 «Светлая» ===== */
+/* ===== темы: 0 «По умолчанию» (светлая, если светлая в Telegram, иначе ночная), 1 «Ночная», 2 «Светлая» ===== */
 (function(){
   const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(16,16,18,.54)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(53,53,54,.7)',glink:'#ffffff',accent:'#4cb4e9',accent2:'#4BB6EE',vb:'#4fc3ff'};
   const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#c7c7c7',sheet:'#ffffff',dim:'rgba(0,0,0,.32)',dimcx:'rgba(0,0,0,.3)',barbg:'rgba(255,255,255,.84)',barink:'#6d6d72',slider:'rgba(118,118,128,.16)',hdrbg:'rgba(255,255,255,.74)',hdrink:'#000000',hdrpress:'rgba(0,0,0,.5)',glbg:'rgba(120,120,128,.14)',glink:'#000000',accent:'#3b8fbb',accent2:'#3b8fbb',vb:'#3b8fbb'};
   const rgb=h=>{h=String(h).replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');const n=parseInt(h,16);return isNaN(n)?'28,28,30':[n>>16&255,n>>8&255,n&255].join(',')};
   const isLightHex=h=>{const q=rgb(h).split(',').map(Number);return (q[0]*299+q[1]*587+q[2]*114)/1000>150};
-  function tgTheme(){   /* «По умолчанию»: цвета берём из темы Telegram */
-    const T=window.Telegram&&Telegram.WebApp,p=T&&T.themeParams;
-    if(!p||!(p.bg_color||p.secondary_bg_color))return NIGHT;
-    const bg=p.secondary_bg_color||p.bg_color,card=p.section_bg_color||p.bg_color;
-    const light=T.colorScheme?T.colorScheme==='light':isLightHex(bg);
-    const b=Object.assign({},light?LIGHT:NIGHT);
-    b.bg=bg;b.card=card;b.sheet=p.bg_color||card;
-    if(p.text_color)b.text=p.text_color;
-    if(p.hint_color){b.hint=p.hint_color;b.hint2=p.hint_color}
-    b.light=light;return b;
+  function tgTheme(){   /* «По умолчанию»: если в Telegram светлая тема — наша «Светлая», иначе «Ночная» */
+    const T=window.Telegram&&Telegram.WebApp,p=T&&T.themeParams||{};
+    const light=T&&T.colorScheme?T.colorScheme==='light':(p.bg_color?isLightHex(p.bg_color):false);
+    return light?Object.assign({},LIGHT,{light:true}):NIGHT;
   }
   function applyTheme(k){
     k=+k;if(!(k>=0&&k<=2))k=0;
