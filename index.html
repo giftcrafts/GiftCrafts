@@ -7533,8 +7533,28 @@ renderMyGifts();
     requestAnimationFrame(f);
   }
   if(window.visualViewport){visualViewport.addEventListener('resize',()=>{fit();loop(500)});visualViewport.addEventListener('scroll',fit)}
-  inp.addEventListener('focus',()=>{nc.__off=false;fit();loop(1000)});
+  inp.addEventListener('focus',()=>{
+    if(nc.__hold){nc.__hold=false;nc.__freeze=false}   /* клавиатуру вернули, пока она закрывалась */
+    nc.__off=false;fit();loop(1000)});
   inp.addEventListener('blur',()=>{
+    /* Клавиатура закрывается: WebView получает полную высоту только В КОНЦЕ её анимации.
+       Если сразу сбросить --kb/--ext/top/height и класс .kb, окно на эти кадры растягивается
+       вверх (шапка уезжает под остров) и в конце прыгает вниз. Поэтому геометрию замораживаем
+       и отпускаем только когда клавиатура реально убралась (или по таймауту). */
+    if(nc.classList.contains('on')&&!nc.__freeze&&(nc.classList.contains('kb')||nc.__kb>0)){
+      nc.__freeze=true;nc.__hold=true;
+      const t0=performance.now();
+      const wait=()=>{
+        if(!nc.__hold)return;
+        if(!nc.classList.contains('on')){nc.__hold=false;nc.__freeze=false;return}
+        const vv=window.visualViewport,vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
+        if(H0-vb<80||performance.now()-t0>1100){nc.__hold=false;nc.__freeze=false;nc.__off=true;fit();loop(700);return}
+        requestAnimationFrame(wait);
+      };
+      requestAnimationFrame(wait);
+      return;
+    }
+    if(nc.__freeze)return;
     if(nc.classList.contains('on'))nc.__off=true;
     fit();loop(600);setTimeout(fit,120)});
   function shapeSheet(){
@@ -7566,6 +7586,7 @@ renderMyGifts();
     clearTimeout(nc.__kbt);nc.__kbt=setTimeout(()=>{if(nc.classList.contains('on'))nc.classList.add('kbt')},90);
   };
   function closeNc(){
+    nc.__hold=false;nc.__freeze=false;
     clearTimeout(nc.__kbt);nc.__off=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
     try{inp.blur()}catch(_){}
     setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre'))setTgBg(window.__th?__th.bg:'#000000')},640);
@@ -7588,6 +7609,7 @@ renderMyGifts();
       openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
       setTimeout(()=>{nc.__freeze=false;nc.__off=true;fit()},600);   /* окно сзади перестраивается уже под закрытым выбором */
     };
+    if(kbUp){nc.__picking=true;nc.__freeze=true}   /* заморозка ДО blur(), иначе обработчик blur успевает сжать окно */
     try{inp.blur()}catch(_){}
     if(!kbUp){open();return}
     /* клавиатура открыта: окно «Новая коллекция» стоит на месте, пока она не уберётся целиком, и только потом открывается выбор —
