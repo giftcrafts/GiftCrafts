@@ -7509,7 +7509,7 @@ renderMyGifts();
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur()});
   function fit(){
     const vv=window.visualViewport,foc=document.activeElement===inp,open=nc.classList.contains('on')||nc.classList.contains('pre');
-    if(!open)return;
+    if(!open||nc.__freeze)return;
     if((foc||open)&&(window.scrollX||window.scrollY))window.scrollTo(0,0);
     if(!H0)H0=baseH();
     const vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
@@ -7580,10 +7580,26 @@ renderMyGifts();
 
   /* «Добавить подарки» → менеджер подарков в режиме выбора */
   const pick=()=>{
-    if(!window.openGiftPicker)return;
+    if(!window.openGiftPicker||nc.__picking)return;
+    const kbUp=document.activeElement===inp||nc.classList.contains('kb');
+    const open=()=>{
+      nc.__picking=false;
+      setTgBg(window.__th?__th.bg:'#000000');
+      openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
+      setTimeout(()=>{nc.__freeze=false;nc.__off=true;fit()},600);   /* окно сзади перестраивается уже под закрытым выбором */
+    };
     try{inp.blur()}catch(_){}
-    nc.__off=true;setTgBg(window.__th?__th.bg:'#000000');   /* серая подложка Telegram под клавиатурой больше не нужна: поверх открывается тёмное окно */
-    openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
+    if(!kbUp){open();return}
+    /* клавиатура открыта: окно «Новая коллекция» стоит на месте, пока она не уберётся целиком, и только потом открывается выбор —
+       иначе окна двигались вверх-вниз, а под клавиатурой оставался блок */
+    nc.__picking=true;nc.__freeze=true;
+    const t0=performance.now();
+    const wait=()=>{
+      const vv=window.visualViewport,vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
+      if(!nc.classList.contains('on')){nc.__picking=false;nc.__freeze=false;return}
+      if(H0-vb<80||performance.now()-t0>900)open();else requestAnimationFrame(wait);
+    };
+    requestAnimationFrame(wait);
   };
   let t0=null;
   addRow.addEventListener('mousedown',e=>e.preventDefault());
