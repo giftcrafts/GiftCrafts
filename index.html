@@ -23,7 +23,7 @@
 --hdr-top:calc(env(safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + 6px);--hdr-h:45px;--shd:calc(var(--hdr-h)/2 + 36px);--ic-hdr:25px;--ic-hdr-gift:31px;--ic-hdr-qr:28px;
 --ic-gram:28px;--ic-profile:29px;--ic-buygift:27px;--ic-stars:26px;--ic-promo:29px;
 --ic-lang:29px;--ic-theme:24px;--ic-anim:27px;              /* профиль */
---bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--bg-rgb:0,0,0;--gl-bg:rgba(53,53,54,.7);--gl-ink:#fff;--dim:rgba(0,0,0,.55);--dim-cx:rgba(0,0,0,.52);--bar-bg:rgba(40,40,41,.84);--bar-ink:#fff;--slider-bg:rgba(16,16,18,.54);--hdr-bg:rgba(53,53,54,.58);--hdr-ink:#fff;--hdr-press:rgba(255,255,255,.6);--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--gold:#ffc83d;--r:22px}
+--bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--bg-rgb:0,0,0;--gl-bg:rgba(53,53,54,.7);--gl-ink:#fff;--dim:rgba(0,0,0,.55);--dim-cx:rgba(0,0,0,.52);--bar-bg:rgba(40,40,41,.84);--bar-ink:#fff;--slider-bg:rgba(16,16,18,.54);--hdr-bg:rgba(53,53,54,.58);--hdr-ink:#fff;--hdr-press:rgba(255,255,255,.6);--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--accent2:#4BB6EE;--gold:#ffc83d;--r:22px}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{display:none;width:0;height:0}
 html,body{height:100%;width:100%;overflow:hidden;touch-action:pan-y;background:var(--bg);color:var(--text);font:16px/1.3 -apple-system,"SF Pro Text",system-ui,sans-serif;overscroll-behavior:none}
@@ -51,7 +51,7 @@ body.nobar #bar{display:none}
 .sbal small{font-size:.62em;font-weight:500}
 .sbl{margin-top:0;font-size:18px;line-height:1.15;color:var(--hint);font-weight:500}
 /* голубая кнопка — те же размеры, цвет, обводка (shapeBtn), тень и нажатие, что в модальных окнах */
-.sbuy{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;margin:20px 0 0;width:100%;height:51px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sbuy{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;margin:20px 0 0;width:100%;height:51px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sbuy:active{transform:scale(1.04)}
 .srow{display:flex;gap:10px;margin-top:14px}
 .stip{padding:0 16px;margin:8px 0 0;font-size:13px;line-height:1.38;font-weight:500;color:var(--hint2)}
@@ -318,7 +318,7 @@ mask-image:radial-gradient(ellipse 70vw 190px at 50% calc(320px + var(--ava-top)
 .hb:not(.hb-dbl).press svg.hs{fill:none;stroke:var(--hdr-press)}
 .hb:not(.hb-dbl).press img{opacity:.6}
 .noanim .gift:active{transform:none}
-#hdr .hb[data-a="save"]{background:#4BB6EE;--menu-glass-bg:#4BB6EE;--glass-rgb:170,222,250;--glass-strong:.4;--glass2-rgb:180,226,250;--glass2-a:.4}
+#hdr .hb[data-a="save"]{background:var(--accent2);--menu-glass-bg:var(--accent2);--glass-rgb:170,222,250;--glass-strong:.4;--glass2-rgb:180,226,250;--glass2-a:.4}
 .hb svg{fill:var(--hdr-ink);fill-rule:evenodd}
 .hb .gbl{color:var(--hdr-ink)}
 #hdr .hb[data-a="save"],#hdr .hb[data-a="save"] .gbl{color:#fff}#hdr .hb[data-a="save"] svg{fill:#fff}#hdr .hb[data-a="save"] svg.hs{fill:none;stroke:#fff}
@@ -409,7 +409,7 @@ body.navanim #bar{z-index:1}
 #sendWrap::before,#sendWrap::after{content:"";position:absolute;left:0;right:0;bottom:0;top:0;z-index:-1;pointer-events:none}
 #sendWrap::before{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%)}
 #sendWrap::after{background:linear-gradient(to bottom,rgba(var(--bg-rgb),0.000) 0.0%,rgba(var(--bg-rgb),0.011) 6.2%,rgba(var(--bg-rgb),0.041) 12.5%,rgba(var(--bg-rgb),0.088) 18.8%,rgba(var(--bg-rgb),0.148) 25.0%,rgba(var(--bg-rgb),0.220) 31.2%,rgba(var(--bg-rgb),0.301) 37.5%,rgba(var(--bg-rgb),0.386) 43.8%,rgba(var(--bg-rgb),0.475) 50.0%,rgba(var(--bg-rgb),0.564) 56.2%,rgba(var(--bg-rgb),0.649) 62.5%,rgba(var(--bg-rgb),0.730) 68.8%,rgba(var(--bg-rgb),0.802) 75.0%,rgba(var(--bg-rgb),0.862) 81.2%,rgba(var(--bg-rgb),0.909) 87.5%,rgba(var(--bg-rgb),0.939) 93.8%,rgba(var(--bg-rgb),0.950) 100.0%)}
-#sendBtn{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#sendBtn{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #sendBtn.press{transform:scale(1.04)}
 .noanim #sendBtn.press{transform:none}
 #stSendWrap{position:fixed;left:0;right:0;bottom:0;z-index:950;padding:0 32px 30px;pointer-events:none;isolation:isolate;visibility:hidden;transform:translateY(calc(100% + 24px));transition:transform .45s cubic-bezier(.25,.8,.25,1),visibility 0s linear .45s}
@@ -418,7 +418,7 @@ body.navanim #bar{z-index:1}
 #stSendWrap::before,#stSendWrap::after{content:"";position:absolute;left:0;right:0;bottom:0;top:0;z-index:-1;pointer-events:none}
 #stSendWrap::before{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%)}
 #stSendWrap::after{background:linear-gradient(to bottom,rgba(var(--bg-rgb),0.000) 0.0%,rgba(var(--bg-rgb),0.011) 6.2%,rgba(var(--bg-rgb),0.041) 12.5%,rgba(var(--bg-rgb),0.088) 18.8%,rgba(var(--bg-rgb),0.148) 25.0%,rgba(var(--bg-rgb),0.220) 31.2%,rgba(var(--bg-rgb),0.301) 37.5%,rgba(var(--bg-rgb),0.386) 43.8%,rgba(var(--bg-rgb),0.475) 50.0%,rgba(var(--bg-rgb),0.564) 56.2%,rgba(var(--bg-rgb),0.649) 62.5%,rgba(var(--bg-rgb),0.730) 68.8%,rgba(var(--bg-rgb),0.802) 75.0%,rgba(var(--bg-rgb),0.862) 81.2%,rgba(var(--bg-rgb),0.909) 87.5%,rgba(var(--bg-rgb),0.939) 93.8%,rgba(var(--bg-rgb),0.950) 100.0%)}
-#stSendBtn{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#stSendBtn{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #stSendBtn.press{transform:scale(1.04)}
 .noanim #stSendBtn.press{transform:none}
 
@@ -540,7 +540,7 @@ background:rgba(66,66,70,.58);-webkit-backdrop-filter:blur(30px) saturate(1.5);b
 #gm .gm-h a svg{display:inline-block;width:7px;height:13px;flex:none;margin-left:3px;vertical-align:-2px}
 #gm .gm-upw{position:relative;z-index:1;padding:18px 29px 31px}
 #gm.sold .gm-upw{padding-top:22px}
-#gm .gm-up{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+#gm .gm-up{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 #gm .gm-up.press{transform:scale(1.04)}
 .noanim #gm .gm-up.press{transform:none}
 #bm .rib{position:absolute;top:-1.5px;right:-1.5px;width:115px;height:115px;pointer-events:none;z-index:2}
@@ -578,10 +578,10 @@ mask-image:linear-gradient(to bottom,transparent 0px,rgba(0,0,0,0.010) 2px,rgba(
 #bm .bm-hide.on .bm-sw{background:#34c759}#bm .bm-hide.on .bm-sw:after{left:20px}
 #bm .bm-note{color:var(--hint2);font-size:13px;line-height:1.3;font-weight:500;padding:6px 17px 0}
 #bm .bm-bar{position:relative;margin-top:14px;height:37px;border-radius:18.5px;background:var(--el);overflow:hidden;font-size:16px;font-weight:500}
-#bm .bm-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:18.5px;background:#4BB6EE;transition:width .6s cubic-bezier(.3,.8,.3,1)}
+#bm .bm-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:18.5px;background:var(--accent2);transition:width .6s cubic-bezier(.3,.8,.3,1)}
 #bm .bm-bar span{position:absolute;top:0;bottom:0;display:flex;align-items:center;z-index:1}
 #bm .bm-left{left:18px}#bm .bm-sold{right:18px}
-#bm .bm-buy{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+#bm .bm-buy{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
 #bm .bm-buy::after{display:none}
 #bm .bm-buy.press{transform:scale(1.04)}
 .noanim #bm .bm-buy.press{transform:none}
@@ -647,7 +647,7 @@ html,body{overscroll-behavior:none}
 #um .um-feat{flex:0 1 auto;min-height:0;overflow:hidden;padding:31px 30px 7px;display:flex;flex-direction:column;gap:23px} #um .um-f:nth-child(3){margin-top:3px}
 #um .um-feat::-webkit-scrollbar{display:none}
 #um .um-f{display:flex;gap:10px;align-items:flex-start}
-#um .um-f svg{flex:none;width:35px;height:35px;fill:#4BB6EE;fill-rule:evenodd;margin-top:1px}
+#um .um-f svg{flex:none;width:35px;height:35px;fill:var(--accent2);fill-rule:evenodd;margin-top:1px}
 #um .um-f b{display:block;font-size:16px;line-height:1.2;font-weight:600}
 #um .um-f span{display:block;margin-top:5px;font-size:15px;line-height:20px;color:var(--hint2)}
 #um .um-chk{flex:none;display:flex;align-items:center;justify-content:center;gap:9px;padding:24px 0 0;cursor:pointer;user-select:none;-webkit-user-select:none;font-size:14px;color:var(--hint2)}
@@ -655,7 +655,7 @@ html,body{overscroll-behavior:none}
 #um .um-box svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #um .um-box svg path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .12s ease-in}
 #um .um-chk.on .um-box svg path{stroke-dashoffset:0;transition:stroke-dashoffset .26s cubic-bezier(.3,.7,.2,1) .06s}
-#um .um-chk.on .um-box{background:#4BB6EE;border-color:#4BB6EE}
+#um .um-chk.on .um-box{background:var(--accent2);border-color:var(--accent2)}
 /* ===== окно «Подарок улучшен» ===== */
 #ug{position:fixed;left:0;right:0;top:0;height:100%;z-index:2200;visibility:hidden;pointer-events:none;transition:visibility 0s linear .4s}
 #ug.on{visibility:visible;pointer-events:auto;transition-delay:0s}
@@ -695,13 +695,13 @@ html,body{overscroll-behavior:none}
 #ug .ug-v.c{display:block;padding:0}
 #ug .ug-col{display:flex;flex-direction:column;will-change:transform}
 #ug .ug-it{flex:none;height:37px;padding:0 12px;display:flex;align-items:center;gap:6px}
-#ug .ug-pc{font-style:normal;font-size:11px;line-height:1;padding:3px 6px;border-radius:8px;background:rgba(75,182,238,.18);color:#4BB6EE}
+#ug .ug-pc{font-style:normal;font-size:11px;line-height:1;padding:3px 6px;border-radius:8px;background:rgba(75,182,238,.18);color:var(--accent2)}
 #ug .ug-ava{flex:none;width:20px;height:20px;border-radius:50%;background:#4a4a4e center/cover;font-size:11px;display:flex;align-items:center;justify-content:center}
-#ug .ug-own{color:#4BB6EE}
+#ug .ug-own{color:var(--accent2)}
 #ug .ug-note{flex:none;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 16px 4px;font-size:13.5px;color:var(--hint2)}
 #ug .ug-note svg{width:19px;height:19px;fill:var(--hint2);fill-rule:evenodd}
 #ug .ug-btnw{flex:none;padding:12px 16px 16px}
-#ug .ug-skip{width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE;color:#fff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .2s}
+#ug .ug-skip{width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2);color:#fff;font:inherit;font-size:17px;font-weight:600;cursor:pointer;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .2s}
 #ug .ug-skip:active{transform:scale(1.04)}
 #ugConf{position:fixed;left:0;top:0;width:100%;height:100%;z-index:2300;pointer-events:none;display:none}
 #um .um-go.busy .um-lab{opacity:0!important;transition:opacity .15s}
@@ -710,14 +710,14 @@ html,body{overscroll-behavior:none}
 @keyframes ugspin{to{transform:rotate(360deg)}}
 
 #um .um-upw{flex:none;padding:18px 29px 31px}
-#um .um-go{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+#um .um-go{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer}
 #um .um-go.press{transform:scale(1.04)}
 .noanim #um .um-go.press{transform:none}
 #um .um-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -6px 0 -3px}
 /* окно результата: те же сглаженные углы (clip-path), отступы и кнопка, что у остальных окон; стеклянные кнопки как «назад» */
 #ug .ug-sheet{border-radius:0}
 #ug .ug-btnw{padding:18px 29px 31px}
-#ug .ug-skip{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+#ug .ug-skip{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 #ug .ug-skip:active{transform:none}
 #ug .ug-skip.press{transform:scale(1.04)}
 .noanim #ug .ug-skip.press{transform:none}
@@ -915,7 +915,7 @@ html,body{overscroll-behavior:none}
 #sl .sl-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #sl .sl-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
 #sl .sl-inp .sl-st{width:24px;height:24px;flex:none;object-fit:contain;display:block}
-#sl .sl-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#sl .sl-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #sl .sl-inp input::placeholder{color:#6d6d72}
 #sl .sl-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #sl .sl-hint b{font-weight:650}
@@ -927,7 +927,7 @@ html,body{overscroll-behavior:none}
 #sl .sl-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #sl.kb .sl-btnw{padding:30px 35px 17px}   /* окно шире на 6+6px — отступы кнопки больше на столько же: кнопка стоит на месте и не перерисовывается */
 #sl:not(.on) .sl-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#sl .sl-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#sl .sl-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #sl .sl-go:active{transform:scale(1.04)}
 #sl .sl-go.dis{color:rgba(255,255,255,.55)}
 #sl .sl-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -953,7 +953,7 @@ html,body{overscroll-behavior:none}
 #pm .pm-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #pm .pm-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #pm .pm-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#pm .pm-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#pm .pm-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #pm .pm-inp input::placeholder{color:#6d6d72}
 #pm .pm-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #pm .pm-hint b{font-weight:650}
@@ -962,7 +962,7 @@ html,body{overscroll-behavior:none}
 #pm .pm-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #pm.kb .pm-btnw{padding:30px 35px 17px}   /* окно шире на 6+6px — отступы кнопки больше на столько же: кнопка стоит на месте и не перерисовывается */
 #pm:not(.on) .pm-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#pm .pm-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#pm .pm-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #pm .pm-go:active{transform:scale(1.04)}
 #pm .pm-go.dis{color:rgba(255,255,255,.55)}
 #pm .pm-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -992,7 +992,7 @@ html,body{overscroll-behavior:none}
 #ap .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #ap .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #ap .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#ap .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#ap .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #ap .ap-inp input::placeholder{color:#6d6d72}
 #ap .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #ap .ap-hint b{font-weight:650}
@@ -1000,7 +1000,7 @@ html,body{overscroll-behavior:none}
 #ap .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #ap .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #ap:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#ap .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#ap .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #ap .ap-go:active{transform:scale(1.04)}
 #ap .ap-go.dis{color:rgba(255,255,255,.55)}
 #ap .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -1049,7 +1049,7 @@ html,body{overscroll-behavior:none}
 #lg .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #lg .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #lg .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#lg .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#lg .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #lg .ap-inp input::placeholder{color:#6d6d72}
 #lg .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #lg .ap-hint b{font-weight:650}
@@ -1057,7 +1057,7 @@ html,body{overscroll-behavior:none}
 #lg .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #lg .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #lg:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#lg .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#lg .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #lg .ap-go:active{transform:scale(1.04)}
 #lg .ap-go.dis{color:rgba(255,255,255,.55)}
 #lg .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -1192,7 +1192,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #cf .cf-pill .mm img{display:block;width:19px;height:19px;object-fit:contain}
 #cf .cf-pill svg{flex:none;width:6px;height:11px;fill:none;stroke:#fff;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
 #cf .cf-btnw{flex:none;position:relative;z-index:1;padding:32px 29px 31px}
-#cf .cf-go{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
+#cf .cf-go{touch-action:none;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
 #cf .cf-go.press{transform:scale(1.04)}
 .noanim #cf .cf-go.press{transform:none}
 #cf .cf-go b{font-size:17px;font-weight:600;line-height:1.15}#cf .cf-go i{font-style:normal;font-size:13px;font-weight:500;opacity:.85;line-height:1.15}
@@ -1329,7 +1329,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #gx .gxc{position:absolute;left:6px;top:6px;z-index:4;width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);background:rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:background .15s,border-color .15s}
 #gx .gxc svg{flex:none;width:13px;height:13px;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #gx .gxc svg path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .12s ease-in}
-#gx .pg.sel .gxc{background:#4BB6EE;border-color:#4BB6EE}
+#gx .pg.sel .gxc{background:var(--accent2);border-color:var(--accent2)}
 #gx .pg.sel .gxc svg path{stroke-dashoffset:0;transition:stroke-dashoffset .26s cubic-bezier(.3,.7,.2,1) .06s}
 #gx .pg:active{transform:none}
 #gxWrap{position:absolute;left:0;right:0;bottom:0;z-index:6;padding:26px 26px 26px;pointer-events:none;isolation:isolate;visibility:hidden;transform:translateY(calc(100% + 24px));transition:transform .45s cubic-bezier(.25,.8,.25,1),visibility 0s linear .45s}
@@ -1338,7 +1338,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #gxWrap::before,#gxWrap::after{content:"";position:absolute;left:0;right:0;bottom:0;top:0;z-index:-1;pointer-events:none}
 #gxWrap::before{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0.000) 0.0%,rgba(0,0,0,0.011) 6.2%,rgba(0,0,0,0.043) 12.5%,rgba(0,0,0,0.092) 18.8%,rgba(0,0,0,0.156) 25.0%,rgba(0,0,0,0.232) 31.2%,rgba(0,0,0,0.316) 37.5%,rgba(0,0,0,0.407) 43.8%,rgba(0,0,0,0.500) 50.0%,rgba(0,0,0,0.593) 56.2%,rgba(0,0,0,0.684) 62.5%,rgba(0,0,0,0.768) 68.8%,rgba(0,0,0,0.844) 75.0%,rgba(0,0,0,0.908) 81.2%,rgba(0,0,0,0.957) 87.5%,rgba(0,0,0,0.989) 93.8%,rgba(0,0,0,1.000) 100.0%)}
 #gxWrap::after{background:linear-gradient(to bottom,rgba(var(--bg-rgb),0.000) 0.0%,rgba(var(--bg-rgb),0.011) 6.2%,rgba(var(--bg-rgb),0.041) 12.5%,rgba(var(--bg-rgb),0.088) 18.8%,rgba(var(--bg-rgb),0.148) 25.0%,rgba(var(--bg-rgb),0.220) 31.2%,rgba(var(--bg-rgb),0.301) 37.5%,rgba(var(--bg-rgb),0.386) 43.8%,rgba(var(--bg-rgb),0.475) 50.0%,rgba(var(--bg-rgb),0.564) 56.2%,rgba(var(--bg-rgb),0.649) 62.5%,rgba(var(--bg-rgb),0.730) 68.8%,rgba(var(--bg-rgb),0.802) 75.0%,rgba(var(--bg-rgb),0.862) 81.2%,rgba(var(--bg-rgb),0.909) 87.5%,rgba(var(--bg-rgb),0.939) 93.8%,rgba(var(--bg-rgb),0.950) 100.0%)}
-#gxGo{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-appearance:none;appearance:none}
+#gxGo{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1);margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-appearance:none;appearance:none}
 #gxGo.press{transform:scale(1.04)}
 .noanim #gxGo.press{transform:none}
 /* системный список поверх кнопки: невидимый, но принимает нажатие */
@@ -1361,7 +1361,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #stat .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #stat .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #stat .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#stat .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#stat .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #stat .ap-inp input::placeholder{color:#6d6d72}
 #stat .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #stat .ap-hint b{font-weight:650}
@@ -1369,7 +1369,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #stat .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #stat .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #stat:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#stat .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#stat .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #stat .ap-go:active{transform:scale(1.04)}
 #stat .ap-go.dis{color:rgba(255,255,255,.55)}
 #stat .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -1417,7 +1417,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #priv .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #priv .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #priv .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#priv .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:#4BB6EE}
+#priv .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #priv .ap-inp input::placeholder{color:#6d6d72}
 #priv .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #priv .ap-hint b{font-weight:650}
@@ -1425,7 +1425,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #priv .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #priv .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #priv:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
-#priv .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:#4BB6EE center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#priv .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #priv .ap-go:active{transform:scale(1.04)}
 #priv .ap-go.dis{color:rgba(255,255,255,.55)}
 #priv .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
@@ -1501,7 +1501,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #ug .mk-sale{height:20px;margin-top:1px;font-size:13px;border-radius:10px}
 
 /* ===== темы приложения: переключаются атрибутом data-theme на <html> и переменными :root (см. applyTheme) ===== */
-html[data-theme=light] :is(#gm,#bm,#um,#ug,#cf,#cx){--text:#fff;--hint:#9e9e9e;--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;color:#fff}   /* окна подарков, покупки, улучшения и крафта остаются тёмными */
+html[data-theme=light] :is(#um,#ug,#cf,#cx){--accent:#4cb4e9;--accent2:#4BB6EE;--text:#fff;--hint:#9e9e9e;--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;color:#fff}   /* окна подарков, покупки, улучшения и крафта остаются тёмными */
 html[data-theme=light] .pf .w,html[data-theme=light] #p-edit .ein input,html[data-theme=light] .wh div.on,
 html[data-theme=light] :is(#ap,#lg,#stat,#priv) .ap-sheet,html[data-theme=light] #sl .sl-sheet,html[data-theme=light] #pm .pm-sheet,
 html[data-theme=light] :is(#ap,#lg,#stat,#priv) .ap-inp,html[data-theme=light] :is(#ap,#lg,#stat,#priv) .ap-inp input,
@@ -1516,6 +1516,23 @@ html[data-theme=light] :is(#cp,#gx) .cp-sheet{color:var(--text)}
 #cp .cp-x,#gx .cp-x,#cp .mk-chip,#cp .mk-chip.on{color:var(--gl-ink)}
 #cp .cp-x svg,#gx .cp-x svg{stroke:var(--gl-ink)}
 html[data-theme=light] :is(#cp,#gx) .glass{--glass-rgb:60,60,67;--glass2-rgb:60,60,67}
+
+/* ===== светлая тема: уточнения ===== */
+/* окна оформления, цены, продажи и т.п.: серый лист, белые графы и кнопки */
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#sl,#pm){--sheet:#efeff3;--sheet-rgb:239,239,243;--el:#fff;--hint:#6d6d72;--hint2:#6d6d72}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#pm) :is(.ap-rv,.pm-rv,.pv-v){color:#8d8d8f}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#pm) :is(.ap-ch,.ap-cr,.pv-ch,.ap-c){stroke:#b7b7b9}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv) .ap-sr:before{background:var(--line)}
+html[data-theme=light] .row .v{color:#8d8d8f}
+html[data-theme=light] .row:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 15' fill='none' stroke='%23b7b7b9' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.6 1.6L7 7.5l-5.4 5.9'/%3E%3C/svg%3E")}
+/* окна подарка и покупки: таблица и графы */
+html[data-theme=light] :is(#gm,#bm){--line:#dedde0;--el:#f2f2f7}
+html[data-theme=light] :is(#gm,#bm) .glass{--menu-glass-bg:var(--gl-bg);--glass-rgb:60,60,67;--glass2-rgb:60,60,67}
+html[data-theme=light] #gm .gm-x{color:var(--gl-ink)}html[data-theme=light] #gm .gm-x svg{stroke:var(--gl-ink)}
+html[data-theme=light] #bm .bm-msg input{color:var(--text)}
+html[data-theme=light] #bm .bm-card{color:#fff}
+html[data-theme=light] #gm .gm-pill{background:rgba(59,143,187,.1)}
+html[data-theme=light] #gm .gm-sell{background:rgba(59,143,187,.1);color:#3b8fbb}
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -1903,7 +1920,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     </div>
     <div class="ap-body">
       <div class="ap-lab">ТЕМА ПРИЛОЖЕНИЯ</div>
-      <div class="ap-sel"><div class="ap-inp" id="apTheme"><span id="apThemeV">По умолчанию</span><select id="apSel" aria-label="Тема приложения"><option value="0">По умолчанию</option><option value="1">Ночная</option><option value="2">Тёмная</option><option value="3">Светлая</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
+      <div class="ap-sel"><div class="ap-inp" id="apTheme"><span id="apThemeV">По умолчанию</span><select id="apSel" aria-label="Тема приложения"><option value="0">По умолчанию</option><option value="1">Ночная</option><option value="2">Светлая</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
       <div class="ap-hint">Выберите подходящую тему приложения.</div>
       <div class="ap-grp" id="apGrp">
         <div class="ap-gh" id="apGh"><span>Настроить анимации</span><svg class="ap-ch ap-cr" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></div>
@@ -2119,11 +2136,10 @@ const store = {
   set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}
 };
 
-/* ===== темы: 0 «По умолчанию» (как в Telegram), 1 «Ночная», 2 «Тёмная», 3 «Светлая» ===== */
+/* ===== темы: 0 «По умолчанию» (как в Telegram), 1 «Ночная», 2 «Светлая» ===== */
 (function(){
-  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(16,16,18,.54)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(53,53,54,.7)',glink:'#ffffff'};
-  const DARK={bg:'#18232e',card:'#213040',text:'#ffffff',hint:'#8d9bab',hint2:'#8d9bab',el:'#2b3d52',el2:'#3b4f66',line:'#2d4055',sheet:'#213040',dim:'rgba(5,11,19,.62)',dimcx:'rgba(5,11,19,.58)',barbg:'rgba(38,55,74,.86)',barink:'#ffffff',slider:'rgba(11,19,29,.52)',hdrbg:'rgba(46,65,87,.62)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(54,75,99,.72)',glink:'#ffffff'};
-  const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#e5e5ea',sheet:'#ffffff',dim:'rgba(0,0,0,.32)',dimcx:'rgba(0,0,0,.3)',barbg:'rgba(255,255,255,.84)',barink:'#6d6d72',slider:'rgba(118,118,128,.16)',hdrbg:'rgba(255,255,255,.74)',hdrink:'#000000',hdrpress:'rgba(0,0,0,.5)',glbg:'rgba(120,120,128,.14)',glink:'#000000'};
+  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(16,16,18,.54)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(53,53,54,.7)',glink:'#ffffff',accent:'#4cb4e9',accent2:'#4BB6EE'};
+  const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#c7c7c7',sheet:'#ffffff',dim:'rgba(0,0,0,.32)',dimcx:'rgba(0,0,0,.3)',barbg:'rgba(255,255,255,.84)',barink:'#6d6d72',slider:'rgba(118,118,128,.16)',hdrbg:'rgba(255,255,255,.74)',hdrink:'#000000',hdrpress:'rgba(0,0,0,.5)',glbg:'rgba(120,120,128,.14)',glink:'#000000',accent:'#3b8fbb',accent2:'#3b8fbb'};
   const rgb=h=>{h=String(h).replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');const n=parseInt(h,16);return isNaN(n)?'28,28,30':[n>>16&255,n>>8&255,n&255].join(',')};
   const isLightHex=h=>{const q=rgb(h).split(',').map(Number);return (q[0]*299+q[1]*587+q[2]*114)/1000>150};
   function tgTheme(){   /* «По умолчанию»: цвета берём из темы Telegram */
@@ -2138,11 +2154,11 @@ const store = {
     b.light=light;return b;
   }
   function applyTheme(k){
-    k=+k;if(!(k>=0&&k<=3))k=0;
-    const c=k===1?NIGHT:k===2?DARK:k===3?LIGHT:tgTheme();
-    const light=k===3||(k===0&&!!c.light),r=document.documentElement,S=r.style;
+    k=+k;if(!(k>=0&&k<=2))k=0;
+    const c=k===1?NIGHT:k===2?LIGHT:tgTheme();
+    const light=k===2||(k===0&&!!c.light),r=document.documentElement,S=r.style;
     S.setProperty('--bg',c.bg);S.setProperty('--bg-rgb',rgb(c.bg));S.setProperty('--card',c.card);S.setProperty('--text',c.text);S.setProperty('--hint',c.hint);S.setProperty('--hint2',c.hint2);
-    S.setProperty('--dim',c.dim);S.setProperty('--dim-cx',c.dimcx);S.setProperty('--bar-bg',c.barbg);S.setProperty('--bar-ink',c.barink);S.setProperty('--slider-bg',c.slider);S.setProperty('--hdr-bg',c.hdrbg);S.setProperty('--hdr-ink',c.hdrink);S.setProperty('--hdr-press',c.hdrpress);S.setProperty('--gl-bg',c.glbg);S.setProperty('--gl-ink',c.glink);
+    S.setProperty('--dim',c.dim);S.setProperty('--dim-cx',c.dimcx);S.setProperty('--bar-bg',c.barbg);S.setProperty('--bar-ink',c.barink);S.setProperty('--slider-bg',c.slider);S.setProperty('--hdr-bg',c.hdrbg);S.setProperty('--hdr-ink',c.hdrink);S.setProperty('--hdr-press',c.hdrpress);S.setProperty('--gl-bg',c.glbg);S.setProperty('--accent',c.accent);S.setProperty('--accent2',c.accent2);S.setProperty('--gl-ink',c.glink);
     S.setProperty('--el',c.el);S.setProperty('--el2',c.el2);S.setProperty('--line',c.line);S.setProperty('--sheet',c.sheet);S.setProperty('--sheet-rgb',rgb(c.sheet));
     r.setAttribute('data-theme',light?'light':'dark');
     window.__th={bg:c.bg,sheet:c.sheet,light};
@@ -2150,7 +2166,10 @@ const store = {
     try{const T=window.Telegram&&Telegram.WebApp;if(T){T.setHeaderColor&&T.setHeaderColor(c.bg);T.setBackgroundColor&&T.setBackgroundColor(c.bg);T.setBottomBarColor&&T.setBottomBarColor(c.bg)}}catch(_){}
   }
   window.applyTheme=applyTheme;
-  const cur=()=>{const v=parseInt(store.get('appTheme','0'),10);return v>=0&&v<=3?v:0};
+  const cur=()=>{
+    let v=parseInt(store.get('appTheme','0'),10)||0;
+    if(store.get('appThemeV','1')!=='2'){v=v===3?2:(v===2||v===4?0:v);store.set('appTheme',String(v));store.set('appThemeV','2')}   /* миграция: «Тёмная» убрана, «Светлая» теперь 2 */
+    return v>=0&&v<=2?v:0};
   applyTheme(cur());
   try{const T=window.Telegram&&Telegram.WebApp;T&&T.onEvent&&T.onEvent('themeChanged',()=>{if(cur()===0)applyTheme(0)})}catch(_){}
 })();
@@ -2434,7 +2453,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'Купить подарок за':'Buy gift for','Купить подарок':'Buy gifts','Купить':'Buy','Редкий подарок можно превратить':'A rare gift can be turned','в коллекционный и затем подарить':'into a collectible and then given','другому пользователю.':'to another user.',
 'Коллекционные подарки скоро появятся':'Collectible gifts are coming soon','Коллекционные':'Collectibles','Коллекционный подарок можно отправить любому пользователю.':'A collectible gift can be sent to any user.',
 'Звёзды GiftCrafts нужны для покупки уникальных и коллекционных подарков, а также для прочих услуг.':'GiftCrafts Stars are used to buy unique and collectible gifts, as well as for other services.','Звезды нужны для покупки подарков, уникальных имён и номеров.':'Stars are used to buy gifts, unique usernames and numbers.','Отправить звёзды':'Send stars','Звёзды GiftCrafts':'GiftCrafts Stars','Звёзды':'Stars','Задания скоро появятся':'Tasks are coming soon','Звезды можно купить или заработать, выполняя задания.':'Stars can be bought or earned by completing tasks.','Посмотреть задания':'View tasks','Задания':'Tasks','Ваш баланс':'Your balance','Подарить звёзды друзьям':'Gift stars to friends',
-'Мой профиль':'My Profile','УВЕДОМЛЕНИЯ':'NOTIFICATIONS','СТАТИСТИКА':'STATISTICS','Количество потраченных вами звёзд.':'Number of stars you have spent.','Общая статистика по покупкам всех подарков и обменам на звёзды.':'Overall statistics on purchases of all gifts and exchanges for stars.','Отображение имени пользователя.':'Username display.','Звёзд потрачено':'Stars spent','Количество потраченных звезд в приложении.':'Number of stars spent in the app.','Общая статистика по покупкам и продажам всех подарков, обменам на звёзды.':'Overall statistics on purchases and sales of all gifts and exchanges for stars.','Общая статистика':'Overall statistics','ИМЯ ПОЛЬЗОВАТЕЛЯ':'USERNAME','Не отображать':'Hide','Отображать':'Show','Настройте отображение имени пользователя.':'Set how your username is displayed.','Вы можете изменить настройки конфиденциальности приложения.':'You can change the app’s privacy settings.','Время захода':'Last seen','Раздел «О себе»':'About section','Никто':'Nobody','Нет':'None','передать':'transfer','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Тёмная':'Dark','Светлая':'Light','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Выбранная тема':'Selected theme','Ночная тема':'Night theme','Premium подписка':'Premium subscription','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настройте язык системных уведомлений о продаже уникальных подарков.':'Set the language of system notifications about sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
+'Мой профиль':'My Profile','УВЕДОМЛЕНИЯ':'NOTIFICATIONS','СТАТИСТИКА':'STATISTICS','Количество потраченных вами звёзд.':'Number of stars you have spent.','Общая статистика по покупкам всех подарков и обменам на звёзды.':'Overall statistics on purchases of all gifts and exchanges for stars.','Отображение имени пользователя.':'Username display.','Звёзд потрачено':'Stars spent','Количество потраченных звезд в приложении.':'Number of stars spent in the app.','Общая статистика по покупкам и продажам всех подарков, обменам на звёзды.':'Overall statistics on purchases and sales of all gifts and exchanges for stars.','Общая статистика':'Overall statistics','ИМЯ ПОЛЬЗОВАТЕЛЯ':'USERNAME','Не отображать':'Hide','Отображать':'Show','Настройте отображение имени пользователя.':'Set how your username is displayed.','Вы можете изменить настройки конфиденциальности приложения.':'You can change the app’s privacy settings.','Время захода':'Last seen','Раздел «О себе»':'About section','Никто':'Nobody','Нет':'None','передать':'transfer','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Светлая':'Light','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Выбранная тема':'Selected theme','Ночная тема':'Night theme','Premium подписка':'Premium subscription','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настройте язык системных уведомлений о продаже уникальных подарков.':'Set the language of system notifications about sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
 'Коллекции скоро':'Collectibles are coming soon','Коллекции':'Collectibles','В данный момент эта функция находится в разработке.':'This feature is currently under development.','Отправка подарков':'Sending gifts','Отправка звёзд':'Sending stars','Изготовление подарка':'Craft Gift','Изготовить':'Craft','Выберите подарки':'Select gifts','Ваши подарки':'Your gifts','в продаже':'for sale','У Вас нет других подарков из этой коллекции':'You have no other gifts from this collection','Предложений пока нет':'No offers yet','Добавьте до':'Add up to',', чтобы изготовить':' to craft','В случае неудачи эти подарки пропадут.':'If crafting fails, these gifts will be lost.','Модели, которые могут выпасть':'Models you can get','Вероятность успеха':'Success chance','Справка':'Help','Изготовление':'Crafting','в сети':'online','мобильный':'mobile','коллекционный номер':'collectible number','имя пользователя':'username','Отправить подарки':'Send gifts','Подарки':'Gifts','Маркет':'Market','Купленный подарок':'Purchased gift','Посмотреть':'View',
 'Скрыть моё имя и сообщение от посетителей профиля.':'Hide my name and message from profile visitors.','Скрыть моё имя':'Hide my name','Когда все подарки будут проданы, вы больше не сможете их купить.':'When all gifts are sold, you will no longer be able to buy them.',
 'Подарок Вам':'Gift for you','Этот подарок можно сделать':'This gift can be made','уникальным коллекционным.':'unique and collectible.','Имя отправителя видите только Вы.':'Only you can see the sender’s name.',
@@ -2775,7 +2794,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
   const sh=document.getElementById('apSheet'),go=document.getElementById('apGo'),
         tv=document.getElementById('apThemeV'),grp=document.getElementById('apGrp'),
         sS=document.getElementById('apS'),sG=document.getElementById('apG');
-  const THEMES=['По умолчанию','Ночная','Тёмная','Светлая'];
+  const THEMES=['По умолчанию','Ночная','Светлая'];
   let theme=0,closeT=0;
   const selN=document.getElementById('apSel');
   const setTheme=k=>{theme=k;tv.textContent=THEMES[k];selN.value=String(k)};
