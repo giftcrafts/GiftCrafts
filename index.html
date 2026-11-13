@@ -1585,15 +1585,15 @@ html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
 #colRow{position:relative;display:flex;gap:4px;margin:14px -16px 0;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 #colRow::-webkit-scrollbar{display:none}
 #colRow[hidden]{display:none}
-#colRow .cc{flex:none;height:34px;padding:0 15px;border:0;border-radius:17px;background:none;color:var(--text);font:inherit;font-size:15px;font-weight:550;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
-.cx-chip{box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0 15px;border-radius:17px;background:#1c1c1e;color:#fff;font-size:15px;font-weight:550;white-space:nowrap;overflow:hidden}
+#colRow .cc{flex:none;height:34px;padding:0 13px;border:0;border-radius:17px;background:none;color:var(--text);font:inherit;font-size:15px;font-weight:550;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.cx-chip{box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:0 13px;border-radius:17px;background:#1c1c1e;color:#fff;font-size:15px;font-weight:550;white-space:nowrap;overflow:hidden}
 #colRow i{position:absolute;top:0;left:0;width:0;height:34px;border-radius:17px;background:var(--card);pointer-events:none;transition:left .22s cubic-bezier(.25,.9,.3,1),width .22s cubic-bezier(.25,.9,.3,1)}
 #colRow .cc{position:relative;z-index:1}
 #colRow .cc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
 /* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
 #gx.gx-pick #gxSel{display:none}
 /* возврат из окна улучшения: крестик сразу того же вида, что у кнопки окна подарка (без «светлого» мигания) */
-#um.cl .um-xc.glass{--glass-rgb:104,106,114;--glass-strong:.135;--glass2-rgb:120,122,130;--glass2-a:.385;--glass-w:.5px;--glass2-spread:.5px;--glass2-blur:1px;background-color:var(--menu-glass-bg);-webkit-backdrop-filter:blur(var(--menu-glass-blur));backdrop-filter:blur(var(--menu-glass-blur))}
+#um.cl .um-xc.glass{--glass-rgb:104,106,114;--glass-strong:.135;--glass2-rgb:120,122,130;--glass2-a:.385;--glass-w:.5px;--glass2-spread:.5px;--glass2-blur:1px;--glw:0px;--glc:transparent;background-color:var(--menu-glass-bg);-webkit-backdrop-filter:blur(var(--menu-glass-blur));backdrop-filter:blur(var(--menu-glass-blur))}
 html[data-theme=light] #um.cl .um-xc.glass{--glass-rgb:60,60,67;--glass2-rgb:60,60,67}
 html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 </style>
@@ -4733,7 +4733,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=bez(.4,0,.2,1),OPEN_MS=310,CLOSE_MS=430;
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=430;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -7408,6 +7408,7 @@ renderMyGifts();
       +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'">'+esc(c.n)+'</button>').join('')
       +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
     const i=row.querySelector('i');
+    try{smoothFit(i,'pill',true,1)}catch(_){}   /* сглаженные углы ползунка */
     if(anim&&ol){   /* ползунок стартует со старого места и переезжает на новое */
       i.style.transition='none';i.style.left=ol;i.style.width=ow;void i.offsetWidth;i.style.transition='';
       placeI(false);
