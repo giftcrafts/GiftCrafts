@@ -7602,24 +7602,36 @@ renderMyGifts();
   /* «Добавить подарки» → менеджер подарков в режиме выбора */
   const pick=()=>{
     if(!window.openGiftPicker||nc.__picking)return;
-    const kbUp=document.activeElement===inp||nc.classList.contains('kb');
-    const open=()=>{
-      nc.__picking=false;
+    const kbUp=document.activeElement===inp||nc.classList.contains('kb')||nc.__kb>0;
+    const gx=$i('gx');
+    if(!kbUp){
       setTgBg(window.__th?__th.bg:'#000000');
       openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
-      setTimeout(()=>{nc.__freeze=false;nc.__off=true;fit()},600);   /* окно сзади перестраивается уже под закрытым выбором */
-    };
-    if(kbUp){nc.__picking=true;nc.__freeze=true}   /* заморозка ДО blur(), иначе обработчик blur успевает сжать окно */
-    try{inp.blur()}catch(_){}
-    if(!kbUp){open();return}
-    /* клавиатура открыта: окно «Новая коллекция» стоит на месте, пока она не уберётся целиком, и только потом открывается выбор —
-       иначе окна двигались вверх-вниз, а под клавиатурой оставался блок */
+      return;
+    }
+    /* Выбор подарков открывается СРАЗУ, вместе с уходом клавиатуры (раньше ждали, пока она уберётся).
+       Чтобы не было багов:
+       1) окно «Новая коллекция» замораживается ДО blur() — его размеры не реагируют на промежуточные размеры экрана;
+       2) окно выбора на время ухода клавиатуры получает полную высоту экрана (H0) — оно не «прыгает», когда WebView
+          в конце анимации возвращает полную высоту: нижняя часть просто скрыта клавиатурой и открывается вместе с ней;
+       3) класс .kb у окна «Новая коллекция» снимается сразу, и блок под клавиатурой не торчит из-под выбора. */
     nc.__picking=true;nc.__freeze=true;
+    nc.classList.remove('kb');
+    const pin=()=>{const vv=window.visualViewport;gx.style.top=(vv?Math.round(vv.offsetTop):0)+'px';gx.style.height=H0+'px'};
+    const release=()=>{
+      gx.style.top='';gx.style.height='';
+      nc.__picking=false;nc.__freeze=false;nc.__off=true;
+      if(nc.classList.contains('on')){setTgBg(window.__th?__th.bg:'#000000');fit();loop(700)}
+    };
+    pin();
+    try{inp.blur()}catch(_){}
+    setTgBg(window.__th?__th.sheet:'#1c1c1e');   /* за углами клавиатуры остаётся цвет окна, пока она уходит */
+    openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
     const t0=performance.now();
     const wait=()=>{
-      const vv=window.visualViewport,vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
-      if(!nc.classList.contains('on')){nc.__picking=false;nc.__freeze=false;return}
-      if(H0-vb<80||performance.now()-t0>900)open();else requestAnimationFrame(wait);
+      const vv=window.visualViewport,vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight,dt=performance.now()-t0;
+      if(!nc.classList.contains('on')||dt>1100||(H0-vb<80&&dt>450)){release();return}
+      pin();requestAnimationFrame(wait);
     };
     requestAnimationFrame(wait);
   };
