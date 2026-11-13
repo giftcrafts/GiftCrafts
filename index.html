@@ -1545,8 +1545,6 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #ug .mk-sale.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.215);-webkit-backdrop-filter:blur(7px) brightness(.875);backdrop-filter:blur(7px) brightness(.875)}
 /* на очень светлом фоне (--ug-l выше .45) обводка кнопок светлее и ярче, чтобы не сливалась с фоном */
 /* пока меняется фон окна, размытие подложки у кнопок выключено (иначе браузер на время оставляет под кнопками старый фон); цвет подкрашен так, чтобы кнопки не светлели */
-#ug.ugsw .ug-a.glass{background-color:rgba(214,214,214,.27);-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .3s cubic-bezier(.4,0,.2,1)}
-#ug.ugsw .mk-sale.glass,#ug.ugsw .ug-x.glass,#ug.ugsw .ug-more.glass,#um.ugsw .um-back.glass{background-color:rgba(200,200,200,.24);-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 #ug .ug-a.glass{--ug-w:calc(80*max(0,var(--ug-l) - .45));--glass-rgb:calc(164 + var(--ug-d) + var(--ug-w)),calc(166 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(174 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w)),calc(186 + var(--ug-d) + var(--ug-w));--glass-strong:calc(.33 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.61 + .25*max(0,var(--ug-l) - .45))}
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--ug-w:calc(80*max(0,var(--ug-l) - .45));--glass-rgb:calc(176 + var(--ug-d) + var(--ug-w)),calc(178 + var(--ug-d) + var(--ug-w)),calc(188 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(188 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w)),calc(200 + var(--ug-d) + var(--ug-w));--glass-strong:calc(.34 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.64 + .25*max(0,var(--ug-l) - .45))}
 #ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4)))}
@@ -1667,10 +1665,13 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #prem .pm-st{flex:none;width:26px;height:26px;margin:0 -2px;fill:url(#pmGrad);fill-rule:evenodd}
 #prem .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
 #prem .pm-2{margin-top:25px}
-#prem .ap-x.ap-bal{left:auto;right:16px;width:max-content;min-width:calc(var(--hdr-h) + 24px);padding:0 14px;flex-direction:column;gap:0;line-height:1;border-radius:calc(var(--hdr-h)/2)}
+#prem .pm-bal{position:absolute;top:16px;right:22px;height:var(--hdr-h);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1;pointer-events:none}
+#prem .pm-bal .gbl{font-size:14px}
+#prem .pm-bal .gv{font-size:17px;margin-top:2px}
+#prem .pm-bal .gv img{width:17px;height:17px}
 #prem:not(.act) .pm-a,#prem.act .pm-b{display:none!important}
 #prem .ap-go{position:relative}
-#prem .ap-go svg{width:19px;height:19px;margin:0 -2px 0 0}
+#prem .ap-go.pm-b{gap:5px}
 #prem .pm-d{cursor:default}
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
@@ -2157,13 +2158,13 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="ap-head">
       <button class="ap-x glass" id="premX" type="button" aria-label="Закрыть"><svg class="ico" style="--s:26px" viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
       <div class="ap-t">Premium</div>
-      <button class="ap-x ap-bal glass" id="premBal" type="button" aria-label="Баланс"><div class="gin"><div class="gbl">Баланс</div><div class="gv"><img id="premBalI" alt=""><span id="premBalV" data-i18n-skip="1"></span></div></div></button>
+      <div class="pm-bal" id="premBal"><div class="gbl">Баланс</div><div class="gv"><img id="premBalI" alt=""><span id="premBalV" data-i18n-skip="1"></span></div></div>
     </div>
     <div class="ap-body">
       <div class="ap-lab">PREMIUM</div>
       <div class="ap-sel pm-b"><div class="ap-inp"><span class="pm-l"><svg class="pm-st" viewBox="0 0 512 512"><use href="#i-star"/></svg><span id="premTermV">1 месяц</span></span><select id="premTermSel" aria-label="Срок подписки"><option value="1">1 месяц</option><option value="3">3 месяца</option><option value="12">12 месяцев</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
       <div class="ap-hint pm-b">Выберите срок подписки</div>
-      <div class="ap-sel pm-2 pm-b"><div class="ap-inp"><span>Способ оплаты</span><span class="pm-r"><span>Звёзды</span><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></span><select id="premPay" aria-label="Способ оплаты"><option value="stars">Звёзды</option></select></div></div>
+      <div class="ap-sel pm-2 pm-b"><div class="ap-inp pm-d"><span>Способ оплаты</span><span class="pm-r"><span>Звёзды</span><svg class="ap-ch" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></span></div></div>
       <div class="ap-hint pm-b">Выберите наиболее подходящий способ оплаты и оплатите Premium подписку.</div>
       <div class="ap-sel pm-a"><div class="ap-inp pm-d"><span class="pm-l"><svg class="pm-st" viewBox="0 0 512 512"><use href="#i-star"/></svg><span id="premActV" data-i18n-skip="1">Активна</span></span></div></div>
       <div class="ap-hint pm-a">Premium подписка активна.</div>
@@ -3100,7 +3101,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
     window.premShown=()=>store.get('premShow','1')!=='0';
     const term=g('premTermSel'),show=g('premShowSel'),go=g('premGo'),ok=g('premOk');
     g('premBalI').src=STAR;
-    if(store.get('premReset1','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset1','1')}   /* разовый сброс подписки для проверки */
+    if(store.get('premReset2','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset2','1')}   /* разовый сброс подписки для проверки */
     function sync(){
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
@@ -3119,20 +3120,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
       try{applyWear()}catch(_){}
       if(premClose)premClose();
     };
-    function confetti(){
-      const w=innerWidth,h=innerHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;
-      cv.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;z-index:2600;pointer-events:none';
-      document.body.appendChild(cv);const c=cv.getContext('2d');
-      const cols=['#2f9bff','#ff8a1f','#34c759','#c46cf0','#ff4f8b','#ffd60a'],P=[],r=(a,b)=>a+Math.random()*(b-a);
-      for(let i=0;i<150;i++){const side=i%2,a=r(-1.45,-.55),sp=r(520,1250);
-        P.push({x:side?w+6:-6,y:h*.62+r(-30,30),vx:(side?-1:1)*Math.cos(a)*sp,vy:Math.sin(a)*sp,s:r(4,8),c:cols[i%6],an:r(0,6.28),va:r(-9,9),st:Math.random()<.2})}
-      let last=performance.now(),t=0;
-      (function f(now){const dt=Math.min(.033,(now-last)/1000);last=now;t+=dt;c.clearRect(0,0,w,h);
-        P.forEach(q=>{q.vy+=1500*dt;q.vx*=.985;q.vy*=.99;q.x+=q.vx*dt;q.y+=q.vy*dt;q.an+=q.va*dt;
-          c.save();c.globalAlpha=Math.max(0,Math.min(1,(3.2-t)/1));c.translate(q.x,q.y);c.rotate(q.an);c.fillStyle=q.c;
-          if(q.st)c.fillRect(-1.5,-5,3,10);else{c.beginPath();c.arc(0,0,q.s/2,0,6.283);c.fill()}c.restore()});
-        if(t<3.3)requestAnimationFrame(f);else cv.remove()})(last);
-    }
+    const confetti=()=>{try{window.__ugConfetti&&__ugConfetti(innerHeight*.45)}catch(_){}};
     go.onclick=()=>{
       const m=+term.value,p=PRICE[m];
       if(getStars()<p){noStars();return}
@@ -5211,7 +5199,7 @@ renderMyGifts();
     cell.classList.add('c');cell.innerHTML='';cell.appendChild(col);
     col.animate([{transform:'translateY(0)'},{transform:'translateY('+(-(items.length-1)*ROW)+'px)'}],{duration:dur,delay:delay||0,easing:'cubic-bezier(.3,.35,.2,1)',fill:'both'});
   }
-  function ugConfetti(){
+  function ugConfetti(yo){
     /* лёгкий вариант: канвас в 1x (частицы мелкие), готовые спрайты вместо path-заливки, очистка только занятой области, без save/restore */
     const D=1,w=innerWidth,h=innerHeight,cv=document.createElement('canvas');
     cv.width=Math.round(w*D);cv.height=Math.round(h*D);
@@ -5223,7 +5211,7 @@ renderMyGifts();
       const a=document.createElement('canvas');a.width=a.height=16;const x=a.getContext('2d');x.fillStyle=col;x.beginPath();x.arc(8,8,8,0,6.283);x.fill();
       const b=document.createElement('canvas');b.width=3;b.height=11;const y=b.getContext('2d');y.fillStyle=col;y.fillRect(0,0,3,11);
       spr[col]={o:a,s:b}});
-    const tb=$u('ugTop').getBoundingClientRect(),y0=Math.min(h*.8,tb.top+tb.height+120);
+    const tb=yo!=null?{top:yo-120,height:0}:$u('ugTop').getBoundingClientRect(),y0=Math.min(h*.8,tb.top+tb.height+120);
     for(let side=0;side<2;side++)for(let i=0;i<46;i++){
       const dir=side?-1:1,a=rnd(-1.45,-.55),sp=rnd(520,1250);
       P.push({x:side?w+6:-6,y:y0+rnd(-30,30),vx:dir*Math.cos(a)*sp,vy:Math.sin(a)*sp,r:rnd(3.2,5.8)*K,c:pick1(cols),l:rnd(2.2,3.4),st:Math.random()<.18,an:rnd(0,6.283),va:rnd(-9,9),d:rnd(0,.25)});
