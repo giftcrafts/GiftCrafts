@@ -2465,6 +2465,7 @@ function go(p,instant,back,o){
   if(p==='me')meFull=(o.full!==undefined)?!!o.full:(!!back&&prev!=='me'&&!!window.__meFullBack);
   if(p!==prev&&(p==='me'||(p==='settings'&&prev!=='me'&&prev!=='edit'))){try{window.pinFlip&&pinFlip(p)}catch(_){}}   /* раскладка подарков вокруг аватарки меняется при каждом заходе: у профиля и у настроек своё чередование; возврат из профиля в настройки раскладку не меняет */
   cur=p;
+  if(p==='me'&&p!==prev){try{window.meUnshift&&meUnshift()}catch(_){}try{window.__meReset&&__meReset()}catch(_){}}   /* профиль не запоминает положение, коллекцию и фильтры */
   const wantNo=noBar(p,meFull);
   setHdr(p,dir!==0||!!o.bounce);
   const inc=$('#p-'+p),out=$('#p-'+prev);
@@ -7679,6 +7680,15 @@ renderMyGifts();
     placeI(false);
     rowVis();
   }
+  /* при каждом заходе в профиль: «Все подарки», фильтры и сортировка по умолчанию, слайдер коллекций в начале */
+  window.__meReset=function(){
+    let ch=false;
+    try{const F=window.MYF;if(F&&(F.sort||F.u||F.v)){F.sort=F.u=F.v=null;ch=true}}catch(_){}
+    try{const sp=document.getElementById('pSpace');if(sp)delete sp.dataset.hold}catch(_){}
+    if(window.MYCOL!=='all'){window.MYCOL='all';ch=true;try{if(row){row.querySelectorAll('.cc').forEach(b=>b.classList.toggle('on',b.dataset.c==='all'));placeI(true)}}catch(_){}}
+    try{if(row)row.scrollLeft=0}catch(_){}
+    if(ch){try{renderMyGifts(true)}catch(_){}try{syncSendLabel()}catch(_){}}
+  };
   /* долгое нажатие на коллекцию (кроме «Все подарки») открывает меню коллекции */
   let lpT=0,lpP=null,lpSup=0;
   const lpOff=()=>{clearTimeout(lpT);lpT=0};
@@ -8223,9 +8233,10 @@ renderMyGifts();
 })();
 </script>
 <script>
-/* закрытие любого окна после свайпа вниз: чем ниже уже опустилась верхушка окна, тем быстрее оно доезжает (оставшийся путь короче) */
+/* закрытие всех окон (шторок) чуть быстрее обычного */
 (function(){
-  if(!document.getAnimations&&!Element.prototype.getAnimations)return;
+  if(!Element.prototype.getAnimations)return;
+  const K=.88;   /* во сколько раз сокращается длительность закрытия */
   document.addEventListener('transitionrun',function(e){
     try{
       if(e.propertyName!=='transform')return;
@@ -8234,16 +8245,17 @@ renderMyGifts();
       let ov=el.parentElement;while(ov&&ov!==document.body&&!ov.id)ov=ov.parentElement;
       if(!ov||ov.classList.contains('on')||ov.classList.contains('pre'))return;   /* только закрытие */
       const a=el.getAnimations().find(q=>q.transitionProperty==='transform');if(!a||!a.effect)return;
-      const kf=a.effect.getKeyframes();if(!kf||!kf.length||!kf[0].transform||kf[0].transform==='none')return;
-      const y0=new DOMMatrix(kf[0].transform).m42;if(!(y0>24))return;
-      const full=el.offsetHeight+6;if(!(full>0))return;
-      const r=Math.max(0,Math.min(1,(full-y0)/full));
-      const f=.55+.45*Math.sqrt(r);   /* r=1 — без изменений, r→0 — примерно в 1.8 раза быстрее */
       const d=a.effect.getComputedTiming().duration;
-      if(d>0)a.effect.updateTiming({duration:d*f});
+      if(d>0)a.effect.updateTiming({duration:d*K});
     }catch(_){}
   },true);
 })();
 </script>
+<style>
+/* затемнение под хедером на страницах Маркет, Подарки и Настройки опущено ниже */
+#setPin .mpin-bl,#setPin .mpin-bg,#mktPin .mpin-bl,#mktPin .mpin-bg,#gftPin .mpin-bl,#gftPin .mpin-bg{height:calc(var(--hdr-top) + var(--hdr-h) + 40px)}
+#setPin .mpin-bg,#mktPin .mpin-bg,#gftPin .mpin-bg{background:linear-gradient(to bottom,rgba(var(--bg-rgb),1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0000),rgba(var(--bg-rgb),1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0357),rgba(var(--bg-rgb),0.9999) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0714),rgba(var(--bg-rgb),0.9996) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1071),rgba(var(--bg-rgb),0.9986) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1429),rgba(var(--bg-rgb),0.9962) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1786),rgba(var(--bg-rgb),0.9916) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2143),rgba(var(--bg-rgb),0.9839) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2500),rgba(var(--bg-rgb),0.9720) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2857),rgba(var(--bg-rgb),0.9548) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3214),rgba(var(--bg-rgb),0.9312) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3571),rgba(var(--bg-rgb),0.9004) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3929),rgba(var(--bg-rgb),0.8617) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4286),rgba(var(--bg-rgb),0.8146) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4643),rgba(var(--bg-rgb),0.7593) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5000),rgba(var(--bg-rgb),0.6961) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5357),rgba(var(--bg-rgb),0.6260) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5714),rgba(var(--bg-rgb),0.5504) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6071),rgba(var(--bg-rgb),0.4711) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6429),rgba(var(--bg-rgb),0.3904) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6786),rgba(var(--bg-rgb),0.3111) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7143),rgba(var(--bg-rgb),0.2359) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7500),rgba(var(--bg-rgb),0.1678) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7857),rgba(var(--bg-rgb),0.1094) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8214),rgba(var(--bg-rgb),0.0630) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8571),rgba(var(--bg-rgb),0.0298) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8929),rgba(var(--bg-rgb),0.0099) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9286),rgba(var(--bg-rgb),0.0014) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9643),rgba(var(--bg-rgb),0.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*1.0000))}
+#setPin .mpin-bl,#mktPin .mpin-bl,#gftPin .mpin-bl{-webkit-backdrop-filter:blur(var(--sb,0px));backdrop-filter:blur(var(--sb,0px));-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0000),rgba(0,0,0,1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0357),rgba(0,0,0,0.9999) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0714),rgba(0,0,0,0.9996) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1071),rgba(0,0,0,0.9986) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1429),rgba(0,0,0,0.9962) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1786),rgba(0,0,0,0.9916) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2143),rgba(0,0,0,0.9839) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2500),rgba(0,0,0,0.9720) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2857),rgba(0,0,0,0.9548) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3214),rgba(0,0,0,0.9312) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3571),rgba(0,0,0,0.9004) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3929),rgba(0,0,0,0.8617) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4286),rgba(0,0,0,0.8146) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4643),rgba(0,0,0,0.7593) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5000),rgba(0,0,0,0.6961) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5357),rgba(0,0,0,0.6260) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5714),rgba(0,0,0,0.5504) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6071),rgba(0,0,0,0.4711) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6429),rgba(0,0,0,0.3904) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6786),rgba(0,0,0,0.3111) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7143),rgba(0,0,0,0.2359) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7500),rgba(0,0,0,0.1678) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7857),rgba(0,0,0,0.1094) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8214),rgba(0,0,0,0.0630) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8571),rgba(0,0,0,0.0298) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8929),rgba(0,0,0,0.0099) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9286),rgba(0,0,0,0.0014) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9643),rgba(0,0,0,0.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*1.0000));mask-image:linear-gradient(to bottom,rgba(0,0,0,1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0000),rgba(0,0,0,1.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0357),rgba(0,0,0,0.9999) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.0714),rgba(0,0,0,0.9996) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1071),rgba(0,0,0,0.9986) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1429),rgba(0,0,0,0.9962) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.1786),rgba(0,0,0,0.9916) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2143),rgba(0,0,0,0.9839) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2500),rgba(0,0,0,0.9720) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.2857),rgba(0,0,0,0.9548) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3214),rgba(0,0,0,0.9312) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3571),rgba(0,0,0,0.9004) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.3929),rgba(0,0,0,0.8617) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4286),rgba(0,0,0,0.8146) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.4643),rgba(0,0,0,0.7593) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5000),rgba(0,0,0,0.6961) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5357),rgba(0,0,0,0.6260) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.5714),rgba(0,0,0,0.5504) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6071),rgba(0,0,0,0.4711) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6429),rgba(0,0,0,0.3904) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.6786),rgba(0,0,0,0.3111) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7143),rgba(0,0,0,0.2359) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7500),rgba(0,0,0,0.1678) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.7857),rgba(0,0,0,0.1094) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8214),rgba(0,0,0,0.0630) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8571),rgba(0,0,0,0.0298) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.8929),rgba(0,0,0,0.0099) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9286),rgba(0,0,0,0.0014) calc((var(--hdr-top) + var(--hdr-h) + 26px)*0.9643),rgba(0,0,0,0.0000) calc((var(--hdr-top) + var(--hdr-h) + 26px)*1.0000))}
+</style>
 </body>
 </html>
