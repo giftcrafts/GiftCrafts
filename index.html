@@ -1592,6 +1592,10 @@ html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
 #colRow .cc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
 /* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
 #gx.gx-pick #gxSel{display:none}
+/* возврат из окна улучшения: крестик сразу того же вида, что у кнопки окна подарка (без «светлого» мигания) */
+#um.cl .um-xc.glass{--glass-rgb:104,106,114;--glass-strong:.135;--glass2-rgb:120,122,130;--glass2-a:.385;--glass-w:.5px;--glass2-spread:.5px;--glass2-blur:1px;background-color:var(--menu-glass-bg);-webkit-backdrop-filter:blur(var(--menu-glass-blur));backdrop-filter:blur(var(--menu-glass-blur))}
+html[data-theme=light] #um.cl .um-xc.glass{--glass-rgb:60,60,67;--glass2-rgb:60,60,67}
+html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -4639,7 +4643,7 @@ renderMyGifts();
       let mini=ms.slice(1,4);if(mini.length<3)mini=mini.concat(ms.slice(0,3-mini.length));
       const mu=m=>AP+'/model/'+e+'/'+encodeURIComponent(nm(m))+'.png?size=';
       return Promise.all([ms[0]?img(mu(ms[0])+'256'):null,Promise.all(mini.map(m=>img(mu(m)+'64').then(i=>i&&{i:i,j:AP+'/model/'+e+'/'+encodeURIComponent(nm(m))+'.json'}))),sy?img(AP+'/symbol/'+e+'/'+encodeURIComponent(nm(sy))+'.png?size=64'):null,bd?backdropCols(g,bd):{}])
-        .then(r=>{const mj=ms[0]?AP+'/model/'+e+'/'+encodeURIComponent(nm(ms[0]))+'.json':null;try{giftAnimWarm(mj);r[1].forEach(o=>o&&giftAnimWarm(o.j))}catch(_){}return {model:r[0],modelJ:mj,minis:r[1].filter(Boolean),sym:r[2],cols:r[3]||{}}});
+        .then(r=>{const mj=ms[0]?AP+'/model/'+e+'/'+encodeURIComponent(nm(ms[0]))+'.json':null;try{giftAnimWarm(mj)}catch(_){}return {model:r[0],modelJ:mj,minis:r[1].filter(Boolean),sym:r[2],cols:r[3]||{}}});
     }).then(p=>{if(!p)delete ready[g];else pr.v=p;return p});
     return pr;
   }
@@ -4706,11 +4710,10 @@ renderMyGifts();
   }
   function apply(p,o){
     o=o||{};const top=$u('umTop'),my=++cyc;
-    if(p.model){$u('umModel').innerHTML='<img src="'+p.model.src+'" alt="">';if(p.modelJ){if(window.__gA===false)giftAnimDur(p.modelJ).then(d=>setTimeout(()=>onDone(my),(o.delay||0)+d*1000));else giftAnim($u('umModel'),p.modelJ,{delay:o.delay,onComplete:()=>onDone(my)})}}
-    if(!o.keep){ring=[p];ri=0;fillRing(curG);
+    if(p.model){const mi=p.model.cloneNode(true);mi.alt='';$u('umModel').replaceChildren(mi);if(p.modelJ){if(window.__gA===false)giftAnimDur(p.modelJ).then(d=>setTimeout(()=>onDone(my),(o.delay||0)+d*1000));else if(o.delay){/* тяжёлая Lottie-сборка — только когда окно уже открылось, чтобы не рвать анимацию */setTimeout(()=>{if(my===cyc&&um.classList.contains('on'))giftAnim($u('umModel'),p.modelJ,{delay:80,onComplete:()=>onDone(my)})},o.delay)}else giftAnim($u('umModel'),p.modelJ,{delay:o.delay,onComplete:()=>onDone(my)})}}
+    if(!o.keep){ring=[p];ri=0;{const gg=curG;setTimeout(()=>fillRing(gg),o.delay?o.delay+150:0)}
       $u('umMini').innerHTML=p.minis.map(m=>'<span class="mm"><img src="'+m.i.src+'" alt=""></span>').join('');
-      $u('umMini').querySelectorAll('.mm').forEach((el,k)=>giftAnim(el,p.minis[k].j,{delay:o.delay,once:true}));
-    }
+          }
     if(p.cols.c1)top.style.setProperty('--um-c1',p.cols.c1);
     if(p.cols.c2)top.style.setProperty('--um-c2',p.cols.c2);
     try{const cs=getComputedStyle(top);um.style.setProperty('--ug-l',window.__ugLumOf({c1:cs.getPropertyValue('--um-c1').trim()||'#7b72ea',c2:cs.getPropertyValue('--um-c2').trim()||'#5b3fb8'}).toFixed(3))}catch(_){}
@@ -4730,7 +4733,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),OPEN_MS=310,CLOSE_MS=250;
+  const EASE=bez(.35,.3,.15,1),EASE_C=bez(.4,0,.2,1),OPEN_MS=310,CLOSE_MS=430;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -4764,16 +4767,26 @@ renderMyGifts();
       SET(st,'--ubo',cl(k,.18,.35));SET(st,'--ubs',k);SET(st,'--ua',cl(k,.42,.7));
     }
   }
-  function run(from,to,dur,done){
-    cancelAnimationFrame(raf);const t0=performance.now();
+  function run(from,to,dur,done,ez){
+    cancelAnimationFrame(raf);let t0=0;ez=ez||EASE;
     const step=now=>{
+      if(!t0)t0=now;   /* старт с первого кадра: тяжёлый первый кадр не «съедает» начало анимации */
       const t=Math.max(0,Math.min(1,(now-t0)/dur));
-      frame(from+(to-from)*EASE(t));
+      frame(from+(to-from)*ez(t));
       if(t<1)raf=requestAnimationFrame(step);else{raf=0;done&&done()}
     };
     raf=requestAnimationFrame(step);
   }
   window.umPrefetch=x=>{const g=gid(x);if(g)prep(g)};
+  /* набор (модель, фон, узор) грузится, пока открыто окно подарка, и удаляется, когда окно закрылось или подарок перелистнули */
+  let held=null;
+  const release=g=>{delete ready[g];if(curG===g&&!um.classList.contains('on')){ring=[];ri=0}};
+  new MutationObserver(()=>{try{
+    if(um.classList.contains('on')||busy)return;
+    const x=window.__gmCur,on=gmEl.classList.contains('on'),g=(on&&x&&!x.sold&&!x.uc&&!x.up&&!x.upg)?gid(x):null;
+    if(held&&held!==g){release(held);held=null}
+    if(g&&g!==held){held=g;prep(g)}
+  }catch(_){}}).observe(gmEl,{attributes:true,attributeFilter:['class']});
   window.__umFit=()=>{if(um.classList.contains('on')&&lastPat)try{drawPattern(lastPat.sym,lastPat.color)}catch(_){}};
   /* фон и обводка «Смотреть все варианты» рисуются по тому же сглаженному контуру, по которому кнопка обрезается */
   function shapeVar(){
@@ -4796,7 +4809,7 @@ renderMyGifts();
   function start(x,p,g){
     const tk=token;
     um.style.visibility='';sh.style.transition='';sh.style.transform='';
-    reset(x);$u('umChk').classList.remove('on');$u('umPrice').textContent=String(PRICE);
+    um.classList.remove('cl');reset(x);$u('umChk').classList.remove('on');$u('umPrice').textContent=String(PRICE);
     um.style.height=Math.max(window.innerHeight,(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.viewportStableHeight)||0)+'px';
     um.classList.add('pre');
     measure();closing=false;
@@ -4831,10 +4844,10 @@ renderMyGifts();
     if(!um.classList.contains('on')||busy)return;
     busy=true;token++;
     try{const gi=document.getElementById('gmImg');if(gi){gi.style.transition='opacity .3s ease .1s';gi.style.opacity='';const a=gi.__lot;if(a)setTimeout(()=>{try{if(gi.isConnected&&gi.__lot===a)a.goToAndPlay(0,true)}catch(_){}},200)}}catch(_){}
-    measure();closing=true;
+    measure();closing=true;um.classList.add('cl');
     frame(1);gmEl.classList.remove('sub');
     um.classList.remove('on');um.setAttribute('aria-hidden','true');
-    run(1,0,CLOSE_MS,()=>{closing=false;frame(0);um.classList.remove('pre');um.style.height='';sh.style.height='';gmEl.classList.remove('up');gmSh.style.height='';gmSh.style.maxHeight='';if(gmBody)gmBody.style.opacity='';busy=false});
+    run(1,0,CLOSE_MS,()=>{closing=false;frame(0);um.classList.remove('pre');um.classList.remove('cl');um.style.height='';sh.style.height='';gmEl.classList.remove('up');gmSh.style.height='';gmSh.style.maxHeight='';if(gmBody)gmBody.style.opacity='';busy=false},EASE_C);
   }
   /* свайп вниз: окно едет за пальцем, при отпускании либо улетает вместе с окном подарка, либо возвращается */
   let sy=0,dy=0,t0=0,tr=false,sup=false;
@@ -4857,7 +4870,7 @@ renderMyGifts();
     if(window.closeGift)closeGift();
     setTimeout(()=>{
       um.style.visibility='hidden';
-      closing=false;frame(0);um.classList.remove('pre');um.style.height='';
+      closing=false;frame(0);um.classList.remove('pre');um.classList.remove('cl');um.style.height='';
       sh.style.transition='';sh.style.height='';
       gmSh.style.height='';gmSh.style.maxHeight='';if(gmBody)gmBody.style.opacity='';
       busy=false;
