@@ -3104,7 +3104,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
     window.premShown=()=>store.get('premShow','1')!=='0';
     const term=g('premTermSel'),show=g('premShowSel'),go=g('premGo'),ok=g('premOk');
     g('premBalI').src=STAR;
-    if(store.get('premReset4','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset4','1')}   /* разовый сброс подписки для проверки */
+    if(store.get('premReset5','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset5','1')}   /* разовый сброс подписки для проверки */
     function sync(){
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
@@ -4528,7 +4528,7 @@ renderMyGifts();
   window.__exchangeGift=function(x){sellGift(x,(typeof giftPrice==='function'?giftPrice(x):x.price)||0)};
   function open(x){
     clearTimeout(closeT);clearTimeout(window.__gmPopT);gm.classList.remove('sub','up','gmpop');window.__gmCur=x;const upv=!!(x.upg||x.upv);gm.classList.toggle('upv',upv);{const gi=$g('gmImg');gi.style.transition='';gi.style.opacity=''}try{if(!x.sold&&!upv)window.umPrefetch&&umPrefetch(x)}catch(_){}
-    $g('gmImg').innerHTML=x.image?'<img src="'+x.image+'" alt="">':(x.emoji||'🎁');giftAnimOrig($g('gmImg'),x);
+    $g('gmImg').innerHTML=x.image?'<img src="'+x.image+'" alt="">':(x.emoji||'🎁');{const gi0=$g('gmImg');gi0.__lot=null;gi0.__box=null;giftAnimOrig(gi0,x,{stop:true})}
     gm.querySelector('.gm-s').style.display=(x.anon&&!x.sold)?'':'none';
     gm.classList.toggle('sold',!!x.sold);
     gm.querySelector('.gm-h').style.display=(x.sold||upv)?'none':'';
@@ -5851,7 +5851,7 @@ renderMyGifts();
   let st=null,anim=false,until=0;
   const Wd=()=>window.innerWidth,eIn=p=>p*p,eOut=p=>1-Math.pow(1-p,3);
   /* соседние подарки — в том же порядке, что в сетке профиля (закреплённые сверху, фильтр и сортировка учитываются) */
-  const ord=()=>{try{const o=myOrder();return o&&o.length?o:MYGIFTS}catch(_){return MYGIFTS}};
+  const ord=()=>{try{return (window.__colFilter||(q=>q))(myOrder())}catch(_){return []}};   /* тот же список, что в сетке: с учётом выбранной коллекции */
   function active(){
     if(anim)return null;
     if(um.classList.contains('on')||um.classList.contains('pre')||$('bm').classList.contains('on'))return null;
@@ -5926,7 +5926,7 @@ renderMyGifts();
     const t=e.touches[0],tg=e.target;
     st=Object.assign(m,{x:t.clientX,y:t.clientY,t0:performance.now(),dx:0,tx:0,axis:null,raf:0,done:false,cur:window.__gmCur,pv:null,bad:0,sm:[],tg});
     /* соседние анимации подгружаются заранее, чтобы к моменту показа соседа они были готовы */
-    try{[-1,1].forEach(d=>{const n=ord()[st.i+d];if(n&&n.upg&&n.upg.mj&&window.giftAnimWarm)giftAnimWarm(n.upg.mj)})}catch(_){}
+    try{[-1,1].forEach(d=>{const n=ord()[st.i+d];if(!n||!window.giftAnimWarm)return;if(n.upg&&n.upg.mj)giftAnimWarm(n.upg.mj);else if(n.image&&/\/original\//.test(n.image))giftAnimWarm(n.image.replace(/\.png.*$/,'.json'))})}catch(_){}
     /* при перерисовке окна элемент, за который взялся палец, может исчезнуть из DOM — события касания тогда идут только ему самому */
     if(tg&&tg.addEventListener&&tg!==m.sheet){tg.addEventListener('touchmove',move,{passive:true});tg.addEventListener('touchend',up);tg.addEventListener('touchcancel',up)}
   }
@@ -5950,6 +5950,12 @@ renderMyGifts();
   /* во время перелистывания Lottie не монтируется (тяжело), и модель остаётся статичным PNG — он мельче анимированной. Когда жест закончен, ставим на место итоговый кадр анимации */
   function settle(){try{
     if(window.__swNoAnim||window.__gA===false||!window.giftAnim)return;
+    /* обычный подарок: после перелистывания его анимация проигрывается заново, как у уникального */
+    {const G=document.getElementById('gm'),gx=window.__gmCur,gi=document.getElementById('gmImg');
+     if(G&&gi&&gx&&G.classList.contains('on')&&!G.classList.contains('upv')&&!(gx.upg&&gx.upg.c)&&gx.image&&/\/original\//.test(gx.image)){
+       if(gi.__lot){try{gi.__lot.goToAndPlay(0,true)}catch(_){}return}
+       if(gi.__box&&gi.contains(gi.__box))return;
+       giftAnimOrig(gi,gx,{stop:true});return}}
     const U=document.getElementById('ug'),x=window.__gmCur;
     if(!U||!x||!x.upg||!x.upg.mj||!U.classList.contains('on')||U.classList.contains('morph'))return;
     const tr=document.getElementById('ugTrack'),el=tr&&tr.children[0];
@@ -8214,6 +8220,29 @@ renderMyGifts();
     if(window.ResizeObserver)new ResizeObserver(()=>shape(b)).observe(b);
     shape(b);
   });
+})();
+</script>
+<script>
+/* закрытие любого окна после свайпа вниз: чем ниже уже опустилась верхушка окна, тем быстрее оно доезжает (оставшийся путь короче) */
+(function(){
+  if(!document.getAnimations&&!Element.prototype.getAnimations)return;
+  document.addEventListener('transitionrun',function(e){
+    try{
+      if(e.propertyName!=='transform')return;
+      const el=e.target;if(!el||!el.classList)return;
+      if(![...el.classList].some(c=>/-sheet$/.test(c)))return;
+      let ov=el.parentElement;while(ov&&ov!==document.body&&!ov.id)ov=ov.parentElement;
+      if(!ov||ov.classList.contains('on')||ov.classList.contains('pre'))return;   /* только закрытие */
+      const a=el.getAnimations().find(q=>q.transitionProperty==='transform');if(!a||!a.effect)return;
+      const kf=a.effect.getKeyframes();if(!kf||!kf.length||!kf[0].transform||kf[0].transform==='none')return;
+      const y0=new DOMMatrix(kf[0].transform).m42;if(!(y0>24))return;
+      const full=el.offsetHeight+6;if(!(full>0))return;
+      const r=Math.max(0,Math.min(1,(full-y0)/full));
+      const f=.55+.45*Math.sqrt(r);   /* r=1 — без изменений, r→0 — примерно в 1.8 раза быстрее */
+      const d=a.effect.getComputedTiming().duration;
+      if(d>0)a.effect.updateTiming({duration:d*f});
+    }catch(_){}
+  },true);
 })();
 </script>
 </body>
