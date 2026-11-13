@@ -5830,7 +5830,15 @@ renderMyGifts();
     root=document.createElement('div');root.id='cx';root.setAttribute('aria-hidden','true');
     root.innerHTML='<div class="cx-dim"></div><div class="cx-pv" id="cxPv"></div><div class="cx-menu" id="cxMenu"></div>';
     document.body.appendChild(root);
-    root.querySelector('.cx-dim').addEventListener('pointerdown',e=>{e.preventDefault();close()});
+    /* нажатие мимо меню только закрывает его: «хвост» этого же касания (click) не должен дойти до карточки под меню */
+    const eat=e=>{e.stopPropagation();e.preventDefault()};
+    const swallowTap=()=>{
+      const evs=['click','mouseup','touchend'];
+      const off=()=>{evs.forEach(t=>document.removeEventListener(t,eat,true));clearTimeout(swallowTap.t)};
+      off();evs.forEach(t=>document.addEventListener(t,eat,true));
+      swallowTap.t=setTimeout(off,500);
+    };
+    root.querySelector('.cx-dim').addEventListener('pointerdown',e=>{e.preventDefault();swallowTap();close()});
     root.addEventListener('contextmenu',e=>e.preventDefault());
     const mnu=root.querySelector('#cxMenu');
     const its=()=>[...mnu.querySelectorAll('.cx-it')];
@@ -7509,18 +7517,19 @@ renderMyGifts();
   inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur()});
   function fit(){
     const vv=window.visualViewport,foc=document.activeElement===inp,open=nc.classList.contains('on')||nc.classList.contains('pre');
-    if(!open||nc.__freeze)return;
+    if(!open)return;
     if((foc||open)&&(window.scrollX||window.scrollY))window.scrollTo(0,0);
     if(!H0)H0=baseH();
     const vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
     let shrink=Math.max(0,H0-vb);if(shrink<80)shrink=0;
-    if(nc.__off){if(foc||shrink===0)nc.__off=false;else shrink=0}   /* клавиатуру закрыли — блок под ней убирается сразу, не ждём системное событие */
     const nt=(vv&&(foc||shrink>0))?Math.round(vv.offsetTop)+'px':'',nh=(vv&&(foc||shrink>0))?Math.round(vv.height)+'px':'';
-    const hold=false;
+    /* как в окне «Продать подарок»: пока клавиатура уходит, положение и размеры окна не трогаем — окно складывается вместе с ней */
+    const hold=!!(nc.__fold&&!foc&&shrink>0);
     if(!hold){if(nc.style.top!==nt)nc.style.top=nt;if(nc.style.height!==nh)nc.style.height=nh}
     let kb=0;
     if(shrink>0){kb=shrink;if(foc&&shrink>120&&shrink!==KBH){KBH=shrink;try{localStorage.setItem('slKbh',String(shrink))}catch(_){}}}
     else if(foc)kb=KBH||Math.round(H0*.35);
+    if(nc.__fold){if(foc||shrink===0)nc.__fold=false;if(nc.__fold)kb=0}   /* нажали мимо поля: окно складывается сразу, не дожидаясь размера экрана без клавиатуры */
     if(nc.__kb!==kb){nc.__kb=kb;nc.style.setProperty('--kb',kb+'px')}
     if(!hold&&nc.__ext!==shrink){nc.__ext=shrink;nc.style.setProperty('--ext',shrink+'px')}
     if(nc.classList.contains('kb')!==foc)nc.classList.toggle('kb',foc);
@@ -7533,30 +7542,10 @@ renderMyGifts();
     requestAnimationFrame(f);
   }
   if(window.visualViewport){visualViewport.addEventListener('resize',()=>{fit();loop(500)});visualViewport.addEventListener('scroll',fit)}
-  inp.addEventListener('focus',()=>{
-    if(nc.__hold){nc.__hold=false;nc.__freeze=false}   /* клавиатуру вернули, пока она закрывалась */
-    nc.__off=false;fit();loop(1000)});
+  inp.addEventListener('focus',()=>{nc.__fold=false;fit();loop(1000)});
   inp.addEventListener('blur',()=>{
-    /* Клавиатура закрывается: WebView получает полную высоту только В КОНЦЕ её анимации.
-       Если сразу сбросить --kb/--ext/top/height и класс .kb, окно на эти кадры растягивается
-       вверх (шапка уезжает под остров) и в конце прыгает вниз. Поэтому геометрию замораживаем
-       и отпускаем только когда клавиатура реально убралась (или по таймауту). */
-    if(nc.classList.contains('on')&&!nc.__freeze&&(nc.classList.contains('kb')||nc.__kb>0)){
-      nc.__freeze=true;nc.__hold=true;
-      const t0=performance.now();
-      const wait=()=>{
-        if(!nc.__hold)return;
-        if(!nc.classList.contains('on')){nc.__hold=false;nc.__freeze=false;return}
-        const vv=window.visualViewport,vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
-        if(H0-vb<80||performance.now()-t0>1100){nc.__hold=false;nc.__freeze=false;nc.__off=true;fit();loop(700);return}
-        requestAnimationFrame(wait);
-      };
-      requestAnimationFrame(wait);
-      return;
-    }
-    if(nc.__freeze)return;
-    if(nc.classList.contains('on'))nc.__off=true;
-    fit();loop(600);setTimeout(fit,120)});
+    if(nc.classList.contains('on')){nc.__fold=true;clearTimeout(nc.__foldT);nc.__foldT=setTimeout(()=>{nc.__fold=false;fit()},1000)}
+    fit();loop(1000);setTimeout(fit,120)});
   function shapeSheet(){
     if(!window.__sheetPath)return;
     const w=sh.offsetWidth,h=sh.offsetHeight;if(!w||!h)return;
@@ -7586,8 +7575,7 @@ renderMyGifts();
     clearTimeout(nc.__kbt);nc.__kbt=setTimeout(()=>{if(nc.classList.contains('on'))nc.classList.add('kbt')},90);
   };
   function closeNc(){
-    nc.__hold=false;nc.__freeze=false;
-    clearTimeout(nc.__kbt);nc.__off=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
+    clearTimeout(nc.__kbt);clearTimeout(nc.__foldT);nc.__fold=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
     try{inp.blur()}catch(_){}
     setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre'))setTgBg(window.__th?__th.bg:'#000000')},640);
     clearTimeout(closeT);closeT=setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre')){nc.style.top='';nc.style.height='';nc.style.removeProperty('--kb');nc.style.removeProperty('--ext');nc.__kb=nc.__ext=undefined;nc.classList.remove('kbt');H0=0}},900);
