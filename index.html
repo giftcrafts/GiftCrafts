@@ -7582,6 +7582,7 @@ renderMyGifts();
   const pick=()=>{
     if(!window.openGiftPicker)return;
     try{inp.blur()}catch(_){}
+    nc.__off=true;setTgBg(window.__th?__th.bg:'#000000');   /* серая подложка Telegram под клавиатурой больше не нужна: поверх открывается тёмное окно */
     openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
   };
   let t0=null;
