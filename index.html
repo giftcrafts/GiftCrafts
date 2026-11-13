@@ -748,7 +748,7 @@ html,body{overscroll-behavior:none}
 #ug .ug-skip{position:relative;overflow:hidden}
 #ug .ug-sl{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;will-change:transform,opacity}
 /* пока идёт переход и меняются фон/узор, блюр под кнопками выключен: backdrop-filter снимает фон с запаздыванием (под кнопками мелькал старый цвет) и утяжеляет кадры перехода; потом плавно возвращается */
-#ug .ug-a,#ug .ug-x,#ug .ug-more,#ug .mk-sale{transition:transform .3s cubic-bezier(.4,0,.2,1),-webkit-backdrop-filter .45s ease,backdrop-filter .45s ease}
+#ug .ug-a,#ug .ug-x,#ug .ug-more,#ug .mk-sale{transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform}   /* backdrop-filter не анимируется: переход блюра заставлял обводку мигать */
 #ug.fxon .ug-a,#ug.fxon .ug-x,#ug.fxon .ug-more,#ug.fxon .mk-sale{-webkit-backdrop-filter:none;backdrop-filter:none}
 #um.mf .um-back,#um.mf .um-var{-webkit-backdrop-filter:none;backdrop-filter:none}
 /* обводка «Отправить / Носить / Продать» адаптивная: яркость фона --ug-l (0 тёмный … 1 светлый; .4 = прежний вид).
@@ -1666,8 +1666,8 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #prem .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
 #prem .pm-2{margin-top:25px}
 #prem .pm-bal{position:absolute;top:16px;right:22px;height:var(--hdr-h);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1;pointer-events:none}
-#prem .pm-bal .gbl{font-size:14px}
-#prem .pm-bal .gv{font-size:17px;margin-top:2px}
+#prem .pm-bal .gbl{font-size:14px;font-weight:500}
+#prem .pm-bal .gv{font-size:15px;font-weight:600;margin-top:2px}
 #prem .pm-bal .gv img{width:17px;height:17px}
 #prem:not(.act) .pm-a,#prem.act .pm-b{display:none!important}
 #prem .ap-go{position:relative}
@@ -3101,7 +3101,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
     window.premShown=()=>store.get('premShow','1')!=='0';
     const term=g('premTermSel'),show=g('premShowSel'),go=g('premGo'),ok=g('premOk');
     g('premBalI').src=STAR;
-    if(store.get('premReset2','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset2','1')}   /* разовый сброс подписки для проверки */
+    if(store.get('premReset3','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset3','1')}   /* разовый сброс подписки для проверки */
     function sync(){
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
@@ -3120,15 +3120,15 @@ applyStarAnim(store.get('starAnim','1')==='1');
       try{applyWear()}catch(_){}
       if(premClose)premClose();
     };
-    const confetti=()=>{try{window.__ugConfetti&&__ugConfetti(innerHeight*.45)}catch(_){}};
     go.onclick=()=>{
       const m=+term.value,p=PRICE[m];
       if(getStars()<p){noStars();return}
       try{addStars(-p,'GiftCrafts Premium',TL[m])}catch(_){}
       const d=new Date();d.setMonth(d.getMonth()+m);store.set('premUntil',String(d.getTime()));store.set('premShow','1');
-      if(premClose)premClose();confetti();
       try{applyWear()}catch(_){}
-      setTimeout(sync,500);   /* содержимое меняется, когда окно уже закрылось */
+      if(premClose)premClose();
+      /* окно закрывается и сразу открывается снова — уже с содержимым «подписка активна» */
+      setTimeout(()=>{sync();try{g('premRow').click()}catch(_){}},420);
     };
     /* окно «нужен Premium» (для «Носить») */
     window.premNeed=function(){
@@ -5610,7 +5610,7 @@ renderMyGifts();
     if(pk.mj&&window.giftAnim&&window.__gA!==false){try{const it=$u('ugTrack').children[pk.F];
       if(it){if(!it.__lot)giftAnim(it,pk.mj,{stop:true});else if(!it.__played&&it.__lot.isPaused&&!it.__lot.currentFrame)it.__lot.goToAndPlay(0,true)}}catch(_){}}
     {const trk=$u('ugTrack'),fi=trk.children[0],pv=trk.children[1];
-      if(fi){fi.style.setProperty('--s',1);fi.animate([{transform:'scale(1)'},{transform:'scale(1.14)'}],{duration:ugQuick?1:640,easing:'cubic-bezier(.3,1.5,.5,1)',fill:'forwards'})}
+      if(fi){fi.style.setProperty('--s',1);fi.animate([{transform:'scale(1)'},{transform:'scale(1.14)'}],{duration:ugQuick?1:640,easing:'cubic-bezier(.3,1.5,.5,1)',fill:'forwards'}).onfinish=()=>{try{fi.getAnimations().forEach(a=>a.cancel());fi.style.transform='scale(1.14)'}catch(_){}}}
       if(pv)pv.animate([{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.7)'}],{duration:ugQuick?1:380,easing:'ease-out',fill:'forwards'}).onfinish=()=>{try{pv.__lot&&pv.__lot.pause()}catch(_){}}}
     ugLater(()=>{ugLock=false},700);ugLater(()=>UG.classList.remove('fxon'),900);
     ugConfetti();
@@ -5637,6 +5637,8 @@ renderMyGifts();
     trk.style.setProperty('--iw',iw+'px');
     if(ugX){try{ugX.cancel()}catch(_){}ugX=null}
     trk.style.transform='translateX('+(W/2-iw/2)+'px)';
+    /* итоговая модель всегда нужного размера: сбросились/потерялись анимации — возвращаем масштаб */
+    try{const fi=trk.children[0];if(fi&&fi.classList.contains('ug-i')&&!trk.querySelector('.ug-i~.ug-i')){fi.getAnimations().forEach(a=>a.cancel());fi.style.transform='scale(1.14)'}}catch(_){}
     const cv=$u('ugPat');if(cv.__ps)try{drawPat2(cv,cv.__ps[0],cv.__ps[1],cv.__ps[2])}catch(_){}
     ugShape();
   }
