@@ -23,7 +23,7 @@
 --hdr-top:calc(env(safe-area-inset-top,0px) + var(--tg-content-safe-area-inset-top,0px) + 6px);--hdr-h:45px;--shd:calc(var(--hdr-h)/2 + 36px);--ic-hdr:25px;--ic-hdr-gift:31px;--ic-hdr-qr:28px;
 --ic-gram:28px;--ic-profile:29px;--ic-buygift:27px;--ic-stars:26px;--ic-promo:29px;
 --ic-lang:29px;--ic-theme:24px;--ic-anim:27px;              /* профиль */
---bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--bg-rgb:0,0,0;--gl-bg:rgba(53,53,54,.7);--gl-ink:#fff;--dim:rgba(0,0,0,.55);--dim-cx:rgba(0,0,0,.52);--bar-bg:rgba(40,40,41,.84);--bar-ink:#fff;--slider-bg:rgba(16,16,18,.54);--hdr-bg:rgba(53,53,54,.58);--hdr-ink:#fff;--hdr-press:rgba(255,255,255,.6);--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--accent2:#4BB6EE;--vb:#4fc3ff;--gold:#ffc83d;--r:22px}
+--bg:#000;--card:#1c1c1d;--text:#fff;--hint:#9e9e9e;--bg-rgb:0,0,0;--gl-bg:rgba(53,53,54,.7);--gl-ink:#fff;--dim:rgba(0,0,0,.55);--dim-cx:rgba(0,0,0,.52);--bar-bg:rgba(40,40,41,.84);--bar-ink:#fff;--slider-bg:rgba(255,255,255,.2);--hdr-bg:rgba(53,53,54,.58);--hdr-ink:#fff;--hdr-press:rgba(255,255,255,.6);--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;--accent:#4cb4e9;--accent2:#4BB6EE;--vb:#4fc3ff;--gold:#ffc83d;--r:22px}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 ::-webkit-scrollbar{display:none;width:0;height:0}
 html,body{height:100%;width:100%;overflow:hidden;touch-action:pan-y;background:var(--bg);color:var(--text);font:16px/1.3 -apple-system,"SF Pro Text",system-ui,sans-serif;overscroll-behavior:none}
@@ -2222,7 +2222,7 @@ const store = {
 
 /* ===== темы: 0 «По умолчанию» (светлая, если светлая в Telegram, иначе ночная), 1 «Ночная», 2 «Светлая» ===== */
 (function(){
-  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(16,16,18,.54)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(53,53,54,.7)',glink:'#ffffff',accent:'#4cb4e9',accent2:'#4BB6EE',vb:'#4fc3ff'};
+  const NIGHT={bg:'#000000',card:'#1c1c1d',text:'#ffffff',hint:'#9e9e9e',hint2:'#8e8e93',el:'#2c2c2e',el2:'#3a3a3c',line:'#333335',sheet:'#1c1c1e',dim:'rgba(0,0,0,.55)',dimcx:'rgba(0,0,0,.52)',barbg:'rgba(40,40,41,.84)',barink:'#ffffff',slider:'rgba(255,255,255,.2)',hdrbg:'rgba(53,53,54,.58)',hdrink:'#ffffff',hdrpress:'rgba(255,255,255,.6)',glbg:'rgba(53,53,54,.7)',glink:'#ffffff',accent:'#4cb4e9',accent2:'#4BB6EE',vb:'#4fc3ff'};
   const LIGHT={bg:'#efeff3',card:'#ffffff',text:'#000000',hint:'#8e8e93',hint2:'#8e8e93',el:'#efeff3',el2:'#d9d9de',line:'#c7c7c7',sheet:'#ffffff',dim:'rgba(0,0,0,.32)',dimcx:'rgba(0,0,0,.3)',barbg:'rgba(255,255,255,.84)',barink:'#6d6d72',slider:'rgba(118,118,128,.16)',hdrbg:'rgba(255,255,255,.74)',hdrink:'#000000',hdrpress:'rgba(0,0,0,.5)',glbg:'rgba(120,120,128,.14)',glink:'#000000',accent:'#3b8fbb',accent2:'#3b8fbb',vb:'#3b8fbb'};
   const rgb=h=>{h=String(h).replace('#','');if(h.length===3)h=h.replace(/./g,'$&$&');const n=parseInt(h,16);return isNaN(n)?'28,28,30':[n>>16&255,n>>8&255,n&255].join(',')};
   const isLightHex=h=>{const q=rgb(h).split(',').map(Number);return (q[0]*299+q[1]*587+q[2]*114)/1000>150};
@@ -2561,7 +2561,15 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'из':'of','осталось':'left','продано':'sold','за':'for','на':'for','в':'at',
 'Верифицирован организацией «GiftCrafts».':'Verified by organization “GiftCrafts”.',
 'Напишите несколько строк о себе.':'Write a few lines about yourself.','Ваш день рождения виден всем.':'Your birthday is visible to everyone.','Удалить день рождения':'Delete birthday','День рождения':'Birthday','день рождения':'birthday','О себе':'About','о себе':'about','Имя пользователя':'Username','Верификация':'Verification','Premium значок':'Premium badge','Канал':'Channel','Добавить':'Add','Указать':'Set',
-'Изготовить ещё':'Craft again','Неудачная попытка':'Failed attempt','Попытка изготовления не удалась.':'The crafting attempt failed.','утрачен':'lost','утрачено':'lost','необычный':'uncommon','редкий':'rare','эпический':'epic','легендарный':'legendary'
+'Изготовить ещё':'Craft again','Неудачная попытка':'Failed attempt','Попытка изготовления не удалась.':'The crafting attempt failed.','утрачен':'lost','утрачено':'lost','необычный':'uncommon','редкий':'rare','эпический':'epic','легендарный':'legendary',
+'Переименовать':'Rename','Изменить порядок':'Reorder','Удалить коллекцию':'Delete collection','Удаление коллекции':'Delete collection',
+'Добавить в коллекцию':'Add to collection','Добавить подарки':'Add gifts','КОЛЛЕКЦИЯ':'COLLECTION','Введите название':'Enter a name',
+'Укажите название коллекции.':'Enter the collection name.','Добавьте в коллекцию обычные или уникальные подарки.':'Add regular or unique gifts to the collection.',
+'Добавьте хотя бы один подарок':'Add at least one gift','Вы действительно хотите удалить коллекцию':'Do you really want to delete the collection','Подарки останутся в профиле.':'The gifts will remain in your profile.',
+'Продать':'Sell','Сортировка':'Sorting','Тема приложения':'App theme','Пополнение':'Top up','Модели':'Models','Сжигание подарка':'Burning gift','Передача подарков':'Transferring gifts',
+'Вы действительно хотите скрыть':'Do you really want to hide','Вы действительно хотите показать':'Do you really want to show','из профиля':'from your profile','в профиле':'in your profile',
+'Вы действительно хотите обменять':'Do you really want to exchange','Вы действительно хотите передать':'Do you really want to transfer','Вы действительно хотите навсегда сжечь':'Do you really want to permanently burn',
+'Это действие нельзя отменить.':'This action cannot be undone.'
   };
   const KEYS=Object.keys(D).sort((a,b)=>b.length-a.length);
   const N=x=>+String(x).replace(/[^\d]/g,''),pl=(n,a,b)=>n===1?a:b,SP='[\\d\\u00a0\\u202f ]*';
@@ -2587,7 +2595,8 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
   const NUMRE=/\d[\u00a0\u202f]\d{3}(?!\d)|\d,\d{1,2}(?!\d)|^,\d{2}$/,fmtNum=s=>s.replace(/(\d),(\d{1,2})(?!\d)/g,'$1.$2').replace(/^,(\d{2})$/,'.$1');
   function tr(s){
     if(!CY.test(s))return fmtNum(s);
-    let o=s;
+    let o=s;const KEEP=[];
+    try{(window.__cols?window.__cols():[]).forEach(c=>{const q='«'+c.n+'»';if(c&&c.n&&o.indexOf(q)>=0){const i=KEEP.push(c.n)-1;o=o.split(q).join('«\uE000'+i+'\uE001»')}})}catch(_){}
     for(let i=0;i<PAT.length;i++)o=o.replace(PAT[i][0],PAT[i][1]);
     for(let ki=0;ki<KEYS.length&&CY.test(o);ki++){
       const k=KEYS[ki];let i=o.indexOf(k);
@@ -2597,7 +2606,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
         else i=o.indexOf(k,i+1);
       }
     }
-    return fmtNum(o);
+    return fmtNum(o).replace(/\uE000(\d+)\uE001/g,(m,i)=>KEEP[+i]);
   }
   /* --- перевод DOM: тексты и подписи (placeholder/title/aria-label), оригинал хранится, чтобы вернуть русский --- */
   const REC=new WeakMap(),ATT=['placeholder','title','aria-label'];
@@ -5795,7 +5804,7 @@ renderMyGifts();
     send:'<path d="M298 242C278.8 244.2 187.3 240 178.8 243.7C174.5 245.4 171.5 249.7 171.1 254.2C169.8 268.7 185.5 267.8 195 267.8C216.7 267.8 238.3 267.8 260 267.8C272.6 267.8 285.3 267.3 297.8 268C282.9 290.7 321.9 234.7 297.7 269.5C295.9 272 293.2 274.2 291.1 276.5C285 283.2 258.6 309.7 256.1 315.5C254.5 319 254.6 323.1 256.4 326.5C259.4 332 266.7 334.7 272.5 332C274.4 331.2 276 329.8 277.5 328.2C292.4 312.9 306.5 296.9 321 281.2C325.3 276.7 336.6 266.1 339.2 261.5C340.7 258.9 341.2 255.5 340.7 252.5C340.3 250.4 339.1 248.2 337.8 246.6C334.6 242.6 330.3 239 326.8 235.2C318.6 226.6 279.7 182.4 273.8 178.9C266.2 174.5 255.5 179.4 255 188.5C254.7 193.4 257 197 260.3 200.5C272.9 213.8 287.2 227.6 298 242ZM245.2 78.1C231 79.5 216.9 81.3 203.2 85.8C141.4 106 93.6 157.1 81.8 221.8C78.7 238.6 77.1 256.7 79.6 273.8C81.7 288.5 84.4 302.7 89.6 316.8C99.6 344.1 116.8 369 138.8 388.2C218.2 457.7 339.7 443 401 357C417.8 333.3 428.8 304.9 431.8 276C436.4 232.6 426.2 188.8 400.8 153C363.4 100.5 308.5 76.5 245.2 78.1ZM255.2 102.9C337.4 104.2 400.7 163.4 407.8 245.2C412.1 295.7 387.1 346.9 347 377C323.4 394.7 293.7 406.1 264 407C253.9 407.3 244 407.2 234 405.8C210 402.6 186.6 392.8 167 378.6C91.4 324.1 82.7 216.5 146.5 149.5C174.8 119.7 214.4 103.6 255.2 102.9Z"/>',
   };
   const FILLED={pin:1,unpin:1,hide:1,show:1,link:1,share:1,tag:1,search:1,send:1,wear:1,unwear:1,exchange:1,price:1,date:1};   /* иконки из набора: 512×512, закрашенные */
-  const it=(k,t,ic)=>{ic=ic||k;if(ic==='craft')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:22px;height:22px;margin:-.5px" viewBox="0 0 24 24"><use href="#ni-craft"/></svg><span>'+t+'</span></div>';if(ic==='col'||ic==='addgift'||ic==='edit'||ic==='reorder')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-'+ic+'"/></svg><span>'+t+'</span></div>';if(ic==='addcol'||ic==='newcol'||ic==='back')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-'+(ic==='addcol'?'addtocol':ic)+'"/></svg><span>'+t+'</span></div>';if(ic==='burn')return '<div class="cx-it red" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-delete"/></svg><span>'+t+'</span></div>';if(ic==='wear')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:22px;height:22px;margin:-.5px" viewBox="0 0 24 24"><use href="#ni-wear"/></svg><span>'+t+'</span></div>';return '<div class="cx-it" data-k="'+k+'">'+(FILLED[ic]?'<svg class="f" viewBox="0 0 512 512">':'<svg viewBox="0 0 24 24">')+IC[ic]+'</svg><span>'+t+'</span></div>'};
+  const it=(k,t,ic)=>{ic=ic||k;if(ic==='craft')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:22px;height:22px;margin:-.5px" viewBox="0 0 24 24"><use href="#ni-craft"/></svg><span>'+t+'</span></div>';if(ic==='col'||ic==='addgift'||ic==='edit'||ic==='reorder')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-'+ic+'"/></svg><span'+(ic==='col'?' data-i18n-skip="1"':'')+'>'+t+'</span></div>';if(ic==='addcol'||ic==='newcol'||ic==='back')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-'+(ic==='addcol'?'addtocol':ic)+'"/></svg><span>'+t+'</span></div>';if(ic==='burn')return '<div class="cx-it red" data-k="'+k+'"><svg class="f" style="width:24px;height:24px;margin:-1.5px" viewBox="0 0 24 24"><use href="#ni-delete"/></svg><span>'+t+'</span></div>';if(ic==='wear')return '<div class="cx-it" data-k="'+k+'"><svg class="f" style="width:22px;height:22px;margin:-.5px" viewBox="0 0 24 24"><use href="#ni-wear"/></svg><span>'+t+'</span></div>';return '<div class="cx-it" data-k="'+k+'">'+(FILLED[ic]?'<svg class="f" viewBox="0 0 512 512">':'<svg viewBox="0 0 24 24">')+IC[ic]+'</svg><span>'+t+'</span></div>'};
   const isU=x=>!!(x&&x.upg&&x.upg.c);
   const hs=x=>it(x.hid?'show':'hide',x.hid?'Показать':'Скрыть');
   const SEP='<div class="cx-sep t"></div>';
@@ -6068,7 +6077,7 @@ renderMyGifts();
     cur={flt:apply};busy=true;openT=performance.now();
     const pv=root.querySelector('#cxPv'),mn=root.querySelector('#cxMenu');
     const rect=el.getBoundingClientRect(),vw=innerWidth,vh=innerHeight;
-    pv.innerHTML='<div class="cx-chip">'+e2(c.n)+'</div>';
+    pv.innerHTML='<div class="cx-chip" data-i18n-skip="1">'+e2(c.n)+'</div>';
     pv.style.width=Math.round(rect.width)+'px';pv.style.height=Math.round(rect.height)+'px';
     pv.style.left=Math.round(rect.left)+'px';pv.style.top=Math.round(rect.top)+'px';
     mn.innerHTML=html;mn.style.width=Math.min(UW,vw-24)+'px';mn.style.right='16px';
@@ -7409,7 +7418,7 @@ renderMyGifts();
     row.hidden=!COLS.length;
     if(!COLS.length){row.innerHTML='';return}
     row.innerHTML='<i></i><button type="button" class="cc'+(window.MYCOL==='all'?' on':'')+'" data-c="all">Все подарки</button>'
-      +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'">'+esc(c.n)+'</button>').join('')
+      +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'" data-i18n-skip="1">'+esc(c.n)+'</button>').join('')
       +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
     const i=row.querySelector('i');
     try{smoothFit(i,'pill',true,.45)}catch(_){}   /* сглаженные углы ползунка (слабее, чем у остальных кнопок) */
