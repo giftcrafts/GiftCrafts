@@ -1090,7 +1090,7 @@ html,body{overscroll-behavior:none}
 #lg .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
 #lg .ap-sr.on .ap-sw{background:#34c759}#lg .ap-sr.on .ap-sw:after{left:20px}
 #lg{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
-#ap .ap-sheet.drag,#lg .ap-sheet.drag,#sl .sl-sheet.drag,#pm .pm-sheet.drag{transition:none}
+#ap .ap-sheet.drag,#lg .ap-sheet.drag,#stat .ap-sheet.drag,#priv .ap-sheet.drag,#prem .ap-sheet.drag,#sl .sl-sheet.drag,#pm .pm-sheet.drag{transition:none!important}
 #lg .ap-row2{cursor:default}
 #cx .cx-menu:has(>.cx-list){padding:0}
 #cx .cx-list{box-sizing:border-box;padding:10px 0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none}
@@ -1666,8 +1666,8 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #prem .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
 #prem .pm-2{margin-top:25px}
 #prem .pm-bal{position:absolute;top:16px;right:22px;height:var(--hdr-h);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1;pointer-events:none}
-#prem .pm-bal .gbl{font-size:14px;font-weight:500}
-#prem .pm-bal .gv{font-size:15px;font-weight:600;margin-top:2px}
+#prem .pm-bal .gbl{font-size:14px;font-weight:450}
+#prem .pm-bal .gv{font-size:15px;font-weight:550;margin-top:2px}
 #prem .pm-bal .gv img{width:17px;height:17px}
 #prem:not(.act) .pm-a,#prem.act .pm-b{display:none!important}
 #prem .ap-go{position:relative}
@@ -2242,12 +2242,13 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       const box=document.createElement('div');box.className='ga';
       box.style.cssText='position:absolute;left:0;right:0;top:0;bottom:0;margin:auto;width:'+s+'px;height:'+s+'px;opacity:0';
       el.appendChild(box);el.__box=box;
-      const a=lottie.loadAnimation({container:box,renderer:'svg',loop:false,autoplay:!(opts&&(opts.delay||opts.at)),animationData:(window.structuredClone?structuredClone(data):JSON.parse(JSON.stringify(data)))});
+      const a=lottie.loadAnimation({container:box,renderer:'svg',loop:false,autoplay:!(opts&&(opts.delay||opts.at||opts.end)),animationData:(window.structuredClone?structuredClone(data):JSON.parse(JSON.stringify(data)))});
       el.__lot=a;let busy=true;a.addEventListener('complete',()=>{busy=false;el.__played=1});
       a.addEventListener('enterFrame',function mk(){if(!a.isPaused&&a.currentFrame>0){el.__played=1;a.removeEventListener('enterFrame',mk)}});
       if(opts&&opts.onComplete)a.addEventListener('complete',opts.onComplete);
       a.addEventListener('DOMLoaded',()=>{
         if(el.__ga!==tok||!el.contains(img)){try{a.destroy()}catch(_){}return}
+        if(opts&&opts.end){try{a.goToAndStop(Math.max(0,(a.totalFrames||1)-1),true)}catch(_){}el.__played=1;busy=false}
         if(opts&&opts.delay)setTimeout(()=>{if(el.__ga===tok)a.play()},opts.delay);
         if(opts&&opts.at)setTimeout(()=>{if(el.__ga===tok)a.play()},Math.max(0,opts.at-performance.now()));
         requestAnimationFrame(()=>{box.style.opacity='1';requestAnimationFrame(()=>{img.style.visibility='hidden'})});
@@ -2644,7 +2645,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'продан':'sold','редкий':'limited','маркет':'resale','Вы действительно хотите очистить кэш приложения?':'Do you really want to clear the app cache?','Очистить кэш приложения?':'Clear app cache?','Очистить':'Clear',
 'Нет подарков по фильтру':'No gifts match the filter','Подарков пока нет':'No gifts yet','Добавьте этот подарок в профиль или обменяйте на':'Add this gift to your profile or exchange it for',
 'Вы купили подарок за':'You bought the gift for','Просмотр подарка':'Viewing gift','Подарки закончились':'Gifts are sold out','Память браузера заполнена: подарок не сохранился':'Browser storage is full: the gift was not saved',
-'Аноним':'Anonymous','Гость':'Guest','Обмен на звёзды':'Exchange for stars','Обменять':'Exchange','Вы обменяли этот подарок':'You exchanged this gift','Этот подарок был сделан':'This gift was made','ОК':'OK','Способ оплаты':'Payment method','Звёзды':'Stars','Выберите срок подписки':'Choose subscription term','1 месяц':'1 month','3 месяца':'3 months','12 месяцев':'12 months','Купить за':'Buy for','Premium подписка активна.':'Premium subscription is active.','Не отображать':'Hide','Отображать':'Show',
+'Аноним':'Anonymous','Гость':'Guest','Обмен на звёзды':'Exchange for stars','Обменять':'Exchange','Вы обменяли этот подарок':'You exchanged this gift','Этот подарок был сделан':'This gift was made','ОК':'OK','Способ оплаты':'Payment method','Звёзды':'Stars','Выберите срок подписки':'Choose subscription term','1 месяц':'1 month','3 месяца':'3 months','12 месяцев':'12 months','Купить за':'Buy for','Premium подписка активна.':'Premium subscription is active.','Premium активирован':'Premium activated','Спасибо за покупку подписки GiftCrafts Premium на':'Thank you for purchasing a GiftCrafts Premium subscription for','Не отображать':'Hide','Отображать':'Show',
 'Дата':'Date','Стоимость':'Cost','От':'From','Наличие':'Availability','Статус':'Status','Неуникальный':'Non-unique','Удаление подписи':'Delete caption','Удалить':'Delete',
 'Подарок уже улучшен':'The gift is already upgraded','Подарок для':'Gift for','Подарок от':'Gift from',', отправлен':', sent','с комментарием':'with comment','подробнее':'more','Подробнее':'More',
 'Добавить в профиль':'Add to profile','Подарок добавлен в профиль':'Gift added to profile','Носить':'Wear','Открепить':'Unpin','Закрепить':'Pin','Убрать':'Remove','Копировать ссылку':'Copy link','Похожие подарки':'Similar gifts','Поделиться':'Share','Передать':'Transfer',
@@ -3101,7 +3102,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
     window.premShown=()=>store.get('premShow','1')!=='0';
     const term=g('premTermSel'),show=g('premShowSel'),go=g('premGo'),ok=g('premOk');
     g('premBalI').src=STAR;
-    if(store.get('premReset3','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset3','1')}   /* разовый сброс подписки для проверки */
+    if(store.get('premReset4','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset4','1')}   /* разовый сброс подписки для проверки */
     function sync(){
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
@@ -3120,15 +3121,24 @@ applyStarAnim(store.get('starAnim','1')==='1');
       try{applyWear()}catch(_){}
       if(premClose)premClose();
     };
+    let buying=false;
     go.onclick=()=>{
+      if(buying||isPrem())return;   /* двойное нажатие во время закрытия окна не должно списывать звёзды дважды */
       const m=+term.value,p=PRICE[m];
       if(getStars()<p){noStars();return}
+      buying=true;setTimeout(()=>{buying=false},900);
       try{addStars(-p,'GiftCrafts Premium',TL[m])}catch(_){}
       const d=new Date();d.setMonth(d.getMonth()+m);store.set('premUntil',String(d.getTime()));store.set('premShow','1');
       try{applyWear()}catch(_){}
       if(premClose)premClose();
-      /* окно закрывается и сразу открывается снова — уже с содержимым «подписка активна» */
-      setTimeout(()=>{sync();try{g('premRow').click()}catch(_){}},420);
+      setTimeout(()=>{try{sync()}catch(_){}},520);   /* содержимое меняется уже после того, как окно уехало */
+      /* окно закрывается и больше не открывается — вместо этого алерт «Premium активирован» с голубой кнопкой OK */
+      setTimeout(()=>{
+        const t='Premium активирован',msg='Спасибо за покупку подписки GiftCrafts Premium на '+TL[m]+'.';
+        if(window.__popup)__popup(t,msg,[{id:'ok',type:'ok'}],()=>{});
+        else if(tg&&tg.showPopup&&(!tg.isVersionAtLeast||tg.isVersionAtLeast('6.2'))){try{tg.showPopup({title:t,message:msg,buttons:[{id:'ok',type:'ok'}]},()=>{})}catch(_){alert(t+'\n\n'+msg)}}
+        else alert(t+'\n\n'+msg);
+      },320);
     };
     /* окно «нужен Premium» (для «Носить») */
     window.premNeed=function(){
@@ -5858,6 +5868,8 @@ renderMyGifts();
     const g=sh.cloneNode(true);
     g.removeAttribute('id');g.setAttribute('aria-hidden','true');
     g.style.cssText+=';transition:none;transform:none;opacity:1;pointer-events:none;translate:'+tx.toFixed(2)+'px 0';
+    /* яркость обводки (--ug-l) лежит на корне окна и при показе соседа меняется для всех — закрепляем значения текущего подарка за копией */
+    try{const cs=getComputedStyle(sh);['--ug-l','--ug-d'].forEach(k=>{const v=cs.getPropertyValue(k);if(v&&v.trim())g.style.setProperty(k,v.trim())})}catch(_){}
     try{const a=sh.querySelectorAll('canvas'),b=g.querySelectorAll('canvas');a.forEach((c,i)=>{if(b[i]&&c.width&&c.height)b[i].getContext('2d').drawImage(c,0,0)})}catch(_){}
     sh.after(g);return g;
   }
@@ -5921,7 +5933,16 @@ renderMyGifts();
       if(ord()[s.i+n]&&Math.abs(s.dx)>=8)preview(s,n);else if(s.pv)revert(s);
       place(s)})}
   }
-  const swOff=()=>{clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},80)};
+  /* во время перелистывания Lottie не монтируется (тяжело), и модель остаётся статичным PNG — он мельче анимированной. Когда жест закончен, ставим на место итоговый кадр анимации */
+  function settle(){try{
+    if(window.__swNoAnim||window.__gA===false||!window.giftAnim)return;
+    const U=document.getElementById('ug'),x=window.__gmCur;
+    if(!U||!x||!x.upg||!x.upg.mj||!U.classList.contains('on')||U.classList.contains('morph'))return;
+    const tr=document.getElementById('ugTrack'),el=tr&&tr.children[0];
+    if(!el||!el.classList.contains('ug-i')||tr.children.length>1||el.__lot||(el.__box&&el.contains(el.__box)))return;
+    giftAnim(el,x.upg.mj,{stop:true,end:true});
+  }catch(_){}}
+  const swOff=()=>{clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false;setTimeout(settle,60)},80)};
   function finish(s){s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
   function up(e){
     if(!st)return;const s=st;st=null;
