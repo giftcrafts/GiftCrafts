@@ -1519,7 +1519,7 @@ html[data-theme=light] :is(#cp,#gx) .glass{--glass-rgb:60,60,67;--glass2-rgb:60,
 
 /* ===== светлая тема: уточнения ===== */
 /* окна оформления, цены, продажи и т.п.: серый лист, белые графы и кнопки */
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#sl,#pm){--sheet:#efeff3;--sheet-rgb:239,239,243;--el:#fff;--hint:#6d6d72;--hint2:#6d6d72}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#sl,#nc,#pm){--sheet:#efeff3;--sheet-rgb:239,239,243;--el:#fff;--hint:#6d6d72;--hint2:#6d6d72}
 html[data-theme=light] :is(#ap,#lg,#stat,#priv,#pm) :is(.ap-rv,.pm-rv,.pv-v){color:#8d8d8f}
 html[data-theme=light] :is(#ap,#lg,#stat,#priv,#pm) :is(.ap-ch,.ap-cr,.pv-ch,.ap-c){stroke:#b7b7b9}
 html[data-theme=light] :is(#ap,#lg,#stat,#priv) .ap-sr:before{background:var(--line)}
@@ -1533,6 +1533,62 @@ html[data-theme=light] #bm .bm-msg input{color:var(--text)}
 html[data-theme=light] #bm .bm-card{color:#fff}
 html[data-theme=light] #gm .gm-pill{background:rgba(59,143,187,.1)}
 html[data-theme=light] #gm .gm-sell{background:rgba(59,143,187,.1);color:#3b8fbb}
+
+/* ===== окно «Новая коллекция» (копия стилей окна «Продать подарок») ===== */
+#nc{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .8s}
+#nc.on,#nc.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
+#nc .sl-x,#nc .sl-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}
+#nc .sl-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
+#nc.on .sl-dim{opacity:1}
+#nc:not(.on) .sl-dim{transition-duration:.6s}
+#nc .sl-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - var(--ext,0px));margin-bottom:6px;max-height:calc(100% - 12px + var(--ext,0px));padding-bottom:var(--kb,0px);display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
+#nc.on .sl-sheet{transform:translate3d(0,0,0)}
+#nc.kb .sl-sheet{left:0;right:0;margin-bottom:0;max-height:calc(100% + var(--ext,0px))}
+#nc.kbt .sl-sheet{transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1),margin-bottom .36s cubic-bezier(.32,.72,0,1),padding-bottom .36s cubic-bezier(.32,.72,0,1)}
+#nc:not(.on) .sl-sheet,#nc.kbt:not(.on) .sl-sheet{transition:transform .62s cubic-bezier(.33,0,.15,1),left .45s cubic-bezier(.33,0,.15,1),right .45s cubic-bezier(.33,0,.15,1),margin-bottom .45s cubic-bezier(.33,0,.15,1),padding-bottom .45s cubic-bezier(.33,0,.15,1)}
+#nc .sl-head{position:relative;flex:none;height:76px;display:flex;align-items:center;justify-content:center}
+#nc .sl-t{font-size:18px;font-weight:650}
+#nc .sl-x{position:absolute;top:16px;left:16px;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer;transition:transform .45s cubic-bezier(.25,.8,.25,1)}
+#nc .sl-x:active{transform:scale(1.1)}
+#nc .sl-x svg{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+#nc .sl-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
+#nc .sl-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
+#nc .sl-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
+#nc .sl-inp .sl-st{width:24px;height:24px;flex:none;object-fit:contain;display:block}
+#nc .sl-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
+#nc .sl-inp input::placeholder{color:#6d6d72}
+#nc .sl-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
+#nc .sl-hint b{font-weight:650}
+#nc .sl-row{margin-top:25px;height:52px;border-radius:26px;background:var(--el);display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+#nc .sl-sw{width:60px;height:30px;border-radius:15px;background:var(--el2);position:relative;transition:.2s}
+#nc .sl-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
+#nc .sl-row.on .sl-sw{background:#34c759}
+#nc .sl-row.on .sl-sw:after{left:20px}
+#nc .sl-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
+#nc .sl-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
+#nc.kb .sl-btnw{padding:30px 35px 17px}
+#nc:not(.on) .sl-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
+#nc .sl-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#nc .sl-go:active{transform:scale(1.04)}
+#nc .sl-go.dis{color:rgba(255,255,255,.55)}
+#nc .sl-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
+#nc .sl-sheet.drag{transition:none}
+html[data-theme=light] #nc .sl-sheet,
+html[data-theme=light] #nc .sl-inp input{color:var(--text)}
+#nc .nc-r{display:flex;align-items:center;gap:4px;color:var(--hint2)}
+#nc .nc-r b{font-weight:500;font-size:18px}
+#nc .nc-r svg{width:22px;height:22px;fill:none;stroke:var(--hint2);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+html[data-theme=light] #nc .nc-r b{color:#8d8d8f}
+html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
+/* слайдер коллекций в профиле */
+#colRow{display:flex;gap:4px;margin:14px -16px 0;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#colRow::-webkit-scrollbar{display:none}
+#colRow[hidden]{display:none}
+#colRow .cc{flex:none;height:36px;padding:0 15px;border:0;border-radius:18px;background:none;color:var(--text);font:inherit;font-size:16px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}
+#colRow .cc.on{background:var(--card)}
+#colRow .cc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+/* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
+#gx.gx-pick #gxSel{display:none}
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -1673,6 +1729,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
   <div class="mpin" id="mePin"><div class="mpin-bl"></div><div class="mpin-bg"></div><div class="mpin-bg2"></div><div class="mpin-band"></div><div class="mpin-hd" id="mpHd"><div class="mph-n" id="mphN"></div><div class="mph-s"><span id="mphC"></span></div></div></div>
   <div class="mbody">
   <div class="mtabs glass" id="mtabs"><i id="mtI"></i><button class="on" data-m="gifts"><span>Подарки</span><span class="mt-ic" id="mtIcons"></span></button><button data-m="collectibles" id="mtColl"><span>Коллекции</span></button></div>
+  <div id="colRow" hidden></div>
   <div class="pgrid" id="pGrid"></div>
   <div class="gempty" id="pEmpty" hidden></div>
   <div id="pSpace" style="height:0;pointer-events:none" aria-hidden="true"></div>
@@ -1892,6 +1949,23 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       <div class="sl-note">Получить уведомления от бота когда ваш уникальный подарок будет продан.</div>
     </div>
     <div class="sl-btnw"><button class="sl-go dis" id="slGo" type="button"><span>Выставить на продажу</span></button></div>
+  </div>
+</div>
+<div id="nc" aria-hidden="true">
+  <div class="sl-dim"></div>
+  <div class="sl-sheet" id="ncSheet">
+    <div class="sl-head">
+      <button class="sl-x glass" id="ncX" type="button" aria-label="Закрыть"><svg class="ico" style="--s:26px" viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
+      <div class="sl-t">Новая коллекция</div>
+    </div>
+    <div class="sl-body">
+      <div class="sl-lab">КОЛЛЕКЦИЯ</div>
+      <label class="sl-inp"><input id="ncIn" type="text" placeholder="Введите название" autocomplete="off" autocorrect="off" spellcheck="false" maxlength="16" enterkeyhint="done"></label>
+      <div class="sl-hint">Укажите название коллекции.</div>
+      <div class="sl-row" id="ncAdd"><span>Добавить подарки</span><span class="nc-r"><b id="ncCnt">0</b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span></div>
+      <div class="sl-note">Добавьте в коллекцию обычные или уникальные подарки.</div>
+    </div>
+    <div class="sl-btnw"><button class="sl-go dis" id="ncGo" type="button"><span>Добавить коллекцию</span></button></div>
   </div>
 </div>
 <div id="pm" aria-hidden="true">
@@ -3865,7 +3939,7 @@ function myOrder(){
 function renderMyGifts(reset){
   const g=$('#pGrid'),e=$('#pEmpty');if(!g||!e)return;
   /* закреплённые — в самом верху (новые закрепы выше); data-i остаётся индексом в MYGIFTS */
-  const list=myOrder();
+  const list=(window.__colFilter||(q=>q))(myOrder());
   g.__ix=list.map(x=>MYGIFTS.indexOf(x));
   try{renderPins()}catch(_){}
   const sig='a|'+list.map(x=>[x.t,x.image||x.emoji,x.total,x.anon?1:0,x.hid?1:0,x.pin!=null?'p'+x.pin:'',x.sale?'s'+x.sale.p:'',x.upg?(x.upg.n+'/'+x.upg.mi+'/'+(x.upg.c?x.upg.c.c1:'')):''].join(':')).join(',');
@@ -5821,6 +5895,7 @@ renderMyGifts();
         return;
       }
       if(k==='wear'){try{window.wearGift&&wearGift(x)}catch(_){}return}
+      if(k==='newcol'){try{window.openNewCol&&openNewCol(x?[x]:[])}catch(_){}return}
       if(k==='exchange'){try{window.__exchangeGift&&__exchangeGift(x)}catch(_){}return}
       if(k==='reprice'){try{window.openSellEdit&&openSellEdit(x)}catch(_){}return}
       if(k==='craft'){try{if(window.__isCr&&!window.__isCr(x)){window.__popup&&window.__popup('Изготовление недоступно','Этот подарок нельзя использовать для изготовления.',[{id:'ok',type:'ok'}],()=>{})}else window.openCraft&&window.openCraft(x)}catch(_){}return}
@@ -7086,7 +7161,7 @@ renderMyGifts();
   const $g=id=>document.getElementById(id);
   const gx=$g('gx'),sh=$g('gxSheet'),body=$g('gxBody'),grid=$g('gxGrid'),emp=$g('gxEmpty'),wrap=$g('gxWrap'),go=$g('gxGo'),sel=$g('gxSel');
   if(!gx||!sh)return;
-  const S=new Set(),CH=36,MGF={sort:null,u:null,v:null,x:false};let LIST=[],N=0;
+  const S=new Set(),CH=36,MGF={sort:null,u:null,v:null,x:false};let LIST=[],N=0,PICK=null;
   const pl=(n,w)=>{const a=n%10,b=n%100;return a===1&&b!==11?w[0]:(a>=2&&a<=4&&(b<10||b>=20)?w[1]:w[2])};
   const ws=n=>pl(n,['подарок','подарка','подарков']);
   const spc=n=>Number(n).toLocaleString('ru-RU');
@@ -7134,6 +7209,7 @@ renderMyGifts();
     const st=stats(),n=st.a.length;
     wrap.classList.toggle('show',n>0);wrap.setAttribute('aria-hidden',n>0?'false':'true');
     if(!n)return;
+    if(PICK){go.textContent='Добавить '+n+' '+ws(n);try{window.shapeBtn&&shapeBtn(go)}catch(_){}return}
     let o='<option value="" disabled selected>Выберите действие</option>';
     const nh=st.a.filter(x=>!x.hid).length,hh=n-nh;   /* nh — показанные, hh — скрытые */
     if(nh)o+='<option value="hide">Скрыть '+nh+' '+ws(nh)+'</option>';
@@ -7214,10 +7290,171 @@ renderMyGifts();
 
   /* открытие / закрытие */
   function show(){gx.classList.add('pre');void sh.offsetWidth;gx.classList.add('on');gx.setAttribute('aria-hidden','false');keep();try{window.shapeBtn&&shapeBtn(go)}catch(_){}}
-  function hide(){try{window.__mkMenu&&__mkMenu.hide()}catch(_){}gx.classList.remove('on','pre');gx.setAttribute('aria-hidden','true');S.clear();wrap.classList.remove('show')}
-  window.openGiftManager=function(){MGF.sort=MGF.u=MGF.v=null;MGF.x=false;S.clear();render(true);body.scrollTop=0;show()};
+  function hide(){try{window.__mkMenu&&__mkMenu.hide()}catch(_){}gx.classList.remove('on','pre');gx.setAttribute('aria-hidden','true');S.clear();wrap.classList.remove('show');
+    if(PICK){PICK=null;gx.classList.remove('gx-pick');setTimeout(()=>{if(!PICK&&!gx.classList.contains('on'))resetTexts()},520)}}
+  const resetTexts=()=>{const t=gx.querySelector('.cp-t');if(t)t.textContent='Менеджер подарков';go.textContent='Выбрать действие';try{window.shapeBtn&&shapeBtn(go)}catch(_){}};
+  window.openGiftManager=function(){PICK=null;gx.classList.remove('gx-pick');resetTexts();MGF.sort=MGF.u=MGF.v=null;MGF.x=false;S.clear();render(true);body.scrollTop=0;show()};
+  /* режим «Добавить в коллекцию»: те же карточки, но заголовок другой, часть подарков уже выбрана, а голубая кнопка «Добавить N подарков» возвращает выбор */
+  window.openGiftPicker=function(o){
+    PICK=o||{};gx.classList.add('gx-pick');
+    const t=gx.querySelector('.cp-t');if(t)t.textContent=PICK.title||'Выберите подарки';
+    MGF.sort=MGF.u=MGF.v=null;MGF.x=false;S.clear();
+    (PICK.sel||[]).forEach(x=>{if(MYGIFTS.indexOf(x)>=0)S.add(x)});
+    render(true);body.scrollTop=0;show();
+  };
+  go.addEventListener('click',()=>{
+    if(!PICK)return;const a=stats().a;if(!a.length)return;
+    const cb=PICK.done;hide();try{cb&&cb(a)}catch(_){}
+  });
   $g('gxX').onclick=hide;gx.querySelector('.cp-dim').onclick=hide;
   $g('gxS').onclick=function(){try{openFilterMenu(this,{manager:false,F:MGF,after:()=>{if(gx.classList.contains('on'))render(true)}})}catch(_){}};
+})();
+</script>
+<script>
+/* ===== коллекции подарков в профиле и окно «Новая коллекция» ===== */
+(function(){
+  const $i=id=>document.getElementById(id);
+  const CKEY='myCols';let COLS=[];
+  try{COLS=JSON.parse(store.get(CKEY,'[]'))||[]}catch(_){}
+  const saveCols=()=>{try{store.set(CKEY,JSON.stringify(COLS))}catch(_){}};
+  const saveG=()=>{try{store.set(MYK,JSON.stringify(MYGIFTS))}catch(_){}};
+  const gid=x=>x.gid||(x.gid='g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8));
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const pl=(n,w)=>{const a=n%10,b=n%100;return a===1&&b!==11?w[0]:(a>=2&&a<=4&&(b<10||b>=20)?w[1]:w[2])};
+  const hap=t=>{try{window.__hap&&__hap(t)}catch(_){}};
+  window.MYCOL='all';
+  /* в сетке профиля — только подарки выбранной коллекции (сами подарки из профиля не пропадают) */
+  window.__colFilter=list=>{const c=COLS.find(c=>c.id===window.MYCOL);if(!c)return list;const s=new Set(c.g);return list.filter(x=>x.gid&&s.has(x.gid))};
+
+  const row=$i('colRow');
+  function renderCols(){
+    if(!row)return;
+    if(!COLS.some(c=>c.id===window.MYCOL))window.MYCOL='all';
+    row.hidden=!COLS.length;
+    if(!COLS.length){row.innerHTML='';return}
+    row.innerHTML='<button type="button" class="cc'+(window.MYCOL==='all'?' on':'')+'" data-c="all">Все подарки</button>'
+      +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'">'+esc(c.n)+'</button>').join('')
+      +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
+  }
+  if(row)row.addEventListener('click',e=>{
+    const b=e.target.closest&&e.target.closest('.cc');if(!b)return;
+    const c=b.dataset.c;
+    if(c==='+'){hap('light');window.openNewCol&&openNewCol([]);return}
+    if(c===window.MYCOL)return;
+    hap('sel');window.MYCOL=c;renderCols();
+    try{renderMyGifts(true)}catch(_){}
+    try{b.scrollIntoView&&row.querySelector('.cc.on')&&row.querySelector('.cc.on').scrollIntoView({inline:'nearest',block:'nearest'})}catch(_){}
+  });
+  window.__addCol=function(name,gifts){
+    const g=gifts.map(gid);saveG();
+    COLS.push({id:'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),n:name,g:g});
+    saveCols();renderCols();try{renderMyGifts(true)}catch(_){}
+  };
+  renderCols();
+
+  /* ---------- окно «Новая коллекция» (клавиатура — как в окне «Продать подарок») ---------- */
+  const nc=$i('nc'),sh=$i('ncSheet'),inp=$i('ncIn'),goB=$i('ncGo'),addRow=$i('ncAdd'),cnt=$i('ncCnt');
+  if(!nc||!sh||!inp)return;
+  let SEL=[],closeT=0,loopT=0,looping=false,H0=0,KBH=0;
+  try{KBH=parseInt(localStorage.getItem('slKbh'),10)||0}catch(_){}
+  const baseH=()=>{const T=window.Telegram&&Telegram.WebApp;return Math.max(window.innerHeight,(T&&T.viewportStableHeight)||0)};
+  let tgBg='';
+  function setTgBg(c){if(tgBg===c)return;tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
+  const valid=()=>inp.value.trim().length>0;
+  function upd(){cnt.textContent=String(SEL.length);goB.classList.toggle('dis',!valid()||!SEL.length)}
+  inp.addEventListener('input',()=>{if(inp.value.length>16)inp.value=inp.value.slice(0,16);upd()});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur()});
+  function fit(){
+    const vv=window.visualViewport,foc=document.activeElement===inp,open=nc.classList.contains('on')||nc.classList.contains('pre');
+    if(!open)return;
+    if((foc||open)&&(window.scrollX||window.scrollY))window.scrollTo(0,0);
+    if(!H0)H0=baseH();
+    const vb=vv?Math.round(vv.offsetTop+vv.height):window.innerHeight;
+    let shrink=Math.max(0,H0-vb);if(shrink<80)shrink=0;
+    const nt=(vv&&(foc||shrink>0))?Math.round(vv.offsetTop)+'px':'',nh=(vv&&(foc||shrink>0))?Math.round(vv.height)+'px':'';
+    const hold=!!(nc.__fold&&!foc&&shrink>0);
+    if(!hold){if(nc.style.top!==nt)nc.style.top=nt;if(nc.style.height!==nh)nc.style.height=nh}
+    let kb=0;
+    if(shrink>0){kb=shrink;if(foc&&shrink>120&&shrink!==KBH){KBH=shrink;try{localStorage.setItem('slKbh',String(shrink))}catch(_){}}}
+    else if(foc)kb=KBH||Math.round(H0*.35);
+    if(nc.__fold){if(foc||shrink===0)nc.__fold=false;if(nc.__fold)kb=0}
+    if(nc.__kb!==kb){nc.__kb=kb;nc.style.setProperty('--kb',kb+'px')}
+    if(!hold&&nc.__ext!==shrink){nc.__ext=shrink;nc.style.setProperty('--ext',shrink+'px')}
+    if(nc.classList.contains('kb')!==foc)nc.classList.toggle('kb',foc);
+    if(foc||kb>0)setTgBg(window.__th?__th.sheet:'#1c1c1e');
+    shapeSheet();
+  }
+  function loop(ms){
+    loopT=performance.now()+ms;if(looping)return;looping=true;
+    const f=()=>{fit();if(performance.now()<loopT)requestAnimationFrame(f);else looping=false};
+    requestAnimationFrame(f);
+  }
+  if(window.visualViewport){visualViewport.addEventListener('resize',()=>{fit();loop(500)});visualViewport.addEventListener('scroll',fit)}
+  inp.addEventListener('focus',()=>{nc.__fold=false;fit();loop(1000)});
+  inp.addEventListener('blur',()=>{
+    if(nc.classList.contains('on')){nc.__fold=true;clearTimeout(nc.__foldT);nc.__foldT=setTimeout(()=>{nc.__fold=false;fit()},1000)}
+    fit();loop(1000);setTimeout(fit,120)});
+  function shapeSheet(){
+    if(!window.__sheetPath)return;
+    const w=sh.offsetWidth,h=sh.offsetHeight;if(!w||!h)return;
+    if(sh.__w===w&&sh.__h===h)return;sh.__w=w;sh.__h=h;
+    const v='path("'+window.__sheetPath(w,h,0,0)+'")';
+    sh.style.borderRadius='0';sh.style.webkitClipPath=v;sh.style.clipPath=v;
+  }
+  if(window.ResizeObserver)new ResizeObserver(shapeSheet).observe(sh,{box:'border-box'});
+
+  window.openNewCol=function(init){
+    SEL=(init||[]).filter(x=>MYGIFTS.indexOf(x)>=0);
+    clearTimeout(closeT);H0=baseH();inp.value='';upd();
+    nc.classList.remove('kb');nc.classList.add('pre');
+    inp.style.transform='translateY(-9999px)';
+    try{inp.focus({preventScroll:true})}catch(e){inp.focus()}
+    requestAnimationFrame(()=>{inp.style.transform=''});
+    fit();loop(1100);
+    void sh.offsetWidth;
+    nc.classList.add('on');nc.setAttribute('aria-hidden','false');
+    try{window.shapeBtn&&shapeBtn(goB)}catch(_){}shapeSheet();
+    clearTimeout(nc.__kbt);nc.__kbt=setTimeout(()=>{if(nc.classList.contains('on'))nc.classList.add('kbt')},90);
+  };
+  function closeNc(){
+    clearTimeout(nc.__kbt);clearTimeout(nc.__foldT);nc.__fold=false;nc.classList.remove('on','pre','kb');nc.setAttribute('aria-hidden','true');
+    try{inp.blur()}catch(_){}
+    setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre'))setTgBg(window.__th?__th.bg:'#000000')},640);
+    clearTimeout(closeT);closeT=setTimeout(()=>{if(!nc.classList.contains('on')&&!nc.classList.contains('pre')){nc.style.top='';nc.style.height='';nc.style.removeProperty('--kb');nc.style.removeProperty('--ext');nc.__kb=nc.__ext=undefined;nc.classList.remove('kbt');H0=0}},900);
+  }
+  $i('ncX').onclick=closeNc;
+  nc.querySelector('.sl-dim').addEventListener('click',closeNc);
+  /* нажатие внутри окна не убирает клавиатуру, пока нажимают не поле/кнопку */
+  const keepKb=e=>{if(document.activeElement!==inp)return;if(e.target.closest&&e.target.closest('.sl-inp,.sl-go,.sl-x'))return;if(e.cancelable)e.preventDefault()};
+  sh.addEventListener('touchstart',keepKb,{passive:false});sh.addEventListener('mousedown',keepKb);
+  nc.addEventListener('touchmove',e=>{if(!e.target.closest('input'))e.preventDefault()},{passive:false});
+
+  /* «Добавить подарки» → менеджер подарков в режиме выбора */
+  const pick=()=>{
+    if(!window.openGiftPicker)return;
+    try{inp.blur()}catch(_){}
+    openGiftPicker({title:'Добавить в коллекцию',sel:SEL.slice(),done:a=>{SEL=a;upd()}});
+  };
+  let t0=null;
+  addRow.addEventListener('mousedown',e=>e.preventDefault());
+  addRow.addEventListener('touchstart',e=>{
+    if(document.activeElement!==inp){t0=null;return}
+    e.preventDefault();const t=e.changedTouches[0];t0={x:t.clientX,y:t.clientY};
+  },{passive:false});
+  addRow.addEventListener('touchend',e=>{
+    if(!t0)return;e.preventDefault();
+    const t=e.changedTouches[0],ok=Math.hypot(t.clientX-t0.x,t.clientY-t0.y)<14;t0=null;if(ok)pick();
+  },{passive:false});
+  addRow.addEventListener('touchcancel',()=>{t0=null});
+  addRow.addEventListener('click',pick);
+
+  goB.onclick=()=>{
+    const n=inp.value.trim().slice(0,16);
+    if(!n||!SEL.length){hap('light');try{toast(!n?'Введите название':'Добавьте хотя бы один подарок')}catch(_){}return}
+    const g=SEL.slice();closeNc();
+    window.__addCol(n,g);
+  };
+  try{window.shapeBtn&&shapeBtn(goB)}catch(_){}
 })();
 </script>
 <script>
