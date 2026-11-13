@@ -5094,11 +5094,11 @@ renderMyGifts();
     else{sh.style.transition='transform .35s cubic-bezier(.25,.8,.25,1)';sh.style.transform='';setTimeout(()=>{sh.style.transition=''},380)}
   };
   sh.addEventListener('touchend',endSw);sh.addEventListener('touchcancel',endSw);
-  $u('umBack').onclick=()=>{if(sh.style.transform&&sh.style.transform!=='none')return;close()};
+  $u('umBack').onclick=()=>{if(upBusy)return;if(sh.style.transform&&sh.style.transform!=='none')return;close()};
   um.querySelector('.um-dim').onclick=close;
   window.addEventListener('resize',()=>{if(um.classList.contains('on')&&!raf&&!busy){measure();H=nh;sh.style.height='';frame(1);gmSh.style.height='';gmSh.style.maxHeight=''}});
-  $u('umChk').onclick=()=>$u('umChk').classList.toggle('on');
-  $u('umVar').onclick=()=>soon('Все варианты');
+  $u('umChk').onclick=()=>{if(upBusy)return;$u('umChk').classList.toggle('on')};
+  $u('umVar').onclick=()=>{if(upBusy)return;soon('Все варианты')};
   $u('umGo').onclick=()=>{if(window.__umDrag){window.__umDrag=false;return}startUpgrade()};
   (function(){
     const btn=$u('umGo'),MIN=160,R=60;let st=null,t0=0;
@@ -5413,7 +5413,7 @@ renderMyGifts();
     else{ic.style.display='none';sp.innerHTML='Подарок виден в профиле. <a>Скрыть<svg viewBox="0 0 10 16" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2.5L8 8l-5.5 5.5"/></svg></a>'}
   }
   UG.querySelector('.ug-note').addEventListener('click',e=>{
-    if(!e.target.closest('a')||ugLock||ugClosing)return;
+    if(!e.target.closest('a')||ugLock||ugCur||ugClosing)return;
     const x=window.__gmCur;if(!x)return;
     x.hid=true;try{if(MYGIFTS.indexOf(x)>=0)store.set(MYK,JSON.stringify(MYGIFTS));renderMyGifts()}catch(_){}
     toast('Подарок скрыт из профиля');ugClose();
@@ -5702,7 +5702,7 @@ renderMyGifts();
     requestAnimationFrame(()=>requestAnimationFrame(()=>{dm.style.transition='';ugS.style.transition=''}));
   }
   /* перелистывание доступно только когда улучшение завершено (не во время анимации улучшения) */
-  window.__ugSw={ready:()=>UG.classList.contains('on')&&!UG.classList.contains('morph')&&!ugLock&&!ugClosing&&!um.classList.contains('on'),show:x=>window.openUpgraded(x,true),hide:ugHideNow};
+  window.__ugSw={ready:()=>UG.classList.contains('on')&&!UG.classList.contains('morph')&&!ugLock&&!ugCur&&!ugClosing&&!um.classList.contains('on'),show:x=>window.openUpgraded(x,true),hide:ugHideNow};
   /* окно уже улучшенного подарка (по нажатию на его карточку в профиле): те же окно и вид, но сразу с итоговыми значениями, без анимации улучшения */
   window.openUpgraded=function(x,quick){
     const d=x&&x.upg;
@@ -5749,7 +5749,7 @@ renderMyGifts();
   /* закрытие как у остальных окон: окно уезжает вниз, затемнение гаснет; пока идёт анимация улучшения — закрыть нельзя */
   function ugClose(force){
     if(!UG.classList.contains('on')||ugClosing)return;
-    if(ugLock&&!force)return;
+    if((ugLock||ugCur)&&!force)return;   /* пока идёт анимация улучшения, закрыть окно нельзя */
     ugClosing=true;
     ugT.forEach(clearTimeout);ugT=[];clearTimeout(ugBg);ugCur=null;ugPend=false;cancelAnimationFrame(ugRaf);cancelAnimationFrame(ugMf);
     
@@ -5765,7 +5765,7 @@ renderMyGifts();
     const curY=()=>{try{const t=getComputedStyle(ugS).transform;return(t&&t!=='none')?new DOMMatrix(t).m42:0}catch(_){return 0}};
     ugS.addEventListener('click',e=>{if(sup){e.stopPropagation();e.preventDefault()}},true);
     ugS.addEventListener('touchstart',e=>{
-      if(ugLock||ugClosing||!UG.classList.contains('on')||e.touches.length!==1||e.target.closest('#ugSkip'))return;
+      if(ugLock||ugCur||ugClosing||!UG.classList.contains('on')||e.touches.length!==1||e.target.closest('#ugSkip'))return;
       {const sc=e.target.closest('.ug-scroll');if(sc&&sc.scrollTop>0)return}
       /* у шторки в CSS есть transition на transform — пока тянем, он обязан быть выключен, иначе каждый кадр запускает новую анимацию и окно дёргается */
       base=Math.max(0,curY());
@@ -8287,6 +8287,10 @@ renderMyGifts();
 /* без backdrop-filter Safari перестаёт обрезать фон кнопки по clip-path (squircle) — фон становился прямоугольным; форму держит маска по тому же контуру */
 #ug.fxon .ug-a.glass.sm,#ug.ugsw .ug-a.glass.sm{border-radius:18px!important}
 #ug.fxon .mk-sale.glass,#ug.ugsw .mk-sale.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(175,175,175,.313)}
+/* пока идёт анимация улучшения (fxon), в окне нажимается только «Пропустить» */
+#ug.fxon .ug-x,#ug.fxon .ug-more,#ug.fxon .ug-a,#ug.fxon .ug-top,#ug.fxon .ug-scroll,#ug.fxon .ug-dim{pointer-events:none!important}
+/* засвет крестика и «⋯» уже на 0.2px (было 0.7px) */
+#ug .ug-x,#ug .ug-more{--glass2-spread:.5px}
 </style>
 </body>
 </html>
