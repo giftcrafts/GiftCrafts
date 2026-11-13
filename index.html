@@ -2234,7 +2234,7 @@ const store = {
     r.setAttribute('data-theme',light?'light':'dark');
     window.__th={bg:c.bg,sheet:c.sheet,light};
     try{const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',c.bg)}catch(_){}
-    try{const T=window.Telegram&&Telegram.WebApp;if(T){T.setHeaderColor&&T.setHeaderColor(c.bg);T.setBackgroundColor&&T.setBackgroundColor(c.bg);T.setBottomBarColor&&T.setBottomBarColor(c.bg)}}catch(_){}
+    try{const T=window.Telegram&&Telegram.WebApp;if(T){window.__tgBgCur=c.bg;T.setHeaderColor&&T.setHeaderColor(c.bg);T.setBackgroundColor&&T.setBackgroundColor(c.bg);T.setBottomBarColor&&T.setBottomBarColor(c.bg)}}catch(_){}
   }
   window.applyTheme=applyTheme;
   const cur=()=>{
@@ -6517,7 +6517,7 @@ renderMyGifts();
   const baseH=()=>{const T=window.Telegram&&Telegram.WebApp;return Math.max(window.innerHeight,(T&&T.viewportStableHeight)||0)};
   /* за скруглёнными углами клавиатуры виден не сайт, а нативный фон Telegram — на время клавиатуры красим его в цвет окна */
   let tgBg='';
-  function setTgBg(c){if(tgBg===c)return;tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
+  function setTgBg(c){if(window.__tgBgCur===c)return;window.__tgBgCur=tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
   function fit(){
     const vv=window.visualViewport,foc=document.activeElement===inp,open=sl.classList.contains('on')||sl.classList.contains('pre');
     if(!open)return;   /* окно закрывается: раскладку не трогаем, иначе оно дёргается на ходу */
@@ -6567,6 +6567,7 @@ renderMyGifts();
     const _t=sl.querySelector('.sl-t');if(_t)_t.textContent=EDIT?'Изменить цену':'Продать подарок';
     inp.value=String(EDIT?x.sale.p:MIN_PRICE);notify=EDIT?!!x.sale.notify:true;notRow.classList.toggle('on',notify);upd();
     sl.classList.remove('kb');sl.classList.add('pre');
+    setTgBg(window.__th?__th.sheet:'#1c1c1e');
     /* клавиатура открывается вместе с окном: фокус ставится прямо в обработчике нажатия */
     inp.style.transform='translateY(-9999px)';
     try{inp.focus({preventScroll:true})}catch(e){inp.focus()}
@@ -7510,7 +7511,7 @@ renderMyGifts();
   try{KBH=parseInt(localStorage.getItem('slKbh'),10)||0}catch(_){}
   const baseH=()=>{const T=window.Telegram&&Telegram.WebApp;return Math.max(window.innerHeight,(T&&T.viewportStableHeight)||0)};
   let tgBg='';
-  function setTgBg(c){if(tgBg===c)return;tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
+  function setTgBg(c){if(window.__tgBgCur===c)return;window.__tgBgCur=tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
   const valid=()=>inp.value.trim().length>0;
   function upd(){cnt.textContent=String(SEL.length);goB.classList.toggle('dis',!valid()||!SEL.length)}
   inp.addEventListener('input',()=>{if(inp.value.length>16)inp.value=inp.value.slice(0,16);upd()});
@@ -7565,6 +7566,7 @@ renderMyGifts();
     const bs=goB.querySelector('span');if(bs)bs.textContent=RN?'Сохранить изменения':'Добавить коллекцию';
     clearTimeout(closeT);H0=baseH();inp.value=RN?rc.n:'';upd();
     nc.classList.remove('kb');nc.classList.add('pre');
+    setTgBg(window.__th?__th.sheet:'#1c1c1e');   /* цвет за углами клавиатуры готов до её появления */
     inp.style.transform='translateY(-9999px)';
     try{inp.focus({preventScroll:true})}catch(e){inp.focus()}
     requestAnimationFrame(()=>{inp.style.transform=''});
@@ -7835,7 +7837,7 @@ renderMyGifts();
   let H0=0,KBH=0;try{KBH=parseInt(localStorage.getItem('slKbh'),10)||0}catch(_){}
   const baseH=()=>{const T=window.Telegram&&Telegram.WebApp;return Math.max(window.innerHeight,(T&&T.viewportStableHeight)||0)};
   let tgBg='';
-  function setTgBg(c){if(tgBg===c)return;tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
+  function setTgBg(c){if(window.__tgBgCur===c)return;window.__tgBgCur=tgBg=c;try{const T=window.Telegram&&Telegram.WebApp;if(!T)return;T.setBackgroundColor&&T.setBackgroundColor(c);T.setBottomBarColor&&T.setBottomBarColor(c)}catch(_){}}
   function fit(){
     const vv=window.visualViewport,foc=document.activeElement===inp,open=pm.classList.contains('on')||pm.classList.contains('pre');
     if(!open)return;
