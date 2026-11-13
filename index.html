@@ -727,9 +727,9 @@ html,body{overscroll-behavior:none}
 #ug.morph .ug-t1,#ug.morph .ug-pat,#ug.morph .ug-car,#ug.morph .ug-top::after{opacity:var(--gt,0)}
 #ug.morph .ug-dim{opacity:0;transition:none}
 /* кнопки окна результата вынесены из шапки: при смене окон они не гаснут вместе с ней; едут за верхним краем растущей формы */
-#ug.morph .ug-more{opacity:var(--gk,0);transform:translate3d(0,var(--go,0px),0);transition:none}
+#ug.morph .ug-more{opacity:var(--gxo,0);transform:none;transition:none}
 /* крестик «прилетает» ровно так же, как при возврате из предпросмотра в окно подарка: круг растёт, затем проявляется символ */
-#ug.morph .ug-x{opacity:var(--gxo,0);transform:translate3d(0,var(--go,0px),0) scale(var(--gxs,0));transition:none}
+#ug.morph .ug-x{opacity:var(--gxo,0);transform:none;transition:none}
 #ug.morph .ug-x svg{opacity:var(--gxa,0)}
 #ug .ug-sheet{touch-action:none;will-change:transform}
 /* окно предпросмотра растёт одной формой; содержимое гаснет, а стрелка «назад» остаётся и уходит по своей кривой */
@@ -1495,7 +1495,7 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #cf .cf-pill{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 /* засвет рядом с обводкой у кнопок окон улучшения и уникального подарка: полоса --glw сразу внутри обводки, светлее фона, слабее обводки; сходит на нет к бокам (маска ::after) */
 #ug,#um{--glw:.7px;--glc:rgba(180,182,194,.2)}
-#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 .85px rgba(0,0,0,calc(.2 - .12*(var(--ug-l) - .4))),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
+#ug .ug-x::after,#ug .ug-more::after,#um .um-back::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
 #um .um-var::after,#ug .mk-sale::after,#um .um-xc::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
 /* «В продаже за»: на 1px ниже по высоте, отступ сверху +1px, текст на 1px меньше */
 #ug .mk-sale{height:20px;margin-top:1px;font-size:13px;border-radius:10px}
@@ -1592,6 +1592,7 @@ html[data-theme=light] #nc .nc-r svg{stroke:#b7b7b9}
 #colRow .cc[data-c="+"]{gap:4px;margin-left:-1px}
 #colRow>.cc:first-of-type{margin-left:auto}
 #colRow>.cc:last-child{margin-right:auto}
+#colRow .cc .ci{width:22px;height:22px;object-fit:contain;flex:none;font-style:normal;font-size:18px;line-height:22px;text-align:center;pointer-events:none}
 #colRow .cc svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
 /* менеджер подарков в режиме «Добавить в коллекцию»: вместо выбора действия — обычная голубая кнопка */
 #gx.gx-pick #gxSel{display:none}
@@ -1707,7 +1708,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="row" id="lgRow"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-lang"/></svg></div><span class="t">Язык</span><span class="v" id="lgRowV">Русский</span></div>
   </div>
   <div class="list">
-    <div class="row" data-s="Premium подписка"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">Premium подписка</span></div>
+    <div class="row" data-s="GiftCrafts Premium"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">GiftCrafts Premium</span></div>
     <div class="row" data-go="stars"><div class="ic" style="background:linear-gradient(to bottom,#ffbd3e,#ffa50d)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-stars"/></svg></div><span class="t">Мои звёзды</span><span class="v" id="bal2">100</span></div>
     <div class="row" id="promoRow"><div class="ic" style="background:linear-gradient(to bottom,#d073fe,#b358e1)"><svg class="ico" style="--s:var(--ic-promo)"><use href="#i-sell"/></svg></div><span class="t">Промокод</span></div>
     <div class="row" id="statRow"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-earnings"/></svg></div><span class="t">Статистика</span></div>
@@ -2049,7 +2050,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       <div class="ap-grp"><div class="ap-gh" id="statAll"><span>Общая статистика</span><svg class="ap-ch ap-cr" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></div></div>
       <div class="ap-note">Общая статистика по покупкам всех подарков и обменам на звёзды.</div>
     </div>
-    <div class="ap-btnw"><button class="ap-go" id="statGo" type="button"><span>Сохранить изменения</span></button></div>
+    <div class="ap-btnw"><button class="ap-go" id="statGo" type="button"><span>ОК</span></button></div>
   </div>
 </div>
 <div id="priv" aria-hidden="true">
@@ -2531,7 +2532,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'Купить подарок за':'Buy gift for','Купить подарок':'Buy gifts','Купить':'Buy','Редкий подарок можно превратить':'A rare gift can be turned','в коллекционный и затем подарить':'into a collectible and then given','другому пользователю.':'to another user.',
 'Коллекционные подарки скоро появятся':'Collectible gifts are coming soon','Коллекционные':'Collectibles','Коллекционный подарок можно отправить любому пользователю.':'A collectible gift can be sent to any user.',
 'Звёзды GiftCrafts нужны для покупки уникальных и коллекционных подарков, а также для прочих услуг.':'GiftCrafts Stars are used to buy unique and collectible gifts, as well as for other services.','Звезды нужны для покупки подарков, уникальных имён и номеров.':'Stars are used to buy gifts, unique usernames and numbers.','Отправить звёзды':'Send stars','Звёзды GiftCrafts':'GiftCrafts Stars','Звёзды':'Stars','Задания скоро появятся':'Tasks are coming soon','Звезды можно купить или заработать, выполняя задания.':'Stars can be bought or earned by completing tasks.','Посмотреть задания':'View tasks','Задания':'Tasks','Ваш баланс':'Your balance','Подарить звёзды друзьям':'Gift stars to friends',
-'Мой профиль':'My Profile','УВЕДОМЛЕНИЯ':'NOTIFICATIONS','СТАТИСТИКА':'STATISTICS','Количество потраченных вами звёзд.':'Number of stars you have spent.','Общая статистика по покупкам всех подарков и обменам на звёзды.':'Overall statistics on purchases of all gifts and exchanges for stars.','Отображение имени пользователя.':'Username display.','Звёзд потрачено':'Stars spent','Количество потраченных звезд в приложении.':'Number of stars spent in the app.','Общая статистика по покупкам и продажам всех подарков, обменам на звёзды.':'Overall statistics on purchases and sales of all gifts and exchanges for stars.','Общая статистика':'Overall statistics','ИМЯ ПОЛЬЗОВАТЕЛЯ':'USERNAME','Не отображать':'Hide','Отображать':'Show','Настройте отображение имени пользователя.':'Set how your username is displayed.','Вы можете изменить настройки конфиденциальности приложения.':'You can change the app’s privacy settings.','Время захода':'Last seen','Раздел «О себе»':'About section','Никто':'Nobody','Нет':'None','передать':'transfer','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Светлая':'Light','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Добавить коллекцию':'Add collection','Выбранная тема':'Selected theme','Ночная тема':'Night theme','Premium подписка':'Premium subscription','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настройте язык системных уведомлений о продаже уникальных подарков.':'Set the language of system notifications about sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
+'Мой профиль':'My Profile','УВЕДОМЛЕНИЯ':'NOTIFICATIONS','СТАТИСТИКА':'STATISTICS','Количество потраченных вами звёзд.':'Number of stars you have spent.','Общая статистика по покупкам всех подарков и обменам на звёзды.':'Overall statistics on purchases of all gifts and exchanges for stars.','Отображение имени пользователя.':'Username display.','Звёзд потрачено':'Stars spent','Количество потраченных звезд в приложении.':'Number of stars spent in the app.','Общая статистика по покупкам и продажам всех подарков, обменам на звёзды.':'Overall statistics on purchases and sales of all gifts and exchanges for stars.','Общая статистика':'Overall statistics','ИМЯ ПОЛЬЗОВАТЕЛЯ':'USERNAME','Не отображать':'Hide','Отображать':'Show','Настройте отображение имени пользователя.':'Set how your username is displayed.','Вы можете изменить настройки конфиденциальности приложения.':'You can change the app’s privacy settings.','Время захода':'Last seen','Раздел «О себе»':'About section','Никто':'Nobody','Нет':'None','передать':'transfer','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Светлая':'Light','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Добавить коллекцию':'Add collection','Выбранная тема':'Selected theme','Ночная тема':'Night theme','GiftCrafts Premium':'GiftCrafts Premium','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настройте язык системных уведомлений о продаже уникальных подарков.':'Set the language of system notifications about sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
 'Коллекции скоро':'Collectibles are coming soon','Коллекции':'Collectibles','В данный момент эта функция находится в разработке.':'This feature is currently under development.','Отправка подарков':'Sending gifts','Отправка звёзд':'Sending stars','Изготовление подарка':'Craft Gift','Изготовить':'Craft','Выберите подарки':'Select gifts','Ваши подарки':'Your gifts','в продаже':'for sale','У Вас нет других подарков из этой коллекции':'You have no other gifts from this collection','Предложений пока нет':'No offers yet','Добавьте до':'Add up to',', чтобы изготовить':' to craft','В случае неудачи эти подарки пропадут.':'If crafting fails, these gifts will be lost.','Модели, которые могут выпасть':'Models you can get','Вероятность успеха':'Success chance','Справка':'Help','Изготовление':'Crafting','в сети':'online','мобильный':'mobile','коллекционный номер':'collectible number','имя пользователя':'username','Отправить подарки':'Send gifts','Подарки':'Gifts','Маркет':'Market','Купленный подарок':'Purchased gift','Посмотреть':'View',
 'Скрыть моё имя и сообщение от посетителей профиля.':'Hide my name and message from profile visitors.','Скрыть моё имя':'Hide my name','Когда все подарки будут проданы, вы больше не сможете их купить.':'When all gifts are sold, you will no longer be able to buy them.',
 'Подарок Вам':'Gift for you','Этот подарок можно сделать':'This gift can be made','уникальным коллекционным.':'unique and collectible.','Имя отправителя видите только Вы.':'Only you can see the sender’s name.',
@@ -4012,6 +4013,7 @@ function renderMyGifts(reset){
   if(ti){const th=myOrder().slice(0,3).map(x=>(x.upg&&x.upg.mi)||x.image?'<img src="'+((x.upg&&x.upg.mi)||x.image)+'" alt="">':'<em>'+(x.emoji||'🎁')+'</em>').join('');if(ti.__h!==th){ti.__h=th;ti.innerHTML=th}}
   try{placeTab(document.getElementById('mtabs'))}catch(_){}
   try{window.__mpHdRefresh&&__mpHdRefresh()}catch(_){}
+  try{window.__colIcons&&__colIcons()}catch(_){}
   try{pgWatch()}catch(_){}
   clearTimeout(pgWarmT);pgWarmT=setTimeout(()=>{try{warmMyGifts()}catch(_){}},500);   /* предзагрузка картинок — не мешает открытию профиля */
 }
@@ -5315,7 +5317,7 @@ renderMyGifts();
       SV(um,'--uf',1-cl(k,0,.3));SV(um,'--uk',1-cl(k,.2,.5));SV(um,'--ut2',1-cl(k,.3,.65));SV(um,'--umo',1-ss(cl(t||0,0,.85)));sh.style.setProperty('--uo',(-rise*k).toFixed(2)+'px');
       /* стрелка уходит, крестик приходит: те же значения, что у возврата предпросмотр → подарок */
       SV(sh,'--ubo',1-cl(k,0,.3));SV(sh,'--ubs',1-.3*cl(k,0,.5));SV(sh,'--ua',1-cl(k,0,.2));
-      SV(UG,'--gxo',cl(k,.18,.35));SV(UG,'--gxs',k);SV(UG,'--gxa',cl(k,.42,.7));
+      SV(UG,'--gxo',cl(k,0,.12));SV(UG,'--gxs',1);SV(UG,'--gxa',cl(k,0,.12));
     };
     mfFrame(0);
     {const tm=performance.now();
@@ -7432,6 +7434,18 @@ renderMyGifts();
     i.style.left=b.offsetLeft+'px';i.style.width=b.offsetWidth+'px';
     if(instant){void i.offsetWidth;i.style.transition=''}
   }
+  /* моделька первого подарка коллекции рядом с названием (у улучшенного — его модель) */
+  function colIco(c){
+    const g=(c.g||[]).map(id=>MYGIFTS.find(x=>x.gid===id)).filter(Boolean)[0];if(!g)return '';
+    const src=(g.upg&&g.upg.mi)||g.image;
+    return src?'<img class="ci" src="'+esc(src)+'" alt="">':'<em class="ci">'+esc(g.emoji||'🎁')+'</em>';
+  }
+  window.__colIcons=function(){
+    try{if(!row||!COLS.length)return;
+      COLS.forEach(c=>{const b=row.querySelector('.cc[data-c="'+c.id+'"]');if(!b)return;
+        const h=colIco(c);if(b.__ci===h)return;if(b.__ci===undefined&&b.querySelector('.ci')&&!h){}
+        b.__ci=h;const o=b.querySelector('.ci');if(o)o.remove();if(h)b.insertAdjacentHTML('afterbegin',h)})}catch(_){}
+  };
   let animUntil=0,btnRO=null;
   function renderCols(anim){
     if(!row)return;
@@ -7440,7 +7454,7 @@ renderMyGifts();
     row.hidden=!COLS.length;
     if(!COLS.length){row.innerHTML='';return}
     row.innerHTML='<i></i><button type="button" class="cc'+(window.MYCOL==='all'?' on':'')+'" data-c="all">Все подарки</button>'
-      +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'" data-i18n-skip="1">'+esc(c.n)+'</button>').join('')
+      +COLS.map(c=>'<button type="button" class="cc'+(window.MYCOL===c.id?' on':'')+'" data-c="'+esc(c.id)+'" data-i18n-skip="1">'+colIco(c)+esc(c.n)+'</button>').join('')
       +'<button type="button" class="cc" data-c="+"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5v11M1.5 7h11"/></svg>Добавить коллекцию</button>';
     const i=row.querySelector('i');
     try{smoothFit(i,'pill',true,.45)}catch(_){}   /* сглаженные углы ползунка (слабее, чем у остальных кнопок) */
