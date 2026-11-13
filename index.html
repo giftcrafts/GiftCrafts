@@ -914,7 +914,7 @@ html,body{overscroll-behavior:none}
 #sl .sl-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #sl .sl-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #sl .sl-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
-#sl .sl-inp .sl-st{width:24px;height:24px;flex:none;object-fit:contain;display:block}
+#sl .sl-inp .sl-st{margin:0 -2px;width:24px;height:24px;flex:none;object-fit:contain;display:block}
 #sl .sl-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #sl .sl-inp input::placeholder{color:#6d6d72}
 #sl .sl-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
@@ -1105,7 +1105,7 @@ html,body{overscroll-behavior:none}
 
 /* ---------- крафт: иконка в «пилюле» окна подарка, окно изготовления и окно выбора подарков ---------- */
 #ug .ug-more .ug-cr{display:none;width:30px;height:30px;flex:none;fill:#fff;fill-rule:evenodd}
-#ug .ug-more.cr{width:auto;min-width:var(--hdr-h);padding:0 5px 0 7px;gap:15px;border-radius:calc(var(--hdr-h)/2*1.09)/calc(var(--hdr-h)/2)}
+#ug .ug-more.cr{width:auto;min-width:var(--hdr-h);padding:0 5px 0 7px;gap:15px;border-radius:calc(var(--hdr-h)/2*1.04)/calc(var(--hdr-h)/2)}
 #ug .ug-more.cr .ug-cr{display:block}
 #ug .ug-more .ug-dt{flex:none}
 /* боковые кнопки окон — тот же адаптивный цвет, что у «Отправить / Носить / Продать» */
@@ -1664,18 +1664,13 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 
 /* ===== окно GiftCrafts Premium (стили как у «Конфиденциальности») ===== */
 #prem .pm-l{display:flex;align-items:center;gap:12px;min-width:0}
-#prem .pm-st{flex:none;width:26px;height:26px;fill:url(#pmGrad);fill-rule:evenodd}
+#prem .pm-st{flex:none;width:26px;height:26px;margin:0 -2px;fill:url(#pmGrad);fill-rule:evenodd}
 #prem .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
 #prem .pm-2{margin-top:25px}
-#prem .ap-x.ap-bal{left:auto;right:16px;width:auto;padding:0 15px 0 12px;gap:5px;font-size:17px;font-weight:600;border-radius:calc(var(--hdr-h)/2)}
-#prem .ap-bal img{width:19px;height:19px;display:block}
-#prem .ap-bal small{font-size:.8em}
+#prem .ap-x.ap-bal{left:auto;right:16px;width:max-content;min-width:calc(var(--hdr-h) + 24px);padding:0 14px;flex-direction:column;gap:0;line-height:1;border-radius:calc(var(--hdr-h)/2)}
 #prem:not(.act) .pm-a,#prem.act .pm-b{display:none!important}
 #prem .ap-go{position:relative}
-#prem .ap-go img{width:19px;height:19px;display:block;margin:0 -2px 0 0}
-#prem .ap-go.ld span,#prem .ap-go.ld img{opacity:0}
-#prem .ap-go.ld::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:pmsp .7s linear infinite}
-@keyframes pmsp{to{transform:rotate(360deg)}}
+#prem .ap-go svg{width:19px;height:19px;margin:0 -2px 0 0}
 #prem .pm-d{cursor:default}
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
@@ -1785,7 +1780,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="row" id="lgRow"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-lang"/></svg></div><span class="t">Язык</span><span class="v" id="lgRowV">Русский</span></div>
   </div>
   <div class="list">
-    <div class="row" id="premRow" data-s="GiftCrafts Premium"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">GiftCrafts Premium</span></div>
+    <div class="row" id="premRow"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">GiftCrafts Premium</span></div>
     <div class="row" data-go="stars"><div class="ic" style="background:linear-gradient(to bottom,#ffbd3e,#ffa50d)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-stars"/></svg></div><span class="t">Мои звёзды</span><span class="v" id="bal2">100</span></div>
     <div class="row" id="promoRow"><div class="ic" style="background:linear-gradient(to bottom,#d073fe,#b358e1)"><svg class="ico" style="--s:var(--ic-promo)"><use href="#i-sell"/></svg></div><span class="t">Промокод</span></div>
     <div class="row" id="statRow"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-earnings"/></svg></div><span class="t">Статистика</span></div>
@@ -2161,7 +2156,8 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
   <div class="ap-sheet" id="premSheet">
     <div class="ap-head">
       <button class="ap-x glass" id="premX" type="button" aria-label="Закрыть"><svg class="ico" style="--s:26px" viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
-      <button class="ap-x ap-bal glass" id="premBal" type="button" aria-label="Баланс"><img id="premBalI" alt=""><span id="premBalV" data-i18n-skip="1"></span></button>
+      <div class="ap-t">Premium</div>
+      <button class="ap-x ap-bal glass" id="premBal" type="button" aria-label="Баланс"><div class="gin"><div class="gbl">Баланс</div><div class="gv"><img id="premBalI" alt=""><span id="premBalV" data-i18n-skip="1"></span></div></div></button>
     </div>
     <div class="ap-body">
       <div class="ap-lab">PREMIUM</div>
@@ -2174,7 +2170,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       <div class="ap-sel pm-2 pm-a"><div class="ap-inp"><span id="premShowV">Отображать</span><select id="premShowSel" aria-label="Отображение Premium"><option value="1">Отображать</option><option value="0">Не отображать</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
       <div class="ap-hint pm-a">Настройте отображение Premium подписки в профиле для себя и других.</div>
     </div>
-    <div class="ap-btnw"><button class="ap-go pm-b" id="premGo" type="button"><span>Купить за</span><img id="premGoI" alt=""><span id="premPrice" data-i18n-skip="1">250</span></button><button class="ap-go pm-a" id="premOk" type="button"><span>ОК</span></button></div>
+    <div class="ap-btnw"><button class="ap-go pm-b" id="premGo" type="button"><span>Купить за</span><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#i-star"/></svg><span id="premPrice" data-i18n-skip="1">250</span></button><button class="ap-go pm-a" id="premOk" type="button"><span>Сохранить изменения</span></button></div>
   </div>
 </div>
 <div id="cf" aria-hidden="true">
@@ -3103,7 +3099,8 @@ applyStarAnim(store.get('starAnim','1')==='1');
     window.isPrem=()=>(+store.get('premUntil','0')||0)>Date.now();
     window.premShown=()=>store.get('premShow','1')!=='0';
     const term=g('premTermSel'),show=g('premShowSel'),go=g('premGo'),ok=g('premOk');
-    g('premBalI').src=STAR;g('premGoI').src=STAR;
+    g('premBalI').src=STAR;
+    if(store.get('premReset1','')!=='1'){store.set('premUntil','0');store.set('premShow','1');store.set('premReset1','1')}   /* разовый сброс подписки для проверки */
     function sync(){
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
@@ -3114,8 +3111,14 @@ applyStarAnim(store.get('starAnim','1')==='1');
     }
     const premClose=win('prem','premRow',()=>{sync();requestAnimationFrame(()=>{try{shapeBtn(go);shapeBtn(ok)}catch(_){}})});
     term.addEventListener('change',sync);
-    show.addEventListener('change',()=>{store.set('premShow',show.value);sync();try{applyWear()}catch(_){}});
-    ok.onclick=()=>{if(premClose)premClose()};
+    show.addEventListener('change',()=>{g('premShowV').textContent=show.value==='0'?'Не отображать':'Отображать'});
+    /* «Не отображать»: значок у имени пропадает и носимый подарок снимается */
+    ok.onclick=()=>{
+      store.set('premShow',show.value);
+      if(show.value==='0'){try{MYGIFTS.forEach(x=>{delete x.worn});store.set(MYK,JSON.stringify(MYGIFTS))}catch(_){}try{renderPins()}catch(_){}}
+      try{applyWear()}catch(_){}
+      if(premClose)premClose();
+    };
     function confetti(){
       const w=innerWidth,h=innerHeight,cv=document.createElement('canvas');cv.width=w;cv.height=h;
       cv.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;z-index:2600;pointer-events:none';
@@ -3130,18 +3133,14 @@ applyStarAnim(store.get('starAnim','1')==='1');
           if(q.st)c.fillRect(-1.5,-5,3,10);else{c.beginPath();c.arc(0,0,q.s/2,0,6.283);c.fill()}c.restore()});
         if(t<3.3)requestAnimationFrame(f);else cv.remove()})(last);
     }
-    let busy=false;
     go.onclick=()=>{
-      if(busy)return;const m=+term.value,p=PRICE[m];
+      const m=+term.value,p=PRICE[m];
       if(getStars()<p){noStars();return}
-      busy=true;go.classList.add('ld');
-      setTimeout(()=>{
-        try{addStars(-p,'GiftCrafts Premium',TL[m])}catch(_){}
-        const d=new Date();d.setMonth(d.getMonth()+m);store.set('premUntil',String(d.getTime()));
-        busy=false;go.classList.remove('ld');sync();confetti();
-        try{applyWear()}catch(_){}
-        requestAnimationFrame(()=>{try{shapeBtn(ok)}catch(_){}});
-      },1500);
+      try{addStars(-p,'GiftCrafts Premium',TL[m])}catch(_){}
+      const d=new Date();d.setMonth(d.getMonth()+m);store.set('premUntil',String(d.getTime()));store.set('premShow','1');
+      if(premClose)premClose();confetti();
+      try{applyWear()}catch(_){}
+      setTimeout(sync,500);   /* содержимое меняется, когда окно уже закрылось */
     };
     /* окно «нужен Premium» (для «Носить») */
     window.premNeed=function(){
@@ -4112,7 +4111,8 @@ document.addEventListener('click',e=>{
 window.wearGift=function(x){
   if(!x||!x.upg||!x.upg.c||MYGIFTS.indexOf(x)<0)return;
   const was=!!x.worn;
-  if(!was&&!(window.isPrem&&isPrem())){try{premNeed()}catch(_){}return false}MYGIFTS.forEach(g=>{delete g.worn});if(!was)x.worn=true;
+  if(!was&&!(window.isPrem&&isPrem())){try{premNeed()}catch(_){}return false}
+  if(!was)try{store.set('premShow','1')}catch(_){}   /* если было «Не отображать» — снова «Отображать» */MYGIFTS.forEach(g=>{delete g.worn});if(!was)x.worn=true;
   try{store.set(MYK,JSON.stringify(MYGIFTS))}catch(_){}
   try{renderPins()}catch(_){applyWear()}   /* renderPins сам вызывает applyWear и прячет/возвращает модель закреплённого носимого подарка */
 };
