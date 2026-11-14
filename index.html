@@ -5871,7 +5871,7 @@ renderMyGifts();
   /* перелистывание подарков свайпом влево/вправо (обычные, уникальные и завершённое улучшение; окно предпросмотра улучшения исключено) */
   if(!(window.CSS&&CSS.supports&&CSS.supports('translate','1px 0')))return;
   const gm=$('gm'),UG=$('ug'),um=$('um'),gS=$('gmSheet'),uS=$('ugSheet');
-  let st=null,anim=false,until=0;
+  let st=null,anim=false,until=0,last=null,lt=0,wd=0;
   const Wd=()=>window.innerWidth,eIn=p=>p*p,eOut=p=>1-Math.pow(1-p,3);
   /* соседние подарки — в том же порядке, что в сетке профиля (закреплённые сверху, фильтр и сортировка учитываются) */
   const ord=()=>{try{return (window.__colFilter||(q=>q))(myOrder())}catch(_){return []}};   /* тот же список, что в сетке: с учётом выбранной коллекции */
@@ -5941,13 +5941,28 @@ renderMyGifts();
     else s.sheet.style.translate=s.tx.toFixed(1)+'px 0';
   }
   const velo=s=>{const sm=s.sm,l=sm[sm.length-1];if(!l)return 0;let f=sm[0];for(const q of sm)if(l.t-q.t<=100){f=q;break}return l.t>f.t?(l.x-f.x)/(l.t-f.t):0};
+  /* страховка: если жест перетаскивания оборвался (потерян touchend/touchcancel, появился второй палец, ушли на другое окно),
+     окно возвращается в исходное состояние и не остаётся полусдвинутым, с «призраком» и поднятым z-index поверх остальных окон */
+  function recover(){
+    const s=last;last=null;st=null;clearInterval(wd);
+    try{if(gl){cancelAnimationFrame(gl.raf);gl=null}}catch(_){}
+    if(s){
+      try{s.done=true;if(s.raf){cancelAnimationFrame(s.raf);s.raf=0}}catch(_){}
+      try{if(s.pv)revert(s)}catch(_){}
+      try{if(s.tg&&s.tg!==s.sheet){s.tg.removeEventListener('touchmove',move);s.tg.removeEventListener('touchend',up);s.tg.removeEventListener('touchcancel',up)}}catch(_){}
+      try{s.sheet.style.translate='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex=''}catch(_){}
+    }
+    try{[UG,gm].forEach(b=>{b.querySelectorAll(':scope>.ug-sheet[aria-hidden="true"],:scope>.gm-sheet[aria-hidden="true"]').forEach(n=>n.remove());b.style.overflow='';b.style.visibility='';b.style.zIndex=''});uS.style.translate='';gS.style.translate=''}catch(_){}
+    anim=false;until=performance.now()+120;try{swOff()}catch(_){}
+  }
   function down(e){
-    window.__swX=false;
-    if(e.touches.length!==1){st=null;return}
+    window.__swX=false;lt=performance.now();
+    if(e.touches.length!==1){if(st&&st.axis==='x')recover();else st=null;return}
     if(anim&&gl)snap();
+    if(st||(anim&&!gl))recover();
     const m=active();if(!m){st=null;return}
     const t=e.touches[0],tg=e.target;
-    st=Object.assign(m,{x:t.clientX,y:t.clientY,t0:performance.now(),dx:0,tx:0,axis:null,raf:0,done:false,cur:window.__gmCur,pv:null,bad:0,sm:[],tg});
+    st=Object.assign(m,{x:t.clientX,y:t.clientY,t0:performance.now(),dx:0,tx:0,axis:null,raf:0,done:false,cur:window.__gmCur,pv:null,bad:0,sm:[],tg});last=st;
     /* соседние анимации подгружаются заранее, чтобы к моменту показа соседа они были готовы */
     try{[-1,1].forEach(d=>{const n=ord()[st.i+d];if(!n||!window.giftAnimWarm)return;if(n.upg&&n.upg.mj)giftAnimWarm(n.upg.mj);else if(n.image&&/\/original\//.test(n.image))giftAnimWarm(n.image.replace(/\.png.*$/,'.json'))})}catch(_){}
     /* при перерисовке окна элемент, за который взялся палец, может исчезнуть из DOM — события касания тогда идут только ему самому */
@@ -5955,10 +5970,11 @@ renderMyGifts();
   }
   function move(e){
     if(!st||e.touches.length!==1)return;
+    lt=performance.now();
     const t=e.touches[0],dx=t.clientX-st.x,dy=t.clientY-st.y;
     if(!st.axis){
       if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
-      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;window.__swNoAnim=true;clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},4000);st.box.style.overflow='hidden'}else{st=null;return}
+      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;window.__swNoAnim=true;clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},4000);st.box.style.overflow='hidden';clearInterval(wd);wd=setInterval(()=>{if(!st||st.done){clearInterval(wd);return}if(performance.now()-lt>2500)recover()},400)}else{st=null;last=null;return}
     }
     st.dx=dx;
     const has=!!ord()[st.i+(dx<0?1:-1)],lim=Wd()+20;
@@ -5989,11 +6005,11 @@ renderMyGifts();
     giftAnim(el,x.upg.mj,{stop:true});
   }catch(_){}}
   const swOff=()=>{clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false;setTimeout(settle,60)},80)};
-  function finish(s){s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
+  function finish(s){if(last===s)last=null;s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
   function up(e){
-    if(!st)return;const s=st;st=null;
+    if(!st)return;const s=st;st=null;clearInterval(wd);
     if(s.tg&&s.tg!==s.sheet){s.tg.removeEventListener('touchmove',move);s.tg.removeEventListener('touchend',up);s.tg.removeEventListener('touchcancel',up)}
-    if(s.axis!=='x')return;
+    if(s.axis!=='x'){if(last===s)last=null;return}
     s.done=true;if(s.raf){cancelAnimationFrame(s.raf);s.raf=0}
     until=performance.now()+200;anim=true;
     const n=s.dx<0?1:-1,next=ord()[s.i+n],v=velo(s),vd=v*Math.sign(s.dx);
@@ -6002,7 +6018,7 @@ renderMyGifts();
     if(commit&&s.pv&&s.pv.n===n){
       const pv=s.pv,D=pv.D;
       glide([{el:pv.gh,from:s.tx},{el:pv.ns,from:s.tx+D}],-D-s.tx,v,()=>{
-        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';anim=false;until=performance.now()+120;swOff();
+        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';if(last===s)last=null;anim=false;until=performance.now()+120;swOff();
       });
       return;
     }
@@ -6019,6 +6035,12 @@ renderMyGifts();
     el.addEventListener('touchend',up,{capture:true});
     el.addEventListener('touchcancel',up,{capture:true});
   });
+  /* конец жеста, пришедший не в окно (палец ушёл / элемент удалён), и второй палец во время перетаскивания */
+  ['touchend','touchcancel'].forEach(t=>document.addEventListener(t,e=>{if(st&&e.touches.length===0)up(e)},true));
+  document.addEventListener('touchstart',e=>{if(st&&st.axis==='x'&&e.touches.length>1)recover()},true);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(st||last||anim))recover()});
+  window.__swRecover=()=>{if(!st&&!gl&&(last||anim))recover()};
+  ['openGift','openUpgraded'].forEach(n=>{const f=window[n];if(typeof f==='function')window[n]=function(){try{window.__swRecover()}catch(_){}return f.apply(this,arguments)}});
   document.addEventListener('click',e=>{
     if((anim||performance.now()<until)&&e.target.closest&&e.target.closest('#gm,#ug')){e.stopPropagation();e.preventDefault()}
   },true);
