@@ -1680,7 +1680,7 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
 /* кнопка «Баланс» над окном предпросмотра улучшения: фон как у окна, по центру между кнопками Telegram и верхом окна */
-#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:2px;padding:9.5px 16px 9.5px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
+#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:2px;padding:9.5px 18px 9.5px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
 #um .um-bal.on{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0);transition-delay:0s}
 #um .um-bal:active{transform:translate(-50%,0) scale(.97)}
 #um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:14px;font-weight:450;color:var(--text,#fff)}
@@ -1688,7 +1688,7 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #um .um-bal .ub-l b{font-weight:550;font-size:14px;margin-left:-2px}
 #um .um-bal .ub-l b small{font-size:inherit}
 #um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:14px;font-weight:450;color:var(--accent,#4ba3f0)}
-#um .um-bal .ub-a svg{width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#um .um-bal .ub-a svg{transform:translateY(.4px);width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
 #ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:11px;padding:8px 18px 8px 13px;border-radius:27px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
@@ -5123,7 +5123,7 @@ renderMyGifts();
     const pos=()=>{
       const r=sh.getBoundingClientRect(),h=bal.offsetHeight||50,tg=Math.max(0,(pr.offsetHeight||0)-6),top=nh>0?r.bottom-nh:r.top   /* итоговый верх окна (по его конечной высоте), чтобы кнопка встала на место сразу */,gap=top-tg;
       if(gap<h+12)return false;                       /* места между кнопками Telegram и окном нет — не показываем */
-      bal.style.top=Math.round(tg+(gap-h)/2)+'px';return true;
+      bal.style.top=Math.round(tg+(gap-h)/2-3)+'px';return true;   /* −3px: кнопка чуть выше центра */
     };
     let t=0;
     new MutationObserver(()=>{
