@@ -1690,10 +1690,10 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:14px;font-weight:450;color:var(--accent,#4ba3f0)}
 #um .um-bal .ub-a svg{width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
-#ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:11px;padding:8px 18px 8px 13px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:11px;padding:8px 18px 8px 13px;border-radius:27px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
-#ug .ug-pill .ug-pi{flex:none;width:30px;height:30px;display:block}
+#ug .ug-pill .ug-pi{flex:none;width:28px;height:28px;display:block}
 #ug .ug-pill .ug-pi svg{width:100%;height:100%;display:block}
 #ug .ug-pill .ug-pt{display:flex;flex-direction:column;gap:0;min-width:0}
 #ug .ug-pill .ug-pt b{font-size:15px;font-weight:600;color:#fff;line-height:1.2}
@@ -5720,7 +5720,7 @@ renderMyGifts();
   /* плашка «Подарок стал коллекционным»: появляется над окном, когда улучшение закончилось; при закрытии окна пропадает и больше не показывается */
   const ugPill=$u('ugPill');
   /* сглаженные углы плашки (как у кнопок и окон: continuous corners) */
-  function ugPillShape(){if(!ugPill||!window.squircle)return;const w=ugPill.offsetWidth,h=ugPill.offsetHeight;if(!w||!h)return;const v='path("'+squircle(w,h,28,.6)+'")';ugPill.style.webkitClipPath=v;ugPill.style.clipPath=v}
+  function ugPillShape(){if(!ugPill||!window.squircle)return;const w=ugPill.offsetWidth,h=ugPill.offsetHeight;if(!w||!h)return;const v='path("'+squircle(w,h,27,.6)+'")';ugPill.style.webkitClipPath=v;ugPill.style.clipPath=v}
   function ugPillPos(){if(!ugPill)return;ugPillShape();const r=ugS.getBoundingClientRect(),h=ugPill.offsetHeight||72;ugPill.style.top=Math.round(r.top-h-8)+'px'}
   try{if(window.ResizeObserver&&ugPill)new ResizeObserver(ugPillShape).observe(ugPill)}catch(_){}
   function ugPillShow(){if(!ugPill||!UG.classList.contains('on')||ugClosing)return;ugPill.classList.remove('on');ugPill.classList.add('dr');ugPill.style.removeProperty('--pd');ugPillPos();void ugPill.offsetWidth;ugPill.classList.remove('dr');ugPill.classList.add('on')}
