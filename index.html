@@ -8578,7 +8578,7 @@ renderMyGifts();
 /* окно улучшенного подарка: пока меняется фон (fxon — улучшение, ugsw — смена фона/перелистывание), размытие под стеклянными кнопками выключено,
    иначе браузер на время оставляет под ними старый фон. Раньше это отключение перебивалось более поздним правилом .glass;
    затемнение brightness заменено эквивалентной полупрозрачной подложкой, чтобы цвет кнопок не скакал при возврате блюра */
-#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(255,255,255,.14)}
+#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(255,255,255,.21)}
 /* без backdrop-filter Safari перестаёт обрезать фон кнопки по clip-path (squircle) — фон становился прямоугольным; форму держит маска по тому же контуру */
 #ug.fxon .ug-a.glass.sm,#ug.ugsw .ug-a.glass.sm{border-radius:18px!important}
 #ug.fxon .mk-sale.glass,#ug.ugsw .mk-sale.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(175,175,179,.313)}
@@ -8587,9 +8587,9 @@ renderMyGifts();
 /* засвет крестика и «⋯» уже на 0.2px (было 0.7px) */
 #ug .ug-x,#ug .ug-more{--glass2-spread:.5px}
 /* кнопки окон предпросмотра улучшения / улучшения / уникального подарка чуть прозрачнее (было .235 / .215 / .34) */
-#ug .ug-a.glass{background-color:rgba(255,255,255,.14)}
-#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.13)}
-#um .um-var{background:rgba(255,255,255,.15)}
+#ug .ug-a.glass{background-color:rgba(255,255,255,.21)}
+#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.2)}
+#um .um-var{background:rgba(255,255,255,.22)}
 /* при складывании (окно улучшения ниже предпросмотра) фон нового окна едет вверх вместе с краем формы и должен быть виден выше его рамки; видимую часть режет clip-path, поэтому overflow на время анимации снимаем */
 #ug.morph .ug-sheet{overflow:visible}
 /* при складывании крестик и «⋯» едут вместе с верхним краем окна, а не стоят на финальном месте, пока окно ещё складывается */
