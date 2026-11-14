@@ -4017,6 +4017,7 @@ function pgDraw(cv){
     cv.__busy=0;
     PGQ.push(()=>{
     if(!cv.isConnected||cv.__W!==W)return;
+    if(cv.closest('.pg.pgoff')){cv.__W=0;return}
     if(!im){const n=cv.__r=(cv.__r||0)+1;if(n<4)setTimeout(()=>{cv.__W=0;pgDraw(cv)},1200*n);return}   /* не загрузилось — пробуем ещё раз */
     cv.width=W;cv.height=H;
     const cx=cv.getContext('2d'),tc=document.createElement('canvas'),tx=tc.getContext('2d');
@@ -4045,8 +4046,8 @@ function pgUncull(){
   try{
     const root=document.getElementById('p-me'),g=document.getElementById('pGrid');
     if(!root||!g||!root.classList.contains('on')||!root.clientHeight)return;
-    const rr=root.getBoundingClientRect(),m=rr.height*1.1;
-    g.querySelectorAll('.pg.pgoff').forEach(c=>{const r=c.getBoundingClientRect();if(r.bottom>rr.top-m&&r.top<rr.bottom+m)c.classList.remove('pgoff')});
+    const rr=root.getBoundingClientRect(),m=rr.height*.7;
+    g.querySelectorAll('.pg.pgoff').forEach(c=>{const r=c.getBoundingClientRect();if(r.bottom>rr.top-m&&r.top<rr.bottom+m){c.classList.remove('pgoff');pgPatSync(c,false)}});
   }catch(_){}
 }
 (function(){
@@ -4056,14 +4057,20 @@ function pgUncull(){
   window.addEventListener('resize',kick);
   setInterval(pgUncull,500);   /* окна поверх профиля (подарок, улучшение…) прокрутки не дают — проверяем и в покое */
 })();
+/* узор карточки за экраном освобождается (холст сжимается до 1px), при возвращении на экран рисуется заново (из кэша готовых картинок) */
+function pgPatSync(c,off){
+  try{const cv=c.querySelector('canvas.pu-pat');if(!cv)return;
+    if(off){if(cv.__ok||cv.__W){cv.width=1;cv.height=1;cv.__ok=0;cv.__W=0}}
+    else if(!cv.__ok&&!cv.__busy)pgDraw(cv)}catch(_){}
+}
 let PG_CULL=null;
 function pgCull(g,from){
   if(!window.IntersectionObserver)return;
   const root=document.getElementById('p-me');if(!root)return;
   if(!PG_CULL)PG_CULL=new IntersectionObserver(es=>{
     if(!root.clientHeight)return;   /* страница скрыта — ничего не прячем, иначе при заходе карточки мигнут */
-    es.forEach(e=>e.target.classList.toggle('pgoff',!e.isIntersecting));
-  },{root:root,rootMargin:'120% 0px 120% 0px'});
+    es.forEach(e=>{const c=e.target,off=!e.isIntersecting;c.classList.toggle('pgoff',off);pgPatSync(c,off)});
+  },{root:root,rootMargin:'60% 0px 60% 0px'});
   Array.prototype.slice.call(g.children,from||0).forEach(c=>PG_CULL.observe(c));
 }
 /* плашка с ценой в карточке подарка: небольшое сглаживание углов (squircle) */
@@ -8655,9 +8662,9 @@ body.hwear{--wh-k:1}
 #hdr .hb:not([data-a="save"]).press svg{fill:var(--wh-prs)}
 #hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:var(--wh-prs)}
 /* производительность профиля: у плашки цены и значка «скрыт» в карточках нет размытия подложки — на сотнях подарков оно сильно тормозило прокрутку */
-.pgrid .pg .ppr,.pgrid .pg .peye{-webkit-backdrop-filter:none;backdrop-filter:none}
-.pgrid .pg .ppr{background:rgba(0,0,0,.4)}
-.pgrid .pg .peye{background:rgba(0,0,0,.42)}
+.pgrid .pg .ppr{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(0,0,0,.4)}
+/* карточки за экраном не рендерятся вовсе (раскладка остаётся) */
+.pg.pgoff{content-visibility:hidden}
 </style>
 <script>
 /* «Носить»: цвет фона подарка → переменные для кнопок хедера; режим включён, пока под хедером видна цветная шапка профиля */
