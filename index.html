@@ -4310,7 +4310,7 @@ function applyWear(){
     }
     const old=pn.querySelector('.wmod');
     if(!x){
-      ph.classList.remove('wear');if(rt)rt.setAttribute('href','#i-n1');
+      ph.classList.remove('wear');if(rt)rt.setAttribute('href','#i-n1');try{window.__whCol&&__whCol()}catch(_){}
       const wantStar=!!(window.isPrem&&isPrem()&&premShown());
       if(!wantStar){if(old)old.remove();return}
       if(!old||old.dataset.k!=='star'){
@@ -4322,7 +4322,7 @@ function applyWear(){
     }
     const d=x.upg,c=d.c||{},c1=pgCol(c.c1)||'#7b72ea',c2=pgCol(c.c2)||'#5b3fb8',key=[d.n,d.mi,c.c1,c.c2,c.c3,d.si].join('|');
     const was=ph.classList.contains('wear');
-    bg.style.background='radial-gradient(ellipse 85% 70% at 50% calc(320px + var(--ava-top) + var(--ava-size)/2),'+c1+' 0%,'+c2+' 100%)';
+    bg.style.background='radial-gradient(ellipse 85% 70% at 50% calc(320px + var(--ava-top) + var(--ava-size)/2),'+c1+' 0%,'+c2+' 100%)';try{window.__whCol&&__whCol(c1,c2)}catch(_){}
     if(!old||old.dataset.k!==key){
       if(old)old.remove();
       const m=document.createElement('span');m.className='pinm wmod';m.dataset.k=key;
@@ -8613,5 +8613,63 @@ renderMyGifts();
 #ug.fastc{transition:visibility 0s linear .4s,--ug-l var(--ug-rim-ms,0ms) linear,--ug-cr var(--ug-rim-ms,0ms) linear,--ug-cg var(--ug-rim-ms,0ms) linear,--ug-cb var(--ug-rim-ms,0ms) linear}
 #ug .ug-a.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-rgb:calc(var(--ug-cr) + (255 - var(--ug-cr))*0.5),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.5),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.5);--glass2-rgb:calc(var(--ug-cr) + (255 - var(--ug-cr))*0.62),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.62),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.62);--glc:rgba(calc(var(--ug-cr) + (255 - var(--ug-cr))*0.72),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.72),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.72),.32)}
 </style>
+<style>
+/* ===== кнопки окна подарка (крестик, «назад», «⋯», крафт): обводка и засвет той же толщины и силы, что у «Передать / Носить / Продать» ===== */
+#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-w:.4px;--glass2-spread:.4px;--glw:.3px;--glass-strong:calc(.33 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.61 + .25*max(0,var(--ug-l) - .45))}
+#ug .ug-x.glass::after,#ug .ug-more.glass::after,#um .um-back.glass::after,#um .um-xc.glass::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
+
+/* ===== «Носить»: кнопки хедера профиля подстраиваются под фон подарка (как кнопки Telegram), но лежат на слегка затемнённой подложке ===== */
+body.hwear #hdr .hb:not([data-a="save"]){
+  --glass-w:.5px;--glass2-spread:.4px;--glass-strong:.33;--glass2-a:.58;
+  --glass-rgb:calc(var(--wh-cr,120) + (255 - var(--wh-cr,120))*.5),calc(var(--wh-cg,100) + (255 - var(--wh-cg,100))*.5),calc(var(--wh-cb,150) + (255 - var(--wh-cb,150))*.5);
+  --glass2-rgb:calc(var(--wh-cr,120) + (255 - var(--wh-cr,120))*.62),calc(var(--wh-cg,100) + (255 - var(--wh-cg,100))*.62),calc(var(--wh-cb,150) + (255 - var(--wh-cb,150))*.62);
+  background-color:rgba(255,255,255,.1);
+  -webkit-backdrop-filter:blur(10px) brightness(.7) saturate(1.3);backdrop-filter:blur(10px) brightness(.7) saturate(1.3);
+  color:#fff;transition:transform .45s cubic-bezier(.25,.8,.25,1),background-color .3s ease}
+body.hwear #hdr .hb:not([data-a="save"]) .gbl{color:#fff}
+body.hwear #hdr .hb:not([data-a="save"]) svg{fill:#fff}
+body.hwear #hdr .hb:not([data-a="save"]) svg.hs{fill:none;stroke:#fff}
+body.hwear #hdr .hb:not([data-a="save"]).press,body.hwear #hdr .hb:not([data-a="save"]).press .gbl{color:rgba(255,255,255,.6)}
+body.hwear #hdr .hb:not([data-a="save"]).press svg{fill:rgba(255,255,255,.6)}
+body.hwear #hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:rgba(255,255,255,.6)}
+</style>
+<script>
+/* «Носить»: цвет фона подарка → переменные для кнопок хедера; режим включён, пока под хедером видна цветная шапка профиля */
+(function(){
+  const R=document.documentElement,B=document.body;
+  const px=h=>{h=String(h||'').trim();let m=h.match(/^#([0-9a-f]{3})$/i);if(m)h='#'+m[1].replace(/./g,x=>x+x);m=h.match(/^#([0-9a-f]{6})$/i);if(m){const n=parseInt(m[1],16);return[(n>>16)&255,(n>>8)&255,n&255]}m=h.match(/(\d+)[ ,]+(\d+)[ ,]+(\d+)/);return m?[+m[1],+m[2],+m[3]]:[90,70,180]};
+  window.__whCol=function(c1,c2){
+    try{
+      if(!c1||!c2){['--wh-cr','--wh-cg','--wh-cb'].forEach(k=>R.style.removeProperty(k));return}
+      const a=px(c1),b=px(c2);   /* у кромки шапки преобладает внешний цвет градиента, по углам фон ещё слегка затемнён */
+      ['--wh-cr','--wh-cg','--wh-cb'].forEach((k,i)=>R.style.setProperty(k,((.25*a[i]+.75*b[i])*.85).toFixed(1)));
+    }catch(_){}
+  };
+  let raf=0;
+  function upd(){
+    raf=0;let on=false;
+    try{
+      const h=document.getElementById('hdr'),hb=h?h.getBoundingClientRect().bottom:0;
+      for(const pg of document.querySelectorAll('#p-me.on,#p-settings.on')){
+        const ph=pg.querySelector('.phead');if(!ph||!ph.classList.contains('wear'))continue;
+        if(ph.getBoundingClientRect().bottom-16>hb+2){on=true;break}
+      }
+    }catch(_){}
+    B.classList.toggle('hwear',on);
+  }
+  const q=()=>{if(!raf)raf=requestAnimationFrame(upd)};
+  ['p-me','p-settings'].forEach(id=>{
+    const pg=document.getElementById(id);if(!pg)return;
+    pg.addEventListener('scroll',q,{passive:true});
+    if(window.MutationObserver){
+      const mo=new MutationObserver(q);
+      mo.observe(pg,{attributes:true,attributeFilter:['class']});
+      const ph=pg.querySelector('.phead');if(ph)mo.observe(ph,{attributes:true,attributeFilter:['class']});
+    }
+  });
+  window.addEventListener('resize',q);
+  q();[300,900,1700].forEach(t=>setTimeout(q,t));
+})();
+</script>
 </body>
 </html>
