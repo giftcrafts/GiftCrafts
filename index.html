@@ -8629,17 +8629,17 @@ renderMyGifts();
 body{--wh-k:0;transition:--wh-k .45s ease}
 body.hwear{--wh-k:1}
 #hdr .hb:not([data-a="save"]){
-  --wr:calc(var(--wh-cr)*.55 + 54);--wg:calc(var(--wh-cg)*.55 + 54);--wb:calc(var(--wh-cb)*.55 + 54);   /* цвет подарка, смешанный с серым */
+  --wr:calc(var(--wh-cr)*.88 + 20);--wg:calc(var(--wh-cg)*.88 + 20);--wb:calc(var(--wh-cb)*.88 + 20);   /* цвет подарка (почти без серого) */
   --glass-w:calc(.6px - .15px*var(--wh-k));--glass2-spread:calc(.65px - .3px*var(--wh-k));--glass2-blur:1.5px;
   --glass-strong:calc(.13 + .1*var(--wh-k));--glass2-a:calc(.3 + .12*var(--wh-k));
   --glass-rgb:calc(104 + (var(--wr) + (255 - var(--wr))*.5 - 104)*var(--wh-k)),calc(106 + (var(--wg) + (255 - var(--wg))*.5 - 106)*var(--wh-k)),calc(114 + (var(--wb) + (255 - var(--wb))*.5 - 114)*var(--wh-k));
   --glass2-rgb:calc(120 + (var(--wr) + (255 - var(--wr))*.55 - 120)*var(--wh-k)),calc(122 + (var(--wg) + (255 - var(--wg))*.55 - 122)*var(--wh-k)),calc(130 + (var(--wb) + (255 - var(--wb))*.55 - 130)*var(--wh-k));
   --wh-ink:color-mix(in srgb,var(--hdr-ink) calc((1 - var(--wh-k))*100%),#fff);
   --wh-prs:color-mix(in srgb,var(--hdr-press) calc((1 - var(--wh-k))*100%),rgba(255,255,255,.6));
-  background-color:color-mix(in srgb,var(--hdr-bg) calc(100% - 25%*var(--wh-k)),transparent);
-  background-image:linear-gradient(rgba(150,150,156,calc(.1*var(--wh-k))),rgba(150,150,156,calc(.1*var(--wh-k))));
-  -webkit-backdrop-filter:blur(10px) saturate(calc(1.2 - .15*var(--wh-k))) brightness(calc(1 - .25*var(--wh-k)));
-  backdrop-filter:blur(10px) saturate(calc(1.2 - .15*var(--wh-k))) brightness(calc(1 - .25*var(--wh-k)));
+  background-color:color-mix(in srgb,var(--hdr-bg) calc(100% - 100%*var(--wh-k)),transparent);   /* серая подложка уходит, вместо неё — тёмный оттенок цвета фона */
+  background-image:linear-gradient(rgba(calc(var(--wh-cr)*.72),calc(var(--wh-cg)*.72),calc(var(--wh-cb)*.72),calc(.5*var(--wh-k))),rgba(calc(var(--wh-cr)*.72),calc(var(--wh-cg)*.72),calc(var(--wh-cb)*.72),calc(.5*var(--wh-k))));
+  -webkit-backdrop-filter:blur(10px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
+  backdrop-filter:blur(10px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
   color:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]) .gbl{color:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]) svg{fill:var(--wh-ink)}
