@@ -140,7 +140,7 @@ body.nostars .sp{animation:none!important}
 .pf b{display:block;font-size:14px;font-weight:500;margin-bottom:2px}
 .pf span{font-size:17px;color:var(--accent)}
 .pf-user{display:flex;align-items:center;justify-content:space-between}
-.pf-user svg{fill:var(--accent);fill-rule:evenodd}
+.pf-user svg{fill:var(--accent);fill-rule:evenodd;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .list.pcard{border-radius:var(--pcard-r)}
 .pf+.pf:before{content:"";position:absolute;top:0;left:16px;right:16px;height:.5px;background:var(--line)}
 .lnk{color:var(--accent)}
@@ -2286,11 +2286,11 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     </div>
     <div class="ap-body">
       <div class="ap-lab">ВЕРИФИКАЦИЯ</div>
-      <div class="ap-sel pm-b"><div class="ap-inp"><span class="pm-l"><svg class="pm-st" viewBox="0 0 24 24" aria-hidden="true"><use href="#ni-verified"/></svg><span id="verifTermV">1 месяц</span></span><select id="verifTermSel" aria-label="Срок верификации"><option value="1">1 месяц</option><option value="3">3 месяца</option><option value="12">12 месяцев</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
+      <div class="ap-sel pm-b"><div class="ap-inp"><span class="pm-l"><svg class="pm-st" viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="vbw1" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g transform="translate(256 256) scale(0.39) translate(-627 -598)" fill="#000"><path d="M331 520Q331 498 350 483L607 292Q627 280 647 292L903 483Q922 498 922 520L922 705Q922 735 895 722L647 528Q627 515 607 528L358 722Q331 735 331 705Z"/><path d="M485 760L608 652Q628 640 648 652L771 760Q793 778 771 796L648 904Q628 916 608 904L485 796Q463 778 485 760Z"/></g></mask></defs><g mask="url(#vbw1)"><rect x="76" y="76" width="360" height="360" rx="42"/><rect x="76" y="76" width="360" height="360" rx="42" transform="rotate(45 256 256)"/></g></svg><span id="verifTermV">1 месяц</span></span><select id="verifTermSel" aria-label="Срок верификации"><option value="1">1 месяц</option><option value="3">3 месяца</option><option value="12">12 месяцев</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
       <div class="ap-hint pm-b">Выберите срок верификации.</div>
       <div class="ap-sel pm-2 pm-b"><div class="ap-inp pm-d"><span>Способ оплаты</span><span class="pm-r"><span>Звёзды</span><svg class="ap-ch" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></span></div></div>
       <div class="ap-hint pm-b">Выберите наиболее подходящий способ оплаты и оплатите верификацию.</div>
-      <div class="ap-sel pm-a"><div class="ap-inp pm-d"><span class="pm-l"><svg class="pm-st" viewBox="0 0 24 24" aria-hidden="true"><use href="#ni-verified"/></svg><span id="verifActV" data-i18n-skip="1">Активна</span></span></div></div>
+      <div class="ap-sel pm-a"><div class="ap-inp pm-d"><span class="pm-l"><svg class="pm-st" viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="vbw2" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g transform="translate(256 256) scale(0.39) translate(-627 -598)" fill="#000"><path d="M331 520Q331 498 350 483L607 292Q627 280 647 292L903 483Q922 498 922 520L922 705Q922 735 895 722L647 528Q627 515 607 528L358 722Q331 735 331 705Z"/><path d="M485 760L608 652Q628 640 648 652L771 760Q793 778 771 796L648 904Q628 916 608 904L485 796Q463 778 485 760Z"/></g></mask></defs><g mask="url(#vbw2)"><rect x="76" y="76" width="360" height="360" rx="42"/><rect x="76" y="76" width="360" height="360" rx="42" transform="rotate(45 256 256)"/></g></svg><span id="verifActV" data-i18n-skip="1">Активна</span></span></div></div>
       <div class="ap-hint pm-a">Верификация активна.</div>
       <div class="ap-sel pm-2 pm-a"><div class="ap-inp"><span id="verifShowV">Отображать</span><select id="verifShowSel" aria-label="Отображение верификации"><option value="1">Отображать</option><option value="0">Не отображать</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
       <div class="ap-hint pm-a">Настройте отображение верификации в профиле для себя и других.</div>
@@ -2501,6 +2501,13 @@ $('#uRate').setAttribute('href','#i-n'+rating);
 });
 
 
+/* «Активна до 14 дек. 2026» / «Active until Dec. 14, 2026» */
+window.actUntil=function(d){
+  const en=(window.getAppLang&&getAppLang())==='en';
+  if(en){const M=['Jan.','Feb.','Mar.','Apr.','May','Jun.','Jul.','Aug.','Sep.','Oct.','Nov.','Dec.'];return 'Active until '+M[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()}
+  const M=['янв.','февр.','мар.','апр.','мая','июн.','июл.','авг.','сент.','окт.','нояб.','дек.'];
+  return 'Активна до '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear();
+};
 /* ===== Хедер ===== */
 const ico=(id,v)=>'<svg class="ico" style="--s:var('+v+')"><use href="#'+id+'"/></svg>';
 const GIFT=ico('i-gift2','--ic-hdr-gift'), QR=ico('i-qr','--ic-hdr-qr');
@@ -2543,10 +2550,19 @@ window.hdrFilter=function(on,instant){
   };
   if(window.queueMicrotask)queueMicrotask(go);else go();
 };
+/* QR-код в профиле и настройках: окно «Поделиться» Telegram со ссылкой на профиль (в ссылке — последние 8 цифр номера) */
+function shareProfile(){
+  const pid=String((document.getElementById('pNum')||{}).textContent||num||'').replace(/\D/g,'').slice(-8);
+  const link='https://t.me/GiftCraftsBot?startapp='+pid,text='Посмотрите на профиль пользователя '+name+' в GiftCrafts';
+  const url='https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(text);
+  try{const w=window.Telegram&&Telegram.WebApp;if(w&&w.openTelegramLink){w.openTelegramLink(url);return}}catch(_){}
+  try{window.open(url,'_blank')}catch(_){}
+}
+document.addEventListener('click',e=>{const q=e.target.closest&&e.target.closest('#p-me .pf-user > svg');if(q){e.stopPropagation();shareProfile()}});
 $('#hdr').addEventListener('click',e=>{
   const t=e.target.closest('[data-a]'); if(!t) return;
   const a=t.dataset.a;
-  if(a==='back'||a==='close') goBack(); else if(a==='save') saveEdit(); else if(a==='edit') openEdit(); else if(a==='stars'){if(cur==='stars'){try{$('#p-stars').scrollTo({top:0,behavior:'smooth'})}catch(_){$('#p-stars').scrollTop=0}}else go('stars')} else if(a==='filter'){try{openFilterMenu(t)}catch(_){}} else soon(HDR_TOAST[a]);
+  if(a==='back'||a==='close') goBack(); else if(a==='save') saveEdit(); else if(a==='edit') openEdit(); else if(a==='stars'){if(cur==='stars'){try{$('#p-stars').scrollTo({top:0,behavior:'smooth'})}catch(_){$('#p-stars').scrollTop=0}}else go('stars')} else if(a==='filter'){try{openFilterMenu(t)}catch(_){}} else if(a==='qr') shareProfile(); else soon(HDR_TOAST[a]);
 });
 
 
@@ -3240,7 +3256,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
       PW.classList.toggle('act',isPrem());
       g('premTermV').textContent=TL[term.value];g('premPrice').textContent=PRICE[term.value];
       const d=new Date(+store.get('premUntil','0')||0);
-      g('premActV').textContent='Активна до '+d.getDate()+' '+MS[d.getMonth()]+' '+d.getFullYear();
+      g('premActV').textContent=actUntil(d);
       show.value=premShown()?'1':'0';g('premShowV').textContent=show.value==='0'?'Не отображать':'Отображать';
       try{g('premBalV').innerHTML=balHtml()}catch(_){}
     }
@@ -3304,14 +3320,14 @@ applyStarAnim(store.get('starAnim','1')==='1');
     /* метка «Верифицирован организацией…» и значение в пункте настроек следуют состоянию верификации */
     function paint(){
       if(note)note.hidden=!(isVer()&&verShown());
-      if(rowV){const w=isVer()?'':'Купить';if(rowV.__w!==w){rowV.__w=w;rowV.textContent=w}}
+      if(rowV){const w=isVer()?(verShown()?'Показать':'Скрыть'):'Купить';if(rowV.__w!==w){rowV.__w=w;rowV.textContent=w}}
     }
     window.__verPaint=paint;
     function sync(){
       VW.classList.toggle('act',isVer());
       g('verifTermV').textContent=TL[term.value];g('verifPrice').textContent=price(PRICE[term.value]);
       const d=new Date(+store.get('verUntil','0')||0);
-      g('verifActV').textContent='Активна до '+d.getDate()+' '+MS[d.getMonth()]+' '+d.getFullYear();
+      g('verifActV').textContent=actUntil(d);
       show.value=verShown()?'1':'0';g('verifShowV').textContent=show.value==='0'?'Не отображать':'Отображать';
       try{g('verifBalV').innerHTML=balHtml()}catch(_){}
       paint();
