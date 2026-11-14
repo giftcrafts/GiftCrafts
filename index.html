@@ -1678,16 +1678,16 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
 /* кнопка «Баланс» над окном предпросмотра улучшения: фон как у окна, по центру между кнопками Telegram и верхом окна */
-#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 22px 8px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
+#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 16px 8px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
 #um .um-bal.on{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0);transition-delay:0s}
 #um .um-bal:active{transform:translate(-50%,0) scale(.97)}
 #um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:450;color:var(--text,#fff)}
 #um .um-bal .ub-l img{width:17px;height:17px;display:block}
-#um .um-bal .ub-l b{font-weight:550}
-#um .um-bal .ub-a{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:400;color:var(--accent,#4ba3f0)}
-#um .um-bal .ub-a svg{width:7px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#um .um-bal .ub-l b{font-weight:550;font-size:14px;margin-left:-2px}
+#um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:15px;font-weight:450;color:var(--accent,#4ba3f0)}
+#um .um-bal .ub-a svg{width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
-#ug .ug-pill{position:absolute;left:18px;right:18px;top:0;z-index:6;display:flex;align-items:center;gap:14px;padding:13px 18px 13px 16px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill{position:absolute;left:18px;right:18px;top:0;z-index:6;display:flex;align-items:center;gap:14px;padding:9px 18px 9px 16px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 #ug .ug-pill .ug-pi{flex:none;width:30px;height:30px;display:block}
@@ -2499,7 +2499,7 @@ function go(p,instant,back,o){
   if(dir<=0)document.body.classList.toggle('nobar',wantNo);
   if(dir<=0){instant?syncInstant():slide(p)}
   // страницы не помнят позицию: всегда открываются сверху и с первой вкладкой
-  if(mkKeep){const sv=window.__mkSave,pu=()=>{try{inc.__mpinUpd&&inc.__mpinUpd()}catch(_){}};inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu()})})}   /* затемнение под хедером обновляется сразу, без мигания */
+  if(mkKeep){const sv=window.__mkSave,pu=()=>{try{inc.__mpinUpd&&inc.__mpinUpd()}catch(_){}};inc.__mpinHold=sv;clearTimeout(inc.__mpinHT);inc.__mpinHT=setTimeout(()=>{inc.__mpinHold=0;pu()},NAV_MS+600);inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu()})})}   /* затемнение под хедером обновляется сразу, без мигания */
   else if(p!==prev||instant){inc.scrollTop=0;if(dir===0)resetTabs()}   /* при анимации сброс вкладок и перерисовка — после первого кадра (heavy) */
   if(p==='me'){const _f=()=>{try{pgPaint($('#pGrid'))}catch(_){}if(dir===0)meFillSpace()};dir!==0?requestAnimationFrame(()=>requestAnimationFrame(_f)):requestAnimationFrame(_f)}   /* после первого кадра, а не до старта анимации; пересчёт запаса — после анимации */
   if(prev==='me'&&p!=='me')setTimeout(()=>{if(cur!=='me'){try{renderMyGifts(true)}catch(_){}}},NAV_MS+150);   /* ушли из профиля — оставляем в нём только первую порцию карточек */
@@ -3536,7 +3536,8 @@ function clearAppCache(){ location.reload(); }
     const bg=pin.querySelector('.mpin-bg'),bl=pin.querySelector('.mpin-bl');
     const RAMP=60,SOFT_RAMP=80,SOFT_MIN=.14,SOFT_BLUR=2;let lp=-1,lsb='';
     function upd(){
-      const sc=pg.scrollTop;
+      let sc=pg.scrollTop;
+      if(pg.__mpinHold&&sc<=1)sc=pg.__mpinHold;   /* возврат со страницы продажи: пока позиция восстанавливается, затемнение держится по сохранённой прокрутке и не гаснет */
       const p=Math.max(0,Math.min(1,sc/RAMP));
       if(p<=0){if(lp!==0){lp=0;pin.style.visibility='hidden';bg.style.opacity=0;bl.style.opacity=0;lsb='';pin.style.removeProperty('--sb')}return}
       if(lp<=0)pin.style.visibility='visible';
@@ -3547,6 +3548,7 @@ function clearAppCache(){ location.reload(); }
       bg.style.opacity=p*mm;bl.style.opacity=p;bg.style.transform=bl.style.transform=tr;
     }
     pg.addEventListener('scroll',upd,{passive:true});
+    pg.addEventListener('touchstart',()=>{pg.__mpinHold=0},{passive:true});pg.addEventListener('wheel',()=>{pg.__mpinHold=0},{passive:true});
     pg.__mpinUpd=upd;
     upd();
   });
@@ -5622,11 +5624,11 @@ renderMyGifts();
         /* фон шапки следит за маской в центре: каждая новая — новый цвет; итоговая — финальный фон */
         const cl=pk.cols,fc=cl[cl.length-1];
         /* фон один на всю прокрутку: примерно на середине он плавно становится итоговым, чуть позже так же определяется узор */
-        /* за всю прокрутку — только 3 фона (два промежуточных и итоговый) и 4 узора (три промежуточных и итоговый); и фон, и узор выбираются раньше */
-        const ta=performance.now(),tBg=T*.22,tPat=tBg+500;
-        const tb=[0,tBg*.45],tp=[0,tPat*.3,tPat*.6];
+        /* за всю прокрутку — только 3 фона (два промежуточных и итоговый) и 3 узора (два промежуточных и итоговый); и фон, и узор выбираются раньше */
+        const ta=performance.now(),tBg=T*.26,tPat=tBg+750;   /* чуть медленнее прежнего */
+        const tb=[0,tBg*.5],tp=[0,tPat*.45];
         const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,2),
-              paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,3);
+              paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,2);
         let bgS=-1,patS=-1,curC=fc;
         const tick=()=>{
           if(!ugX||!UG.classList.contains('on'))return;
@@ -5634,12 +5636,12 @@ renderMyGifts();
           const q=Math.max(0,Math.min(N-1,Math.round((tx1-tx)/iw)));
           {const el=performance.now()-ta;
             if(!finBg){
-              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,650)}
-              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,420)}}
+              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,800)}
+              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,540)}}
             }
             if(!finPat){
               if(el>=tPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}
-              else{const st=el>=tp[2]?2:(el>=tp[1]?1:0);if(st!==patS){patS=st;ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,(finBg?fc:curC).c3,false)}}
+              else{const st=el>=tp[1]?1:0;if(st!==patS){patS=st;ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,(finBg?fc:curC).c3,false)}}
             }}
           for(let z=1;z<3&&z<N;z++){
             const d=(tx+z*iw+iw/2-W/2)/iw,el=trk.children[z];if(!el)continue;
