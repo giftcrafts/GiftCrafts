@@ -3364,11 +3364,13 @@ function clearAppCache(){ location.reload(); }
       $('#mphC').textContent=c+' '+(a===1&&b!==11?'подарок':(a>=2&&a<=4&&(b<10||b>=20)?'подарка':'подарков'));
     }catch(_){}
   }
+  /* страховка: если выезд кнопки застрял на полпути, она докатывается до конца */
+  window.__slideGuard=(el,on)=>{clearTimeout(el.__sg);if(!on)return;el.__sg=setTimeout(()=>{try{if(!el.classList.contains('show'))return;const m=new DOMMatrix(getComputedStyle(el).transform);if(Math.abs(m.m42)>.5){el.style.transition='none';el.style.transform='none';void el.offsetWidth;el.style.transition='';el.style.transform=''}}catch(_){}},700)};
   function syncSend(){
     const want=!!(M&&pg.classList.contains('on')&&(pg.scrollTop+off)>=M.tabsAt-3);
     if(want===sOn)return;sOn=want;if(want)hdFill();hd.classList.toggle('on',want);try{window.hdrFilter&&hdrFilter(want)}catch(_){}
     if(want&&window.shapeBtn)try{shapeBtn(sb)}catch(_){}
-    sw.classList.toggle('show',want);sw.setAttribute('aria-hidden',want?'false':'true');
+    sw.classList.toggle('show',want);sw.setAttribute('aria-hidden',want?'false':'true');try{__slideGuard(sw,want)}catch(_){}
   }
   new MutationObserver(()=>{if(!pg.classList.contains('on')){window.__meStuck=false;if(sOn){sOn=false;sw.classList.remove('show');hd.classList.remove('on')}}else{if(!M)measure();syncSend()}}).observe(pg,{attributes:true,attributeFilter:['class']});
   requestAnimationFrame(()=>{try{window.shapeBtn&&shapeBtn(sb)}catch(_){}});
@@ -3633,7 +3635,7 @@ function clearAppCache(){ location.reload(); }
     stuck=want;window.__stStuck=want;
     try{hdrBal(want)}catch(_){}
     if(want&&window.shapeBtn)try{shapeBtn(sbt)}catch(_){}
-    sw.classList.toggle('show',want);sw.setAttribute('aria-hidden',want?'false':'true');
+    sw.classList.toggle('show',want);sw.setAttribute('aria-hidden',want?'false':'true');try{__slideGuard(sw,want)}catch(_){}
   }
   requestAnimationFrame(()=>{try{window.shapeBtn&&shapeBtn(sbt)}catch(_){}});
   window.addEventListener('resize',()=>{try{window.shapeBtn&&shapeBtn(sbt)}catch(_){}});
@@ -4687,9 +4689,8 @@ renderMyGifts();
     x.hid=!x.hid;
     if(x.hid&&x.pin!=null){delete x.pin;delete x.pinT;try{pinFit(MYGIFTS.filter(g=>g.pin!=null))}catch(_){}}   /* скрытый подарок не может быть закреплённым */
     try{store.set(MYK,JSON.stringify(MYGIFTS))}catch(_){}
-    setTimeout(()=>{try{renderMyGifts()}catch(_){}},320);   /* перерисовка после анимации закрытия */
-    gm.classList.add('gmpop');clearTimeout(window.__gmPopT);window.__gmPopT=setTimeout(()=>gm.classList.remove('gmpop'),900);
-    close();
+    setTimeout(()=>{try{renderMyGifts()}catch(_){}},550);   /* перерисовка после анимации закрытия */
+    close();   /* обычное закрытие, как у окна уникального подарка */
   });
   window.addEventListener('resize',()=>{try{if(gm.classList.contains('on'))shapeBtn($g('gmUp'))}catch(e){}});
   document.getElementById('pGrid').addEventListener('click',e=>{
@@ -4974,7 +4975,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=340;
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=340,UGGO=170;   /* UGGO — через сколько подарок доезжает на место и стартует карусель */
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -5585,8 +5586,8 @@ renderMyGifts();
         gxF={pr:pr,b0:b0,b1:b1};
       }
     }catch(_){gxF=null}
-    const ghFrame=k=>{if(!gxF||!GX||GX.done)return;const bx_=gxF.b0.x+(gxF.b1.x-gxF.b0.x)*k,by=gxF.b0.y+(gxF.b1.y-gxF.b0.y)*k;GX.gh.style.transform='translate('+((gxF.pr.x-bx_)*(1-k)).toFixed(2)+'px,'+((gxF.pr.y-by)*(1-k)).toFixed(2)+'px) scale('+(1+.12*k).toFixed(3)+')'};
-    {const _mf=mfFrame;mfFrame=(k,t)=>{_mf(k,t);ghFrame(k)}}
+    const ghFrame=(k,t)=>{if(!gxF||!GX||GX.done)return;const pp=ss(Math.min(1,(t||0)*UGMF_MS/UGGO));const bx_=gxF.b0.x+(gxF.b1.x-gxF.b0.x)*k,by=gxF.b0.y+(gxF.b1.y-gxF.b0.y)*k;GX.gh.style.transform='translate('+((gxF.pr.x-bx_)*(1-pp)).toFixed(2)+'px,'+((gxF.pr.y-by)*(1-pp)).toFixed(2)+'px) scale('+(1+.12*pp).toFixed(3)+')'};
+    {const _mf=mfFrame;mfFrame=(k,t)=>{_mf(k,t);ghFrame(k,t)}}
     mfFrame(0);
     setTimeout(()=>{ghHand()},UGMF_MS+900);
     window.__ugGhKill=()=>{if(GX&&!GX.done){GX.done=true;GX.rmG();try{GX.lot&&GX.lot.destroy()}catch(_){}}};
@@ -5674,7 +5675,7 @@ renderMyGifts();
         };
         ugRaf=requestAnimationFrame(tick);
         ugLater(()=>ugDone(x,pk,num,cl[cl.length-1]),Math.max(600,T-200));
-      },ugQuick?0:UGMF_MS);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
+      },ugQuick?0:UGGO);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
     });
   }
   function quietClose(){
