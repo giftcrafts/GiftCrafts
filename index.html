@@ -1678,22 +1678,23 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
 /* кнопка «Баланс» над окном предпросмотра улучшения: фон как у окна, по центру между кнопками Telegram и верхом окна */
-#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 22px 10px;border:0;border-radius:24px;background:var(--sheet);color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
+#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 22px 8px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
 #um .um-bal.on{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0);transition-delay:0s}
 #um .um-bal:active{transform:translate(-50%,0) scale(.97)}
-#um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:16px;font-weight:500;color:var(--text,#fff)}
+#um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:450;color:var(--text,#fff)}
 #um .um-bal .ub-l img{width:17px;height:17px;display:block}
-#um .um-bal .ub-l b{font-weight:600}
-#um .um-bal .ub-a{display:flex;align-items:center;gap:5px;font-size:16px;font-weight:450;color:var(--accent,#4ba3f0)}
+#um .um-bal .ub-l b{font-weight:550}
+#um .um-bal .ub-a{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:400;color:var(--accent,#4ba3f0)}
 #um .um-bal .ub-a svg{width:7px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
-#ug .ug-pill{position:absolute;left:18px;right:18px;top:0;z-index:6;display:flex;align-items:center;gap:14px;padding:15px 18px 15px 16px;border-radius:28px;background:var(--sheet);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill{position:absolute;left:18px;right:18px;top:0;z-index:6;display:flex;align-items:center;gap:14px;padding:13px 18px 13px 16px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 #ug .ug-pill .ug-pi{flex:none;width:30px;height:30px;display:block}
 #ug .ug-pill .ug-pi svg{width:100%;height:100%;display:block}
 #ug .ug-pill .ug-pt{display:flex;flex-direction:column;gap:1px;min-width:0}
-#ug .ug-pill .ug-pt b{font-size:17px;font-weight:600;line-height:1.25}
-#ug .ug-pill .ug-pt span{font-size:16px;font-weight:400;line-height:1.28;color:rgba(255,255,255,.86)}
+#ug .ug-pill .ug-pt b{font-size:15px;font-weight:550;line-height:1.25}
+#ug .ug-pill .ug-pt span{font-size:14px;font-weight:400;line-height:1.28;color:rgba(255,255,255,.86)}
 </style>
 </head>
 <body>
@@ -2002,7 +2003,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="um-chk" id="umChk"><i class="um-box"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></i><span>С именем отправителя</span></div>
     <div class="um-upw"><button class="um-go" id="umGo"><span class="um-lab um-old"><span>Улучшить</span></span><span class="um-lab um-new"><span>Улучшить за</span><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#i-star"/></svg><span id="umPrice">25</span></span><i class="um-sp"></i></button></div>
   </div>
-  <button class="um-bal" id="umBal" type="button" aria-label="Пополнить баланс"><span class="ub-l">Баланс: <img alt=""><b class="ub-v"></b></span><span class="ub-a">Пополнить баланс<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1.5 1.5L6.5 7l-5 5.5"/></svg></span></button>
+  <button class="um-bal" id="umBal" type="button" aria-label="Пополнить баланс"><span class="ub-l">Ваш баланс: <img alt=""><b class="ub-v"></b></span><span class="ub-a">Пополнить баланс<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1.5 1.5L6.5 7l-5 5.5"/></svg></span></button>
 </div>
 <div id="ug" aria-hidden="true">
   <div class="ug-dim"></div>
@@ -2498,7 +2499,7 @@ function go(p,instant,back,o){
   if(dir<=0)document.body.classList.toggle('nobar',wantNo);
   if(dir<=0){instant?syncInstant():slide(p)}
   // страницы не помнят позицию: всегда открываются сверху и с первой вкладкой
-  if(mkKeep){const sv=window.__mkSave;inc.scrollTop=sv;requestAnimationFrame(()=>{inc.scrollTop=sv;requestAnimationFrame(()=>{inc.scrollTop=sv})})}
+  if(mkKeep){const sv=window.__mkSave,pu=()=>{try{inc.__mpinUpd&&inc.__mpinUpd()}catch(_){}};inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu()})})}   /* затемнение под хедером обновляется сразу, без мигания */
   else if(p!==prev||instant){inc.scrollTop=0;if(dir===0)resetTabs()}   /* при анимации сброс вкладок и перерисовка — после первого кадра (heavy) */
   if(p==='me'){const _f=()=>{try{pgPaint($('#pGrid'))}catch(_){}if(dir===0)meFillSpace()};dir!==0?requestAnimationFrame(()=>requestAnimationFrame(_f)):requestAnimationFrame(_f)}   /* после первого кадра, а не до старта анимации; пересчёт запаса — после анимации */
   if(prev==='me'&&p!=='me')setTimeout(()=>{if(cur!=='me'){try{renderMyGifts(true)}catch(_){}}},NAV_MS+150);   /* ушли из профиля — оставляем в нём только первую порцию карточек */
@@ -3546,6 +3547,7 @@ function clearAppCache(){ location.reload(); }
       bg.style.opacity=p*mm;bl.style.opacity=p;bg.style.transform=bl.style.transform=tr;
     }
     pg.addEventListener('scroll',upd,{passive:true});
+    pg.__mpinUpd=upd;
     upd();
   });
 })();
@@ -5104,7 +5106,7 @@ renderMyGifts();
     const pr=document.createElement('div');pr.style.cssText='position:fixed;left:-99px;top:0;width:1px;height:var(--hdr-top);visibility:hidden;pointer-events:none';document.body.appendChild(pr);
     const want=()=>um.classList.contains('on')&&!um.classList.contains('mf')&&!um.classList.contains('cl');
     const pos=()=>{
-      const r=sh.getBoundingClientRect(),h=bal.offsetHeight||54,tg=Math.max(0,(pr.offsetHeight||0)-6),gap=r.top-tg;
+      const r=sh.getBoundingClientRect(),h=bal.offsetHeight||50,tg=Math.max(0,(pr.offsetHeight||0)-6),top=nh>0?r.bottom-nh:r.top   /* итоговый верх окна (по его конечной высоте), чтобы кнопка встала на место сразу */,gap=top-tg;
       if(gap<h+12)return false;                       /* места между кнопками Telegram и окном нет — не показываем */
       bal.style.top=Math.round(tg+(gap-h)/2)+'px';return true;
     };
@@ -5113,7 +5115,7 @@ renderMyGifts();
       clearTimeout(t);
       if(!want()){bal.classList.remove('on');return}
       if(bal.classList.contains('on'))return;
-      t=setTimeout(()=>{if(!want())return;try{bal.querySelector('.ub-v').innerHTML=balHtml()}catch(_){}if(pos())bal.classList.add('on')},OPEN_MS+40);
+      t=setTimeout(()=>{if(!want())return;try{bal.querySelector('.ub-v').innerHTML=balHtml()}catch(_){}if(pos())bal.classList.add('on')},30);   /* появляется сразу вместе с открытием окна */
     }).observe(um,{attributes:true,attributeFilter:['class']});
     window.addEventListener('resize',()=>{if(bal.classList.contains('on')&&!pos())bal.classList.remove('on')});
     bal.addEventListener('click',()=>{
@@ -5709,8 +5711,9 @@ renderMyGifts();
   }
   /* плашка «Подарок стал коллекционным»: появляется над окном, когда улучшение закончилось; при закрытии окна пропадает и больше не показывается */
   const ugPill=$u('ugPill');
-  function ugPillPos(){if(!ugPill)return;const r=ugS.getBoundingClientRect(),h=ugPill.offsetHeight||72;ugPill.style.top='max(calc(var(--hdr-top) + 4px),'+Math.round(r.top-h-8)+'px)'}
-  function ugPillShow(){if(!ugPill||!UG.classList.contains('on')||ugClosing)return;ugPill.classList.remove('on');ugPillPos();void ugPill.offsetWidth;ugPill.classList.add('on')}
+  function ugPillPos(){if(!ugPill)return;const r=ugS.getBoundingClientRect(),h=ugPill.offsetHeight||72;ugPill.style.top=Math.round(r.top-h-8)+'px'}
+  function ugPillShow(){if(!ugPill||!UG.classList.contains('on')||ugClosing)return;ugPill.classList.remove('on');ugPill.classList.add('dr');ugPill.style.removeProperty('--pd');ugPillPos();void ugPill.offsetWidth;ugPill.classList.remove('dr');ugPill.classList.add('on')}
+  try{if(window.ResizeObserver&&ugPill)new ResizeObserver(()=>{if(ugPill.classList.contains('on'))ugPillPos()}).observe(ugS)}catch(_){}
   function ugPillHide(){if(ugPill)ugPill.classList.remove('on')}
   function ugDone(x,pk,num,c){
     ugLater(ugPillShow,ugQuick?150:520);
@@ -5837,6 +5840,7 @@ renderMyGifts();
       base=Math.max(0,curY());
       ugS.style.transition='none';ugS.style.transform=base>0?'translate3d(0,'+base+'px,0)':'';
       sy=e.touches[0].clientY-base;dy=base;t0=performance.now();tr=true;
+      try{ugPill.classList.add('dr')}catch(_){}
     },{passive:true});
     ugS.addEventListener('touchmove',e=>{
       if(!tr)return;
@@ -5844,14 +5848,16 @@ renderMyGifts();
       const r=e.touches[0].clientY-sy;if(Math.abs(r-base)>8)sup=true;
       dy=Math.max(0,r);
       ugS.style.transform=dy>0?'translate3d(0,'+dy+'px,0)':'';
+      try{ugPill.style.setProperty('--pd',dy+'px')}catch(_){}
     },{passive:true});
     const end=()=>{
       if(sup)setTimeout(()=>{sup=false},400);
       if(!tr)return;tr=false;
-      if(dy<=0){ugS.style.transform='';ugS.style.transition='';return}
+      const pRel=()=>{try{ugPill.classList.remove('dr');ugPill.style.removeProperty('--pd')}catch(_){}};
+      if(dy<=0){ugS.style.transform='';ugS.style.transition='';pRel();return}
       const v=(dy-base)/Math.max(1,performance.now()-t0);
       if(dy>110||(dy>40&&v>.5))ugClose();
-      else{ugS.style.transition='transform .35s cubic-bezier(.25,.8,.25,1)';ugS.style.transform='';setTimeout(()=>{if(!tr)ugS.style.transition=''},380)}
+      else{ugS.style.transition='transform .35s cubic-bezier(.25,.8,.25,1)';ugS.style.transform='';pRel();setTimeout(()=>{if(!tr)ugS.style.transition=''},380)}
     };
     ugS.addEventListener('touchend',end);ugS.addEventListener('touchcancel',end);
   })();
