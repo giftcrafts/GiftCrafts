@@ -5156,12 +5156,12 @@ renderMyGifts();
           }
     if(p.cols.c1)top.style.setProperty('--um-c1',p.cols.c1);
     if(p.cols.c2)top.style.setProperty('--um-c2',p.cols.c2);
-    try{const cs=getComputedStyle(top);um.style.setProperty('--ug-l',window.__ugLumOf({c1:cs.getPropertyValue('--um-c1').trim()||'#7b72ea',c2:cs.getPropertyValue('--um-c2').trim()||'#5b3fb8'}).toFixed(3))}catch(_){}
+    try{const cs=getComputedStyle(top);{const uc={c1:cs.getPropertyValue('--um-c1').trim()||'#7b72ea',c2:cs.getPropertyValue('--um-c2').trim()||'#5b3fb8'};um.style.setProperty('--ug-l',window.__ugLumOf(uc).toFixed(3));window.__ugColSet(um,window.__ugColOf(uc))}}catch(_){}
     drawPattern(p.sym,p.cols.c3);
   }
   function reset(x){
     lastPat=null;
-    const top=$u('umTop');top.style.removeProperty('--um-c1');top.style.removeProperty('--um-c2');um.style.removeProperty('--ug-l');
+    const top=$u('umTop');top.style.removeProperty('--um-c1');top.style.removeProperty('--um-c2');um.style.removeProperty('--ug-l');um.style.removeProperty('--ug-cr');um.style.removeProperty('--ug-cg');um.style.removeProperty('--ug-cb');
     $u('umMini').innerHTML='';
     $u('umModel').innerHTML='';
     const cv=$u('umPat');cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
@@ -5439,37 +5439,43 @@ renderMyGifts();
   }
   /* фон шапки: цвета плавно перетекают (registered custom properties), без мигания слоёв */
   /* яркость фона (кнопки внизу лежат ближе к краю градиента, поэтому c2 весит больше) → --ug-l для адаптивной обводки */
+  const ugPx=h=>{h=String(h||'').trim();let m=h.match(/^#([0-9a-f]{3})$/i);if(m)h='#'+m[1].replace(/./g,x=>x+x);m=h.match(/^#([0-9a-f]{6})$/i);if(m){const n=parseInt(m[1],16);return[(n>>16)&255,(n>>8)&255,n&255]}m=h.match(/(\d+)[ ,]+(\d+)[ ,]+(\d+)/);return m?[+m[1],+m[2],+m[3]]:[90,70,180]};
   function ugLumOf(c){
-    const px=h=>{h=String(h||'').trim();let m=h.match(/^#([0-9a-f]{3})$/i);if(m)h='#'+m[1].replace(/./g,x=>x+x);m=h.match(/^#([0-9a-f]{6})$/i);if(m){const n=parseInt(m[1],16);return[(n>>16)&255,(n>>8)&255,n&255]}m=h.match(/(\d+)[ ,]+(\d+)[ ,]+(\d+)/);return m?[+m[1],+m[2],+m[3]]:[90,70,180]};
+    const px=ugPx;
     const f=v=>(.299*v[0]+.587*v[1]+.114*v[2])/255;
     return .25*f(px(c.c1))+.75*f(px(c.c2));
   }
+  /* цвет фона под кнопками (те же веса, что у яркости) → --ug-cr/cg/cb: обводка и засвет кнопок окрашиваются в цвет фона, но светлее его */
+  function ugColOf(c){const a=ugPx(c.c1),b=ugPx(c.c2);return[0,1,2].map(k=>.25*a[k]+.75*b[k])}
+  function ugColSet(el,a){try{el.style.setProperty('--ug-cr',a[0].toFixed(1));el.style.setProperty('--ug-cg',a[1].toFixed(1));el.style.setProperty('--ug-cb',a[2].toFixed(1))}catch(_){}}
+  window.__ugColOf=ugColOf;window.__ugColSet=ugColSet;
   window.__ugLumOf=ugLumOf;
-  function ugRim(c,ms){try{UG.classList.add('ugsw');clearTimeout(window.__ugswT);window.__ugswT=setTimeout(()=>UG.classList.remove('ugsw'),(ms||0)+220)}catch(_){}try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3))}catch(_){}
+  function ugRim(c,ms){try{UG.classList.add('ugsw');clearTimeout(window.__ugswT);window.__ugswT=setTimeout(()=>UG.classList.remove('ugsw'),(ms||0)+220)}catch(_){}try{UG.style.setProperty('--ug-rim-ms',Math.round(ms||0)+'ms');UG.style.setProperty('--ug-l',ugLumOf(c).toFixed(3));ugColSet(UG,ugColOf(c))}catch(_){}
     /* плашка «В продаже за» перерисовывает обводку вместе с плавной сменой яркости фона */
     try{const t1=performance.now(),dur=(ms||0)+80,loop=()=>{UG.querySelectorAll('.mk-sale').forEach(b=>{try{b.__draw&&b.__draw()}catch(_){}});if(performance.now()-t1<dur)requestAnimationFrame(loop)};loop()}catch(_){}}
   /* яркость фона под каждой кнопкой считается покадрово: слой нового фона выезжает с мягким краем слева направо,
      и каждая кнопка меняет цвет рамки ровно тогда, когда край проходит под ней (а не линейно по таймеру для всех сразу) */
-  let ugBase=null,ugLay=[],ugBtnRaf=0;
+  let ugBase=null,ugBaseC=null,ugLay=[],ugBtnRaf=0;
   const ugBtnEls=()=>UG.querySelectorAll('.ug-a,.ug-x,.ug-more');
-  function ugBtnClear(){ugLay=[];cancelAnimationFrame(ugBtnRaf);ugBtnRaf=0;try{ugBtnEls().forEach(b=>{b.style.removeProperty('--ug-l');b.style.removeProperty('--ug-d')})}catch(_){}}
+  function ugBtnClear(){ugLay=[];cancelAnimationFrame(ugBtnRaf);ugBtnRaf=0;try{ugBtnEls().forEach(b=>{b.style.removeProperty('--ug-l');b.style.removeProperty('--ug-d');b.style.removeProperty('--ug-cr');b.style.removeProperty('--ug-cg');b.style.removeProperty('--ug-cb')})}catch(_){}}
   function ugBtnLoop(){
     ugBtnRaf=0;
     if(!ugLay.length||ugBase==null){ugBtnClear();return}
     const els=ugBtnEls();
     els.forEach((b,i)=>{
-      let l=ugBase;
+      let l=ugBase,cc=ugBaseC?ugBaseC.slice():null;
       for(const y of ugLay){
         let e=1;try{const pr=y.an.effect.getComputedTiming().progress;e=pr==null?0:pr}catch(_){}
         const xf=y.xs[i]==null?.5:y.xs[i],a=Math.max(0,Math.min(1,2*e-xf));   /* прозрачность слоя в точке xf: край маски шириной в ширину окна */
         l=l*(1-a)+y.L*a;
+        if(cc&&y.C)cc=cc.map((v,k)=>v*(1-a)+y.C[k]*a);
       }
-      b.style.setProperty('--ug-l',l.toFixed(3));b.style.setProperty('--ug-d',(90*(l-.4)).toFixed(2));
+      b.style.setProperty('--ug-l',l.toFixed(3));b.style.setProperty('--ug-d',(90*(l-.4)).toFixed(2));if(cc)ugColSet(b,cc);
     });
     ugBtnRaf=requestAnimationFrame(ugBtnLoop);
   }
   let bgTo=null;
-  function ugBgSet(c){ugRim(c,0);ugBtnClear();ugBase=ugLumOf(c);const a=$u('ugT1'),b=$u('ugT2');clearTimeout(ugBg);b.style.transition='none';b.style.opacity=0;a.style.setProperty('--c1',c.c1);a.style.setProperty('--c2',c.c2);bgTo=null}
+  function ugBgSet(c){ugRim(c,0);ugBtnClear();ugBase=ugLumOf(c);ugBaseC=ugColOf(c);const a=$u('ugT1'),b=$u('ugT2');clearTimeout(ugBg);b.style.transition='none';b.style.opacity=0;a.style.setProperty('--c1',c.c1);a.style.setProperty('--c2',c.c2);bgTo=null}
   function ugBgTo(c,ms){
     ugRim(c,ms);const a=$u('ugT1'),b=$u('ugT2');
     if(bgTo){a.style.setProperty('--c1',bgTo.c1);a.style.setProperty('--c2',bgTo.c2)}
@@ -5870,11 +5876,11 @@ renderMyGifts();
     ugRim(c,ms);const t1=$u('ugT1'),L=document.createElement('div');
     L.className='ug-t3';L.style.setProperty('--c1',c.c1);L.style.setProperty('--c2',c.c2);
     $u('ugPat').before(L);
-    const lay={L:ugLumOf(c),an:null,xs:[]};
-    if(!ugLay.length){const t1s=$u('ugT1');ugBase=ugLumOf({c1:t1s.style.getPropertyValue('--c1'),c2:t1s.style.getPropertyValue('--c2')})}   /* основа — цвет фона до слоя; поверх неё считаются идущие слои */
+    const lay={L:ugLumOf(c),C:ugColOf(c),an:null,xs:[]};
+    if(!ugLay.length){const t1s=$u('ugT1');{const bc={c1:t1s.style.getPropertyValue('--c1'),c2:t1s.style.getPropertyValue('--c2')};ugBase=ugLumOf(bc);ugBaseC=ugColOf(bc)}}   /* основа — цвет фона до слоя; поверх неё считаются идущие слои */
     try{const lr=L.getBoundingClientRect();lay.xs=[...ugBtnEls()].map(b=>{const r=b.getBoundingClientRect();return lr.width?((r.left+r.width/2-lr.left)/lr.width):.5})}catch(_){}
     const fin=()=>{
-      {const i=ugLay.indexOf(lay);if(i>=0){ugBase=lay.L;ugLay.splice(0,i+1);if(!ugLay.length){cancelAnimationFrame(ugBtnRaf);ugBtnRaf=0;try{ugBtnEls().forEach(b=>{b.style.removeProperty('--ug-l');b.style.removeProperty('--ug-d')})}catch(_){}}}}
+      {const i=ugLay.indexOf(lay);if(i>=0){ugBase=lay.L;ugBaseC=lay.C;ugLay.splice(0,i+1);if(!ugLay.length){cancelAnimationFrame(ugBtnRaf);ugBtnRaf=0;try{ugBtnEls().forEach(b=>{b.style.removeProperty('--ug-l');b.style.removeProperty('--ug-d');b.style.removeProperty('--ug-cr');b.style.removeProperty('--ug-cg');b.style.removeProperty('--ug-cb')})}catch(_){}}}}
       if(!L.parentNode)return;
       t1.style.setProperty('--c1',c.c1);t1.style.setProperty('--c2',c.c2);
       let p;while((p=L.previousElementSibling)&&p.classList.contains('ug-t3'))p.remove();
@@ -6177,7 +6183,7 @@ renderMyGifts();
     g.removeAttribute('id');g.setAttribute('aria-hidden','true');
     g.style.cssText+=';transition:none;transform:none;opacity:1;pointer-events:none;translate:'+tx.toFixed(2)+'px 0';
     /* яркость обводки (--ug-l) лежит на корне окна и при показе соседа меняется для всех — закрепляем значения текущего подарка за копией */
-    try{const cs=getComputedStyle(sh);['--ug-l','--ug-d'].forEach(k=>{const v=cs.getPropertyValue(k);if(v&&v.trim())g.style.setProperty(k,v.trim())})}catch(_){}
+    try{const cs=getComputedStyle(sh);['--ug-l','--ug-d','--ug-cr','--ug-cg','--ug-cb'].forEach(k=>{const v=cs.getPropertyValue(k);if(v&&v.trim())g.style.setProperty(k,v.trim())})}catch(_){}
     try{const a=sh.querySelectorAll('canvas'),b=g.querySelectorAll('canvas');a.forEach((c,i)=>{if(b[i]&&c.width&&c.height)b[i].getContext('2d').drawImage(c,0,0)})}catch(_){}
     sh.after(g);return g;
   }
@@ -8599,6 +8605,13 @@ renderMyGifts();
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-rgb:calc(176 + var(--ug-d) + var(--ug-w)),calc(178 + var(--ug-d) + var(--ug-w)),calc(196 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(188 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w)),calc(208 + var(--ug-d) + var(--ug-w))}
 /* как в Telegram: кнопка лишь чуть светлее фона под ней и сохраняет его цвет (без затемнения и обесцвечивания), без тёмной линии по краю; обводку и засвет рисует стекло */
 #ug .ug-a.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass{-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);box-shadow:none}
+/* обводка и засвет окрашены в цвет фона под кнопкой (--ug-cr/cg/cb), но заметно светлее него и светлее заливки кнопки */
+@property --ug-cr{syntax:"<number>";inherits:true;initial-value:130}
+@property --ug-cg{syntax:"<number>";inherits:true;initial-value:100}
+@property --ug-cb{syntax:"<number>";inherits:true;initial-value:115}
+#ug{transition:visibility 0s linear .85s,--ug-l var(--ug-rim-ms,0ms) linear,--ug-cr var(--ug-rim-ms,0ms) linear,--ug-cg var(--ug-rim-ms,0ms) linear,--ug-cb var(--ug-rim-ms,0ms) linear}
+#ug.fastc{transition:visibility 0s linear .4s,--ug-l var(--ug-rim-ms,0ms) linear,--ug-cr var(--ug-rim-ms,0ms) linear,--ug-cg var(--ug-rim-ms,0ms) linear,--ug-cb var(--ug-rim-ms,0ms) linear}
+#ug .ug-a.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-rgb:calc(var(--ug-cr) + (255 - var(--ug-cr))*0.5),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.5),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.5);--glass2-rgb:calc(var(--ug-cr) + (255 - var(--ug-cr))*0.62),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.62),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.62);--glc:rgba(calc(var(--ug-cr) + (255 - var(--ug-cr))*0.72),calc(var(--ug-cg) + (255 - var(--ug-cg))*0.72),calc(var(--ug-cb) + (255 - var(--ug-cb))*0.72),.32)}
 </style>
 </body>
 </html>
