@@ -8296,6 +8296,8 @@ renderMyGifts();
 #ug .ug-a.glass{background-color:rgba(255,255,255,.205)}
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.185)}
 #um .um-var{background:rgba(200,202,210,.30)}
+/* при складывании (окно улучшения ниже предпросмотра) фон нового окна едет вверх вместе с краем формы и должен быть виден выше его рамки; видимую часть режет clip-path, поэтому overflow на время анимации снимаем */
+#ug.morph .ug-sheet{overflow:visible}
 </style>
 </body>
 </html>
