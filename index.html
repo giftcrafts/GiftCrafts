@@ -1567,7 +1567,7 @@ html[data-theme=light] #sl .sl-inp input,html[data-theme=light] #pm .pm-inp inpu
 html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#pm) .ap-row.ok .ap-rv,html[data-theme=light] #pm .pm-row.ok .pm-rv{color:var(--text)}
 html[data-theme=light] .sw i:after,html[data-theme=light] #ap .ap-sw:after{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 /* цена на карточках маркета: фон — цвет текста цены с прозрачностью .1 (перебивает цвет от подарка) */
-#p-market .mkc .mkp,#p-mkg .mkc .mkp{background:rgba(255,255,255,.1)!important}
+/* цена на карточках маркета: фон задаётся инлайном — тот же цвет, что у плашки с номером подарка */
 /* окна «Выберите подарки»: стеклянные кнопки (крестик, фильтры) и текст следуют теме */
 html[data-theme=light] :is(#cp,#gx) .cp-sheet{color:var(--text)}
 #cp .glass,#gx .glass,#cp .mk-chip{--menu-glass-bg:var(--gl-bg)}
@@ -1837,7 +1837,6 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="row" data-s="Номер"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-phone"/></svg></div><span class="t">Номер</span><span class="v" id="eNum"></span></div>
     <div class="row" data-s="Имя пользователя"><div class="ic" style="background:linear-gradient(to bottom,#8a7cf5,#5b5bdb)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-user"/></svg></div><span class="t">Имя пользователя</span><span class="v" id="eUser2"></span></div>
     <div class="row" data-s="Верификация"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:27px" viewBox="0 0 24 24"><use href="#ni-verified"/></svg></div><span class="t">Верификация</span><span class="v">Купить</span></div>
-    <div class="row" data-s="Premium значок"><div class="ic" style="background:linear-gradient(to bottom,#b57cff,#7a6bf2)"><svg class="ico" style="--s:var(--ic-stars)"><use href="#i-star"/></svg></div><span class="t">Premium значок</span></div>
     <div class="row" data-s="Канал"><div class="ic" style="background:linear-gradient(to bottom,#ffbd3e,#ffa50d)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-channel"/></svg></div><span class="t">Канал</span><span class="v">Добавить</span></div>
   </div>
   <div class="ehint">Вы можете отображать в профиле приложения свой канал из Telegram. <a id="chInfo">Узнать подробнее<svg viewBox="0 0 8 12"><path d="M1.5 1.5L6.3 6l-4.8 4.5"/></svg></a></div>
@@ -2465,7 +2464,7 @@ function go(p,instant,back,o){
   if(p==='me')meFull=(o.full!==undefined)?!!o.full:(!!back&&prev!=='me'&&!!window.__meFullBack);
   if(p!==prev&&(p==='me'||(p==='settings'&&prev!=='me'&&prev!=='edit'))){try{window.pinFlip&&pinFlip(p)}catch(_){}}   /* раскладка подарков вокруг аватарки меняется при каждом заходе: у профиля и у настроек своё чередование; возврат из профиля в настройки раскладку не меняет */
   cur=p;
-  if(p==='me'&&p!==prev){try{window.meUnshift&&meUnshift()}catch(_){}try{window.__meReset&&__meReset()}catch(_){}}   /* профиль не запоминает положение, коллекцию и фильтры */
+  if(p==='me'&&p!==prev){try{window.meHardReset&&meHardReset()}catch(_){}try{window.meUnshift&&meUnshift()}catch(_){}try{window.__meReset&&__meReset()}catch(_){}}   /* профиль не запоминает положение, коллекцию и фильтры */
   const wantNo=noBar(p,meFull);
   setHdr(p,dir!==0||!!o.bounce);
   const inc=$('#p-'+p),out=$('#p-'+prev);
@@ -3410,7 +3409,7 @@ function clearAppCache(){ location.reload(); }
     const need=T+pg.clientHeight-mb.offsetTop;                 // высота .mbody, при которой scrollHeight = T + clientHeight
     if(need<=0||mb.offsetHeight<=need)return;                  // страница и так короче — упор не нужен
     const pb=parseFloat(getComputedStyle(pg).paddingBottom)||0;
-    mb.style.maxHeight=need+'px';mb.style.overflow='clip';mb.style.overflowClipMargin='4px';mb.style.marginBottom=(-pb)+'px';capped=true;
+    mb.style.maxHeight=need+'px';mb.style.overflowX='visible';mb.style.overflowY='clip';mb.style.overflowClipMargin='4px';mb.style.marginBottom=(-pb)+'px';capped=true;
   };
   const capOff=()=>{if(capped){capped=false;mb.style.maxHeight=mb.style.overflow=mb.style.marginBottom=mb.style.overflowClipMargin=''}};
   const stopAnim=()=>{if(raf2){cancelAnimationFrame(raf2);raf2=0}};
@@ -3444,6 +3443,8 @@ function clearAppCache(){ location.reload(); }
   };
   window.meUnshift=()=>{if(!touching&&!raf2&&performance.now()-lsT>350)shiftOff()};   /* не посреди прокрутки: сброс сдвига обрывает инерцию */
   const shiftOff=()=>{if(!off)return;const o=off;off=0;pg._off=0;phd.style.marginTop='';pg.scrollTop+=o;M=null;requestAnimationFrame(upd)};
+  /* принудительный сброс при входе в профиль (не зависит от касаний/инерции): иначе сдвиг шапки мог остаться от прошлого захода и сломать раскладку */
+  window.meHardReset=()=>{try{stopAnim();unfreeze();capOff()}catch(_){}off=0;pg._off=0;phd.style.marginTop='';M=null;lp=-2;try{requestAnimationFrame(upd)}catch(_){}};
   /* прокрутка профиля в самое начало (с учётом сдвига «ступеньки») */
   window.meTop=()=>{try{stopAnim();shiftOff();pg.scrollTo({top:0,behavior:'smooth'})}catch(_){pg.scrollTop=0}};
   let sett=0;
@@ -3497,7 +3498,7 @@ function clearAppCache(){ location.reload(); }
   },{passive:true});
   const inv=()=>{M=null;requestAnimationFrame(upd)};
   window.addEventListener('resize',inv);
-  new MutationObserver(()=>{if(!pg.classList.contains('on'))release();inv()}).observe(pg,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(()=>{if(!pg.classList.contains('on'))release();else if(!touching&&!raf2&&off&&pg.scrollTop<=1&&phd.style.marginTop){window.meHardReset()}inv()}).observe(pg,{attributes:true,attributeFilter:['class']});
   if(window.ResizeObserver){const ro=new ResizeObserver(inv);ro.observe(pg);const ph=pg.querySelector('.phead');if(ph)ro.observe(ph)}
 })();
 
