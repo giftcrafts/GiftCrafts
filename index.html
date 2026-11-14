@@ -5724,7 +5724,7 @@ renderMyGifts();
   try{if(window.ResizeObserver&&ugPill)new ResizeObserver(()=>{if(ugPill.classList.contains('on'))ugPillPos()}).observe(ugS)}catch(_){}
   function ugPillHide(){if(ugPill)ugPill.classList.remove('on')}
   function ugDone(x,pk,num,c){
-    ugLater(ugPillShow,ugQuick?150:520);
+    ugLater(ugPillShow,0);   /* плашка появляется в тот же момент, что и конфетти */
     ugCur=null;ugFinalSet(pk,c,ugQuick?0:300);
     /* страховка: если анимация итоговой модели не загрузилась или так и не стартовала — запускаем её сейчас */
     if(pk.mj&&window.giftAnim&&window.__gA!==false){try{const it=$u('ugTrack').children[pk.F];
