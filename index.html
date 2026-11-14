@@ -1093,6 +1093,7 @@ html,body{overscroll-behavior:none}
 #lg .ap-sr.on .ap-sw{background:#34c759}#lg .ap-sr.on .ap-sw:after{left:20px}
 #lg{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #ap .ap-sheet.drag,#lg .ap-sheet.drag,#stat .ap-sheet.drag,#priv .ap-sheet.drag,#prem .ap-sheet.drag,#sl .sl-sheet.drag,#pm .pm-sheet.drag{transition:none!important}
+#ap .ap-sheet.drag,#lg .ap-sheet.drag,#stat .ap-sheet.drag,#priv .ap-sheet.drag,#verif .ap-sheet.drag,#sl .sl-sheet.drag,#pm .pm-sheet.drag{transition:none!important}
 #lg .ap-row2{cursor:default}
 #cx .cx-menu:has(>.cx-list){padding:0}
 #cx .cx-list{box-sizing:border-box;padding:10px 0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none}
@@ -1405,128 +1406,189 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 #stat .ap-sr.on .ap-sw{background:#34c759}#stat .ap-sr.on .ap-sw:after{left:20px}
 #priv,
 #prem{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
+#verif{position:fixed;left:0;right:0;top:0;height:100%;z-index:2400;visibility:hidden;pointer-events:none;transition:visibility 0s linear .5s}
 #priv.on,
 #prem.on,#priv.pre,#prem.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
+#verif.on,#priv.pre,#verif.pre{visibility:visible;pointer-events:auto;transition-delay:0s}
 #priv .ap-x,
 #prem .ap-x,#priv .ap-go,#prem .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
+#verif .ap-x,#priv .ap-go,#verif .ap-go{-webkit-backdrop-filter:none;backdrop-filter:none;filter:none}   /* блюр и тень под кнопками на сплошном фоне невидимы, но тормозят анимацию окна */
 #priv .ap-dim,
 #prem .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
+#verif .ap-dim{position:absolute;inset:0;background:var(--dim);opacity:0;transition:opacity .38s ease}
 #priv.on .ap-dim,
 #prem.on .ap-dim{opacity:1}
+#verif.on .ap-dim{opacity:1}
 #priv:not(.on) .ap-dim,
 #prem:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
+#verif:not(.on) .ap-dim{transition-duration:.6s}   /* затемнение уходит вместе с окном, не раньше */
 #priv .ap-sheet,
 #prem .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
+#verif .ap-sheet{position:absolute;left:6px;right:6px;bottom:calc(0px - 0px);margin-bottom:6px;max-height:calc(100% - 12px + 0px);padding-bottom:0px;display:flex;flex-direction:column;background:var(--sheet);border-radius:45.6px 45.6px 63.6px 63.6px/38px 38px 53px 53px;overflow:hidden;isolation:isolate;transform:translate3d(0,calc(100% + 6px),0);transition:transform .46s cubic-bezier(.32,.72,0,1),left .36s cubic-bezier(.32,.72,0,1),right .36s cubic-bezier(.32,.72,0,1);will-change:transform;backface-visibility:hidden}
 #priv.on .ap-sheet,
 #prem.on .ap-sheet{transform:translate3d(0,0,0)}
+#verif.on .ap-sheet{transform:translate3d(0,0,0)}
 #priv .ap-head,
 #prem .ap-head{position:relative;flex:none;height:76px;display:flex;align-items:center;justify-content:center}
+#verif .ap-head{position:relative;flex:none;height:76px;display:flex;align-items:center;justify-content:center}
 #priv .ap-t,
 #prem .ap-t{font-size:18px;font-weight:650}
+#verif .ap-t{font-size:18px;font-weight:650}
 #priv .ap-x,
 #prem .ap-x{position:absolute;top:16px;left:16px;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer;transition:transform .45s cubic-bezier(.25,.8,.25,1)}
+#verif .ap-x{position:absolute;top:16px;left:16px;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer;transition:transform .45s cubic-bezier(.25,.8,.25,1)}
 #priv .ap-x:active,
 #prem .ap-x:active{transform:scale(1.1)}
+#verif .ap-x:active{transform:scale(1.1)}
 #priv .ap-x svg,
 #prem .ap-x svg{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+#verif .ap-x svg{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
 #priv .ap-body,
 #prem .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
+#verif .ap-body{flex:0 1 auto;min-height:0;padding:22px 20px 0}
 #priv .ap-lab,
 #prem .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
+#verif .ap-lab{margin:0 0 8px 16px;font-size:13px;font-weight:500;color:var(--hint2);letter-spacing:.02em}
 #priv .ap-inp,
 #prem .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
+#verif .ap-inp{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;border-radius:26px;background:var(--el)}
 #priv .ap-inp input,
 #prem .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
+#verif .ap-inp input{flex:1;min-width:0;height:100%;padding:0;margin:0;border:0;outline:0;background:none;color:#fff;font:inherit;font-size:18px;font-weight:500;caret-color:var(--accent2)}
 #priv .ap-inp input::placeholder,
 #prem .ap-inp input::placeholder{color:#6d6d72}
+#verif .ap-inp input::placeholder{color:#6d6d72}
 #priv .ap-hint,
 #prem .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
+#verif .ap-hint{margin:8px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #priv .ap-hint b,
 #prem .ap-hint b{font-weight:650}
+#verif .ap-hint b{font-weight:650}
 #priv .ap-row,
 #prem .ap-row{margin-top:25px;height:52px;border-radius:26px;background:var(--el);display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+#verif .ap-row{margin-top:25px;height:52px;border-radius:26px;background:var(--el);display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
 #priv .ap-note,
 #prem .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
+#verif .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #priv .ap-btnw,
 #prem .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
+#verif .ap-btnw{flex:none;padding:30px 29px 31px;transition:padding-left .36s cubic-bezier(.32,.72,0,1),padding-right .36s cubic-bezier(.32,.72,0,1),padding-bottom .25s}
 #priv:not(.on) .ap-btnw,
 #prem:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
+#verif:not(.on) .ap-btnw{transition:padding-left .45s cubic-bezier(.33,0,.15,1),padding-right .45s cubic-bezier(.33,0,.15,1),padding-bottom .25s}
 #priv .ap-go,
 #prem .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#verif .ap-go{touch-action:manipulation;transition:transform .3s cubic-bezier(.4,0,.2,1),color .2s;margin:0;filter:drop-shadow(0 0 26px rgba(0,0,0,.12));width:100%;height:52px;border:0;border-radius:26px;background:var(--accent2) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;-webkit-appearance:none;appearance:none}
 #priv .ap-go:active,
 #prem .ap-go:active{transform:scale(1.04)}
+#verif .ap-go:active{transform:scale(1.04)}
 #priv .ap-go.dis,
 #prem .ap-go.dis{color:rgba(255,255,255,.55)}
+#verif .ap-go.dis{color:rgba(255,255,255,.55)}
 #priv .ap-go svg,
 #prem .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
+#verif .ap-go svg{flex:none;width:22px;height:22px;fill:#fff;fill-rule:evenodd;margin:0 -4px 0 -3px}
 #priv .ap-row,
 #prem .ap-row{cursor:default;padding:0 18px}
+#verif .ap-row{cursor:default;padding:0 18px}
 #priv .ap-rv,
 #prem .ap-rv{color:var(--hint2);font-weight:500}
+#verif .ap-rv{color:var(--hint2);font-weight:500}
 #priv .ap-row.ok .ap-rv,
 #prem .ap-row.ok .ap-rv{color:#fff}
+#verif .ap-row.ok .ap-rv{color:#fff}
 #priv .ap-note,
 #prem .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
+#verif .ap-note{margin:10px 16px 0;font-size:14px;line-height:1.25;color:var(--hint2)}
 #priv .ap-rv,
 #prem .ap-rv{display:flex;align-items:center;gap:5px}
+#verif .ap-rv{display:flex;align-items:center;gap:5px}
 #priv .ap-rs,
 #prem .ap-rs{width:19px;height:19px;object-fit:contain;display:block}
+#verif .ap-rs{width:19px;height:19px;object-fit:contain;display:block}
 #priv .ap-sheet,
 #prem .ap-sheet{transition:transform .48s cubic-bezier(.25,.85,.3,1)}
+#verif .ap-sheet{transition:transform .48s cubic-bezier(.25,.85,.3,1)}
 #priv:not(.on) .ap-sheet,
 #prem:not(.on) .ap-sheet{transition:transform .4s cubic-bezier(.33,0,.15,1)}
+#verif:not(.on) .ap-sheet{transition:transform .4s cubic-bezier(.33,0,.15,1)}
 #priv .ap-dim,
 #prem .ap-dim{transition-duration:.4s}
+#verif .ap-dim{transition-duration:.4s}
 #priv:not(.on) .ap-dim,
 #prem:not(.on) .ap-dim{transition-duration:.4s}
+#verif:not(.on) .ap-dim{transition-duration:.4s}
 #priv .ap-body,
 #prem .ap-body{padding:22px 20px 0}
+#verif .ap-body{padding:22px 20px 0}
 #priv .ap-sel,
 #prem .ap-sel{position:relative}
+#verif .ap-sel{position:relative}
 #priv .ap-inp,
 #prem .ap-inp{position:relative}
+#verif .ap-inp{position:relative}
 #priv .ap-inp select,
 #prem .ap-inp select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;border:0;margin:0;padding:0;cursor:pointer}
+#verif .ap-inp select{position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:16px;border:0;margin:0;padding:0;cursor:pointer}
 #priv .ap-inp,
 #prem .ap-inp{cursor:pointer;justify-content:space-between;color:#fff;font-size:18px;font-weight:500;user-select:none;-webkit-user-select:none}
+#verif .ap-inp{cursor:pointer;justify-content:space-between;color:#fff;font-size:18px;font-weight:500;user-select:none;-webkit-user-select:none}
 #priv .ap-ch,
 #prem .ap-ch{flex:none;width:22px;height:22px;fill:none;stroke:var(--hint2);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease}
+#verif .ap-ch{flex:none;width:22px;height:22px;fill:none;stroke:var(--hint2);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s ease}
 #priv .ap-grp,
 #prem .ap-grp{margin-top:25px;border-radius:26px;background:var(--el);overflow:hidden}
+#verif .ap-grp{margin-top:25px;border-radius:26px;background:var(--el);overflow:hidden}
 #priv .ap-gh,
 #prem .ap-gh{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
+#verif .ap-gh{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 14px 0 18px;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none}
 #priv .ap-cr,
 #prem .ap-cr{stroke:var(--hint2);transition:transform .25s ease}
+#verif .ap-cr{stroke:var(--hint2);transition:transform .25s ease}
 #priv .ap-grp.open .ap-cr,
 #prem .ap-grp.open .ap-cr{transform:rotate(90deg)}
+#verif .ap-grp.open .ap-cr{transform:rotate(90deg)}
 #priv .ap-gb,
 #prem .ap-gb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.32,.72,0,1)}
+#verif .ap-gb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.32,.72,0,1)}
 #priv .ap-grp.open .ap-gb,
 #prem .ap-grp.open .ap-gb{grid-template-rows:1fr}
+#verif .ap-grp.open .ap-gb{grid-template-rows:1fr}
 #priv .ap-gi,
 #prem .ap-gi{overflow:hidden;min-height:0}
+#verif .ap-gi{overflow:hidden;min-height:0}
 #priv .ap-sr,
 #prem .ap-sr{display:flex;align-items:center;justify-content:space-between;height:52px;margin-left:18px;padding:0 14px 0 0;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative}
+#verif .ap-sr{display:flex;align-items:center;justify-content:space-between;height:52px;margin-left:18px;padding:0 14px 0 0;font-size:18px;font-weight:500;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative}
 #priv .ap-sr:before,
 #prem .ap-sr:before{content:"";position:absolute;top:0;left:0;right:0;height:.5px;background:#4a4a4d}
+#verif .ap-sr:before{content:"";position:absolute;top:0;left:0;right:0;height:.5px;background:#4a4a4d}
 #priv .ap-sw,
 #prem .ap-sw{width:60px;height:30px;border-radius:15px;background:var(--el2);position:relative;transition:.2s}
+#verif .ap-sw{width:60px;height:30px;border-radius:15px;background:var(--el2);position:relative;transition:.2s}
 #priv .ap-sw:after,
 #prem .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
+#verif .ap-sw:after{content:"";position:absolute;top:2px;left:2px;width:38px;height:26px;border-radius:13px;background:#e2e2e4;transition:.2s}
 #priv .ap-sr.on .ap-sw,
 #prem .ap-sr.on .ap-sw{background:#34c759}#priv .ap-sr.on .ap-sw:after,#prem .ap-sr.on .ap-sw:after{left:20px}
+#verif .ap-sr.on .ap-sw{background:#34c759}#priv .ap-sr.on .ap-sw:after,#verif .ap-sr.on .ap-sw:after{left:20px}
 #stat .ap-body,#priv .ap-body,#prem .ap-body{padding:22px 20px 0}
+#stat .ap-body,#priv .ap-body,#verif .ap-body{padding:22px 20px 0}
 #stat .ap-inp{cursor:default}
 #stat .sv-r{display:flex;align-items:center;gap:5px;color:#fff}
 #stat .sv-r img{width:20px;height:20px;display:block;flex:none}
 #priv .pv-sr:before,
 #prem .pv-sr:before{content:"";position:absolute;top:0;left:0;right:0;height:.5px;background:#4a4a4d}
+#verif .pv-sr:before{content:"";position:absolute;top:0;left:0;right:0;height:.5px;background:#4a4a4d}
 #priv .pv-sr,
 #prem .pv-sr{cursor:pointer}
+#verif .pv-sr{cursor:pointer}
 #priv .pv-v,
 #prem .pv-v{display:flex;align-items:center;gap:2px;color:var(--hint2);font-weight:500}
+#verif .pv-v{display:flex;align-items:center;gap:2px;color:var(--hint2);font-weight:500}
 #priv .pv-ch,
 #prem .pv-ch{flex:none;width:22px;height:22px;fill:none;stroke:var(--hint2);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#verif .pv-ch{flex:none;width:22px;height:22px;fill:none;stroke:var(--hint2);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .pf-user[hidden]{display:none!important}
 
 /* ===== окна улучшения, подарка и крафта: блюр под стеклянными элементами чуть меньше, обводка чуть тоньше ===== */
@@ -1565,10 +1627,10 @@ background:linear-gradient(to bottom,rgba(var(--glass2-rgb),var(--glass2-a)) 0%,
 /* ===== темы приложения: переключаются атрибутом data-theme на <html> и переменными :root (см. applyTheme) ===== */
 html[data-theme=light] :is(#cf,#cx){--accent:#4cb4e9;--accent2:#4BB6EE;--text:#fff;--hint:#9e9e9e;--hint2:#8e8e93;--el:#2c2c2e;--el2:#3a3a3c;--line:#333335;--sheet:#1c1c1e;--sheet-rgb:28,28,30;color:#fff}   /* окна подарков, покупки, улучшения и крафта остаются тёмными */
 html[data-theme=light] .pf .w,html[data-theme=light] #p-edit .ein input,html[data-theme=light] .wh div.on,
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem) .ap-sheet,html[data-theme=light] #sl .sl-sheet,html[data-theme=light] #pm .pm-sheet,
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem) .ap-inp,html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem) .ap-inp input,
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif) .ap-sheet,html[data-theme=light] #sl .sl-sheet,html[data-theme=light] #pm .pm-sheet,
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif) .ap-inp,html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif) .ap-inp input,
 html[data-theme=light] #sl .sl-inp input,html[data-theme=light] #pm .pm-inp input,
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#pm) .ap-row.ok .ap-rv,html[data-theme=light] #pm .pm-row.ok .pm-rv{color:var(--text)}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif,#pm) .ap-row.ok .ap-rv,html[data-theme=light] #pm .pm-row.ok .pm-rv{color:var(--text)}
 html[data-theme=light] .sw i:after,html[data-theme=light] #ap .ap-sw:after{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 /* цена на карточках маркета: фон — цвет текста цены с прозрачностью .1 (перебивает цвет от подарка) */
 /* цена на карточках маркета: фон задаётся инлайном — тот же цвет, что у плашки с номером подарка */
@@ -1582,10 +1644,10 @@ html[data-theme=light] :is(#cp,#gx) .glass{--glass-rgb:60,60,67;--glass2-rgb:60,
 
 /* ===== светлая тема: уточнения ===== */
 /* окна оформления, цены, продажи и т.п.: серый лист, белые графы и кнопки */
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#sl,#nc,#pm){--sheet:#efeff3;--sheet-rgb:239,239,243;--el:#fff;--hint:#6d6d72;--hint2:#6d6d72}
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#pm) :is(.ap-rv,.pm-rv,.pv-v){color:#8d8d8f}
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#pm) :is(.ap-ch,.ap-cr,.pv-ch,.ap-c){stroke:#b7b7b9}
-html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem) .ap-sr:before{background:var(--line)}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif,#sl,#nc,#pm){--sheet:#efeff3;--sheet-rgb:239,239,243;--el:#fff;--hint:#6d6d72;--hint2:#6d6d72}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif,#pm) :is(.ap-rv,.pm-rv,.pv-v){color:#8d8d8f}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif,#pm) :is(.ap-ch,.ap-cr,.pv-ch,.ap-c){stroke:#b7b7b9}
+html[data-theme=light] :is(#ap,#lg,#stat,#priv,#prem,#verif) .ap-sr:before{background:var(--line)}
 html[data-theme=light] .row .v{color:#8d8d8f}
 html[data-theme=light] .row:after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 15' fill='none' stroke='%23b7b7b9' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.6 1.6L7 7.5l-5.4 5.9'/%3E%3C/svg%3E")}
 /* окна подарка и покупки: таблица и графы */
@@ -1666,17 +1728,30 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 
 /* ===== окно GiftCrafts Premium (стили как у «Конфиденциальности») ===== */
 #prem .pm-l{display:flex;align-items:center;gap:12px;min-width:0}
+#verif .pm-l{display:flex;align-items:center;gap:12px;min-width:0}
 #prem .pm-st{flex:none;width:26px;height:26px;margin:0 -2px;fill:url(#pmGrad);fill-rule:evenodd}
+#verif .pm-st{flex:none;width:26px;height:26px;margin:0 -2px;fill:url(#pmGrad);fill-rule:evenodd}
 #prem .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
+#verif .pm-r{display:flex;align-items:center;gap:6px;color:var(--hint2);font-weight:500}
 #prem .pm-2{margin-top:25px}
+#verif .pm-2{margin-top:25px}
 #prem .pm-bal{position:absolute;top:16px;right:22px;height:var(--hdr-h);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1;pointer-events:none}
+#verif .pm-bal{position:absolute;top:16px;right:22px;height:var(--hdr-h);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;line-height:1;pointer-events:none}
 #prem .pm-bal .gbl{font-size:14px;font-weight:450}
+#verif .pm-bal .gbl{font-size:14px;font-weight:450}
 #prem .pm-bal .gv{font-size:15px;font-weight:550;margin-top:2px}
+#verif .pm-bal .gv{font-size:15px;font-weight:550;margin-top:2px}
 #prem .pm-bal .gv img{width:17px;height:17px}
+#verif .pm-bal .gv img{width:17px;height:17px}
 #prem:not(.act) .pm-a,#prem.act .pm-b{display:none!important}
+#verif:not(.act) .pm-a,#verif.act .pm-b{display:none!important}
 #prem .ap-go{position:relative}
+#verif .ap-go{position:relative}
 #prem .ap-go.pm-b{gap:5px}
+#verif .ap-go.pm-b{gap:5px}
 #prem .pm-d{cursor:default}
+#verif .pm-d{cursor:default}
+#verif .pm-st{fill:url(#vfGrad);fill-rule:evenodd}   /* значок верификации в окне — голубой градиент */
 </style>
 <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/placedgames/pg/Background.jpg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -1834,7 +1909,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="pf" id="pfBd" hidden><b>день рождения</b><span class="w" id="pBd"></span></div>
     <div class="pf" id="pfAbout" hidden><b>о себе</b><span class="w" id="pAbout"></span></div>
   </div>
-  <div class="vnote"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="vbm-note" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g transform="translate(256 256) scale(0.39) translate(-627 -598)" fill="#000"><path d="M331 520Q331 498 350 483L607 292Q627 280 647 292L903 483Q922 498 922 520L922 705Q922 735 895 722L647 528Q627 515 607 528L358 722Q331 735 331 705Z"/><path d="M485 760L608 652Q628 640 648 652L771 760Q793 778 771 796L648 904Q628 916 608 904L485 796Q463 778 485 760Z"/></g></mask></defs><g mask="url(#vbm-note)"><rect x="76" y="76" width="360" height="360" rx="42"/><rect x="76" y="76" width="360" height="360" rx="42" transform="rotate(45 256 256)"/></g></svg><span>Верифицирован организацией «GiftCrafts».</span></div>
+  <div class="vnote" id="vnote" hidden><svg viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="vbm-note" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g transform="translate(256 256) scale(0.39) translate(-627 -598)" fill="#000"><path d="M331 520Q331 498 350 483L607 292Q627 280 647 292L903 483Q922 498 922 520L922 705Q922 735 895 722L647 528Q627 515 607 528L358 722Q331 735 331 705Z"/><path d="M485 760L608 652Q628 640 648 652L771 760Q793 778 771 796L648 904Q628 916 608 904L485 796Q463 778 485 760Z"/></g></mask></defs><g mask="url(#vbm-note)"><rect x="76" y="76" width="360" height="360" rx="42"/><rect x="76" y="76" width="360" height="360" rx="42" transform="rotate(45 256 256)"/></g></svg><span>Верифицирован организацией «GiftCrafts».</span></div>
   <div class="mpin" id="mePin"><div class="mpin-bl"></div><div class="mpin-bg"></div><div class="mpin-bg2"></div><div class="mpin-band"></div><div class="mpin-hd" id="mpHd"><div class="mph-n" id="mphN"></div><div class="mph-s"><span id="mphC"></span></div></div></div>
   <div class="mbody">
   <div class="mtabs glass" id="mtabs"><i id="mtI"></i><button class="on" data-m="gifts"><span>Подарки</span><span class="mt-ic" id="mtIcons"></span></button><button data-m="collectibles" id="mtColl"><span>Коллекции</span></button></div>
@@ -1861,7 +1936,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
   <div class="list">
     <div class="row" data-s="Номер"><div class="ic" style="background:linear-gradient(to bottom,#62e27d,#31cc62)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-phone"/></svg></div><span class="t">Номер</span><span class="v" id="eNum"></span></div>
     <div class="row" data-s="Имя пользователя"><div class="ic" style="background:linear-gradient(to bottom,#8a7cf5,#5b5bdb)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-user"/></svg></div><span class="t">Имя пользователя</span><span class="v" id="eUser2"></span></div>
-    <div class="row" data-s="Верификация"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:27px" viewBox="0 0 24 24"><use href="#ni-verified"/></svg></div><span class="t">Верификация</span><span class="v">Купить</span></div>
+    <div class="row" id="verRow"><div class="ic" style="background:linear-gradient(to bottom,#56caff,#3bb1e9)"><svg class="ico" style="--s:27px" viewBox="0 0 24 24"><use href="#ni-verified"/></svg></div><span class="t">Верификация</span><span class="v" id="verRowV">Купить</span></div>
     <div class="row" data-s="Канал"><div class="ic" style="background:linear-gradient(to bottom,#ffbd3e,#ffa50d)"><svg class="ico" style="--s:30px" viewBox="0 0 30 30"><use href="#ni-channel"/></svg></div><span class="t">Канал</span><span class="v">Добавить</span></div>
   </div>
   <div class="ehint">Вы можете отображать в профиле приложения свой канал из Telegram. <a id="chInfo">Узнать подробнее<svg viewBox="0 0 8 12"><path d="M1.5 1.5L6.3 6l-4.8 4.5"/></svg></a></div>
@@ -2200,6 +2275,29 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     <div class="ap-btnw"><button class="ap-go pm-b" id="premGo" type="button"><span>Купить за</span><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#i-star"/></svg><span id="premPrice" data-i18n-skip="1">250</span></button><button class="ap-go pm-a" id="premOk" type="button"><span>Сохранить изменения</span></button></div>
   </div>
 </div>
+<div id="verif" aria-hidden="true">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="vfGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#56caff"/><stop offset="1" stop-color="#3bb1e9"/></linearGradient></defs></svg>
+  <div class="ap-dim"></div>
+  <div class="ap-sheet" id="verifSheet">
+    <div class="ap-head">
+      <button class="ap-x glass" id="verifX" type="button" aria-label="Закрыть"><svg class="ico" style="--s:26px" viewBox="0 0 24 24" stroke-width="2.4"><path d="M5.5 5.5l13 13M18.5 5.5l-13 13"/></svg></button>
+      <div class="ap-t">Верификация</div>
+      <div class="pm-bal" id="verifBal"><div class="gbl">Баланс</div><div class="gv"><img id="verifBalI" alt=""><span id="verifBalV" data-i18n-skip="1"></span></div></div>
+    </div>
+    <div class="ap-body">
+      <div class="ap-lab">ВЕРИФИКАЦИЯ</div>
+      <div class="ap-sel pm-b"><div class="ap-inp"><span class="pm-l"><svg class="pm-st" viewBox="0 0 24 24" aria-hidden="true"><use href="#ni-verified"/></svg><span id="verifTermV">1 месяц</span></span><select id="verifTermSel" aria-label="Срок верификации"><option value="1">1 месяц</option><option value="3">3 месяца</option><option value="12">12 месяцев</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
+      <div class="ap-hint pm-b">Выберите срок верификации.</div>
+      <div class="ap-sel pm-2 pm-b"><div class="ap-inp pm-d"><span>Способ оплаты</span><span class="pm-r"><span>Звёзды</span><svg class="ap-ch" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></svg></span></div></div>
+      <div class="ap-hint pm-b">Выберите наиболее подходящий способ оплаты и оплатите верификацию.</div>
+      <div class="ap-sel pm-a"><div class="ap-inp pm-d"><span class="pm-l"><svg class="pm-st" viewBox="0 0 24 24" aria-hidden="true"><use href="#ni-verified"/></svg><span id="verifActV" data-i18n-skip="1">Активна</span></span></div></div>
+      <div class="ap-hint pm-a">Верификация активна.</div>
+      <div class="ap-sel pm-2 pm-a"><div class="ap-inp"><span id="verifShowV">Отображать</span><select id="verifShowSel" aria-label="Отображение верификации"><option value="1">Отображать</option><option value="0">Не отображать</option></select><svg class="ap-ch" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg></div></div>
+      <div class="ap-hint pm-a">Настройте отображение верификации в профиле для себя и других.</div>
+    </div>
+    <div class="ap-btnw"><button class="ap-go pm-b" id="verifGo" type="button"><span>Купить за</span><svg viewBox="0 0 512 512" aria-hidden="true"><use href="#i-star"/></svg><span id="verifPrice" data-i18n-skip="1">3 000</span></button><button class="ap-go pm-a" id="verifOk" type="button"><span>Сохранить изменения</span></button></div>
+  </div>
+</div>
 <div id="cf" aria-hidden="true">
   <div class="cf-dim"></div>
   <div class="cf-sheet" id="cfSheet">
@@ -2284,7 +2382,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
     }).catch(e=>{
       delete cache[url];
       if(!(opts&&opts.__r)&&el.__ga===tok&&!(el.__box&&el.contains(el.__box))){setTimeout(()=>{if(el.__ga===tok&&el.contains(img))mount(el,img,url,Object.assign({},opts,{__r:1}),tok,fail)},400);return}
-      console.warn('[giftAnim] не удалось загрузить/запустить',url,e);fail&&fail();
+      console.warn('[giftAnim] не удалось загрузить/запустить',url,e);fail&&fail();try{opts&&opts.onFail&&opts.onFail()}catch(_){}
     });
   }
   /* при включённых анимациях подарок играет сам; при выключенных — только по нажатию (один раз, повтор после окончания) */
@@ -2680,7 +2778,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'продан':'sold','редкий':'limited','маркет':'resale','Вы действительно хотите очистить кэш приложения?':'Do you really want to clear the app cache?','Очистить кэш приложения?':'Clear app cache?','Очистить':'Clear',
 'Нет подарков по фильтру':'No gifts match the filter','Подарков пока нет':'No gifts yet','Добавьте этот подарок в профиль или обменяйте на':'Add this gift to your profile or exchange it for',
 'Вы купили подарок за':'You bought the gift for','Просмотр подарка':'Viewing gift','Подарки закончились':'Gifts are sold out','Память браузера заполнена: подарок не сохранился':'Browser storage is full: the gift was not saved',
-'Аноним':'Anonymous','Гость':'Guest','Обмен на звёзды':'Exchange for stars','Обменять':'Exchange','Вы обменяли этот подарок':'You exchanged this gift','Этот подарок был сделан':'This gift was made','ОК':'OK','Способ оплаты':'Payment method','Звёзды':'Stars','Выберите срок подписки':'Choose subscription term','1 месяц':'1 month','3 месяца':'3 months','12 месяцев':'12 months','Купить за':'Buy for','Premium подписка активна.':'Premium subscription is active.','Premium активирован':'Premium activated','Подтверждение оплаты':'Payment confirmation','Вы действительно хотите купить GiftCrafts Premium на':'Are you sure you want to buy GiftCrafts Premium for','Купить':'Buy','Спасибо за покупку подписки GiftCrafts Premium на':'Thank you for purchasing a GiftCrafts Premium subscription for','Не отображать':'Hide','Отображать':'Show',
+'Аноним':'Anonymous','Гость':'Guest','Обмен на звёзды':'Exchange for stars','Обменять':'Exchange','Вы обменяли этот подарок':'You exchanged this gift','Этот подарок был сделан':'This gift was made','ОК':'OK','Способ оплаты':'Payment method','Звёзды':'Stars','Выберите срок подписки':'Choose subscription term','1 месяц':'1 month','3 месяца':'3 months','12 месяцев':'12 months','Купить за':'Buy for','Premium подписка активна.':'Premium subscription is active.','Premium активирован':'Premium activated','Верификация':'Verification','ВЕРИФИКАЦИЯ':'VERIFICATION','Выберите срок верификации.':'Choose the verification period.','Выберите наиболее подходящий способ оплаты и оплатите верификацию.':'Choose the most suitable payment method and pay for verification.','Верификация активна.':'Verification is active.','Настройте отображение верификации в профиле для себя и других.':'Set how verification is displayed in your profile for you and others.','Верификация активирована':'Verification activated','Вы действительно хотите купить верификацию на':'Are you sure you want to buy verification for','Спасибо за покупку верификации на':'Thank you for purchasing verification for','Подтверждение оплаты':'Payment confirmation','Вы действительно хотите купить GiftCrafts Premium на':'Are you sure you want to buy GiftCrafts Premium for','Купить':'Buy','Спасибо за покупку подписки GiftCrafts Premium на':'Thank you for purchasing a GiftCrafts Premium subscription for','Не отображать':'Hide','Отображать':'Show',
 'Дата':'Date','Стоимость':'Cost','От':'From','Наличие':'Availability','Статус':'Status','Неуникальный':'Non-unique','Удаление подписи':'Delete caption','Удалить':'Delete',
 'Подарок уже улучшен':'The gift is already upgraded','Подарок для':'Gift for','Подарок от':'Gift from',', отправлен':', sent','с комментарием':'with comment','подробнее':'more','Подробнее':'More',
 'Добавить в профиль':'Add to profile','Подарок добавлен в профиль':'Gift added to profile','Носить':'Wear','Открепить':'Unpin','Закрепить':'Pin','Убрать':'Remove','Копировать ссылку':'Copy link','Похожие подарки':'Similar gifts','Поделиться':'Share','Передать':'Transfer',
@@ -3190,6 +3288,73 @@ applyStarAnim(store.get('starAnim','1')==='1');
       if(window.__popup)__popup(t,m,bt,cb);else if(confirm(t+'\n\n'+m))cb('buy');
     };
   })();
+
+  /* ===== Верификация: окно как у Premium (срок → способ оплаты → «Купить за»; после покупки «Активна до…» и «Отображать») ===== */
+  (function(){
+    const VW=document.getElementById('verif');if(!VW)return;
+    const g=id=>document.getElementById(id);
+    const PRICE={1:3000,3:8000,12:30000},TL={1:'1 месяц',3:'3 месяца',12:'12 месяцев'};
+    const MS=['янв.','февр.','мар.','апр.','мая','июн.','июл.','авг.','сент.','окт.','нояб.','дек.'];
+    const price=p=>Number(p).toLocaleString('ru-RU');
+    /* по умолчанию верификации нет: значка у имени и метки под карточкой профиля тоже нет */
+    window.isVer=()=>(+store.get('verUntil','0')||0)>Date.now();
+    window.verShown=()=>store.get('verShow','1')!=='0';
+    const term=g('verifTermSel'),show=g('verifShowSel'),go=g('verifGo'),ok=g('verifOk'),rowV=g('verRowV'),note=g('vnote');
+    g('verifBalI').src=STAR;
+    /* метка «Верифицирован организацией…» и значение в пункте настроек следуют состоянию верификации */
+    function paint(){
+      if(note)note.hidden=!(isVer()&&verShown());
+      if(rowV){const w=isVer()?'':'Купить';if(rowV.__w!==w){rowV.__w=w;rowV.textContent=w}}
+    }
+    window.__verPaint=paint;
+    function sync(){
+      VW.classList.toggle('act',isVer());
+      g('verifTermV').textContent=TL[term.value];g('verifPrice').textContent=price(PRICE[term.value]);
+      const d=new Date(+store.get('verUntil','0')||0);
+      g('verifActV').textContent='Активна до '+d.getDate()+' '+MS[d.getMonth()]+' '+d.getFullYear();
+      show.value=verShown()?'1':'0';g('verifShowV').textContent=show.value==='0'?'Не отображать':'Отображать';
+      try{g('verifBalV').innerHTML=balHtml()}catch(_){}
+      paint();
+    }
+    const verClose=win('verif','verRow',()=>{sync();requestAnimationFrame(()=>{try{shapeBtn(go);shapeBtn(ok)}catch(_){}})});
+    term.addEventListener('change',sync);
+    show.addEventListener('change',()=>{g('verifShowV').textContent=show.value==='0'?'Не отображать':'Отображать'});
+    /* «Не отображать»: значок у имени и метка под карточкой пропадают */
+    ok.onclick=()=>{
+      store.set('verShow',show.value);
+      try{applyWear()}catch(_){}
+      paint();
+      if(verClose)verClose();
+    };
+    let buying=false;
+    go.onclick=()=>{
+      if(buying||isVer())return;   /* двойное нажатие во время закрытия окна не должно списывать звёзды дважды */
+      const m=+term.value,p=PRICE[m];
+      if(getStars()<p){noStars();return}
+      const T0='Подтверждение оплаты',M0='Вы действительно хотите купить верификацию на '+TL[m]+'?',B0=[{id:'buy',type:'default',text:'Купить'},{id:'cancel',type:'cancel'}];
+      const doBuy=()=>{
+        if(isVer()||getStars()<p)return;
+        buying=true;setTimeout(()=>{buying=false},900);
+        try{addStars(-p,'Верификация',TL[m])}catch(_){}
+        const d=new Date();d.setMonth(d.getMonth()+m);store.set('verUntil',String(d.getTime()));store.set('verShow','1');
+        try{applyWear()}catch(_){}
+        paint();
+        if(verClose)verClose();
+        setTimeout(()=>{try{sync()}catch(_){}},520);   /* содержимое меняется уже после того, как окно уехало */
+        /* окно закрывается и больше не открывается как покупка — вместо этого окно благодарности */
+        setTimeout(()=>{
+          const t='Верификация активирована',msg='Спасибо за покупку верификации на '+TL[m]+'.';
+          if(window.__popup)__popup(t,msg,[{id:'ok',type:'ok'}],()=>{});
+          else if(tg&&tg.showPopup&&(!tg.isVersionAtLeast||tg.isVersionAtLeast('6.2'))){try{tg.showPopup({title:t,message:msg,buttons:[{id:'ok',type:'ok'}]},()=>{})}catch(_){alert(t+'\n\n'+msg)}}
+          else alert(t+'\n\n'+msg);
+        },320);
+      };
+      buying=true;setTimeout(()=>{buying=false},400);
+      if(window.__popup)__popup(T0,M0,B0,r=>{if(r==='buy')doBuy()});
+      else if(confirm(T0+'\n\n'+M0))doBuy();
+    };
+    paint();
+  })();
 })();
 
 /* ===== Свайп вниз закрывает окна: Оформление, Язык, и др. ===== */
@@ -3238,6 +3403,7 @@ applyStarAnim(store.get('starAnim','1')==='1');
   swipe('stat','statSheet','statX','.ap-body');
   swipe('priv','privSheet','privX','.ap-body');
   swipe('prem','premSheet','premX','.ap-body');
+  swipe('verif','verifSheet','verifX','.ap-body');
   swipe('sl','slSheet','slX',null);
   swipe('pm','pmSheet','pmX',null);
 })();
@@ -4119,7 +4285,9 @@ function applyWear(){
     const ph=document.querySelector(t.ph),bg=document.getElementById(t.bg),pn=document.getElementById(t.pn),rt=document.getElementById(t.rt);
     if(!ph||!bg||!pn)return;
     /* значок слева от имени (в профиле и в настройках) */
-    if(!pn.querySelector('.vbadge')){
+    const wantVb=!!(window.isVer&&isVer()&&verShown());   /* значка верификации по умолчанию нет — он появляется после покупки */
+    if(!wantVb){const ob=pn.querySelector('.vbadge');if(ob)ob.remove()}
+    else if(!pn.querySelector('.vbadge')){
       const id='vbm-'+t.pn,b=document.createElement('span');b.className='vbadge';
       b.innerHTML='<svg viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="'+id+'" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><g transform="translate(256 256) scale(0.39) translate(-627 -598)" fill="#000"><path d="M331 520Q331 498 350 483L607 292Q627 280 647 292L903 483Q922 498 922 520L922 705Q922 735 895 722L647 528Q627 515 607 528L358 722Q331 735 331 705Z"/><path d="M485 760L608 652Q628 640 648 652L771 760Q793 778 771 796L648 904Q628 916 608 904L485 796Q463 778 485 760Z"/></g></mask></defs><g mask="url(#'+id+')"><rect x="76" y="76" width="360" height="360" rx="42"/><rect x="76" y="76" width="360" height="360" rx="42" transform="rotate(45 256 256)"/></g></svg>';
       pn.insertBefore(b,pn.firstChild);
@@ -4151,6 +4319,7 @@ function applyWear(){
     repaintWear(bg);
     if(!bg.__ro&&window.ResizeObserver){bg.__ro=new ResizeObserver(()=>{try{drawWearPat(t)}catch(_){}});bg.__ro.observe(bg)}
   });
+  try{window.__verPaint&&__verPaint()}catch(_){}
   try{window.__mpHdRefresh&&__mpHdRefresh()}catch(_){}
 }
 /* нажатие на носимый подарок рядом с именем — открывается окно этого подарка */
@@ -4928,7 +5097,7 @@ renderMyGifts();
     if(my!==cyc||!um.classList.contains('on')||closing)return;
     setTimeout(()=>{
       if(my!==cyc||!um.classList.contains('on')||closing||!curG)return;
-      if(ring.length<2){onDone(my);return}            /* второй набор ещё грузится — ждём */
+      if(ring.length<2){const nw=Date.now();if(nw-(onDone.rt||0)>2500){onDone.rt=nw;try{fillRing(curG)}catch(_){}}onDone(my);return}            /* второй набор ещё грузится — ждём и время от времени пробуем догрузить */
       ri=(ri+1)%ring.length;const q=ring[ri];
       xfade(()=>apply(q,{keep:true}));
     },300);
@@ -4961,7 +5130,11 @@ renderMyGifts();
   }
   function apply(p,o){
     o=o||{};const top=$u('umTop'),my=++cyc;
-    if(p.model){const mi=p.model.cloneNode(true);mi.alt='';$u('umModel').replaceChildren(mi);if(p.modelJ){if(window.__gA===false)giftAnimDur(p.modelJ).then(d=>setTimeout(()=>onDone(my),(o.delay||0)+d*1000));else if(o.delay){/* тяжёлая Lottie-сборка — только когда окно уже открылось, чтобы не рвать анимацию */setTimeout(()=>{if(my===cyc&&um.classList.contains('on'))giftAnim($u('umModel'),p.modelJ,{delay:80,onComplete:()=>onDone(my)})},o.delay)}else giftAnim($u('umModel'),p.modelJ,{delay:o.delay,onComplete:()=>onDone(my)})}}
+    if(p.model){const mi=p.model.cloneNode(true);mi.alt='';$u('umModel').replaceChildren(mi);if(p.modelJ){if(window.__gA===false)giftAnimDur(p.modelJ).then(d=>setTimeout(()=>onDone(my),(o.delay||0)+d*1000));else if(o.delay){/* тяжёлая Lottie-сборка — только когда окно уже открылось, чтобы не рвать анимацию */setTimeout(()=>{if(my===cyc&&um.classList.contains('on'))giftAnim($u('umModel'),p.modelJ,{delay:80,onComplete:()=>onDone(my),onFail:()=>setTimeout(()=>onDone(my),2200)})},o.delay)}else giftAnim($u('umModel'),p.modelJ,{delay:o.delay,onComplete:()=>onDone(my),onFail:()=>setTimeout(()=>onDone(my),2200)})}}
+    if(!p.model)$u('umModel').replaceChildren();   /* картинки модели нет на сервере — старая модель не остаётся */
+    /* страховка: если анимации нет, она не загрузилась или не запустилась — набор всё равно сменится (фон, узор и модель) */
+    {const fb=d=>setTimeout(()=>onDone(my),(o.delay||0)+Math.max(3000,Math.min(9000,d*1000+1800)));
+      if(p.model&&p.modelJ&&window.giftAnimDur)giftAnimDur(p.modelJ).then(d=>fb(d),()=>fb(3));else fb(3)}
     if(!o.keep){if(!o.reuse){ring=[p];ri=0;ringG=curG;{const gg=curG;setTimeout(()=>fillRing(gg),o.delay?o.delay+150:0)}}
       $u('umMini').innerHTML=p.minis.map(m=>'<span class="mm"><img src="'+m.i.src+'" alt=""></span>').join('');
           }
