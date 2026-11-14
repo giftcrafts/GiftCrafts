@@ -3603,7 +3603,7 @@ function clearAppCache(){ location.reload(); }
     /* затемнение под слайдером растёт вместе с прокруткой: чем ближе слайдер к месту, где он встаёт под хедер, тем больше площадь затемнения
        (выезжает сверху вниз). Никаких таймерных transition — на месте ничего не меняется. */
     const q=Math.max(0,Math.min(1,1-(M.tabsAt-sc)/SHADE_RAMP));
-    bg2.style.opacity=q*mm;bg2.style.transform='translate3d(0,'+(-(1-q)*(q>=1?0:Math.max(0,bg2.offsetHeight-bg.offsetHeight)))+'px,0)';
+    bg2.style.opacity=q*mm;bg2.style.transform='translate3d(0,'+(-(1-q)*(q>=1?0:M.ext))+'px,0)';
     bl.style.opacity=q;bl.style.transform=bg2.style.transform;
   }
   /* «ступенька» на слайдере: жест, начатый выше/ниже места, где слайдер встаёт под кнопки хедера, не может проехать это место —
@@ -3868,7 +3868,7 @@ function clearAppCache(){ location.reload(); }
     if(sbv!==lsb){lsb=sbv;pin.style.setProperty('--sb',sbv)}
     bg.style.opacity=p*mm;
     /* затемнение под слайдером выезжает сверху вниз по мере приближения слайдера к хедеру */
-    const q=cl(1-(M.tabsAt-sc)/SHADE_RAMP),tr='translate3d(0,'+(-(1-q)*(q>=1?0:Math.max(0,bg2.offsetHeight-bg.offsetHeight)))+'px,0)';
+    const q=cl(1-(M.tabsAt-sc)/SHADE_RAMP),tr='translate3d(0,'+(-(1-q)*(q>=1?0:M.ext))+'px,0)';
     bg2.style.opacity=q*mm;bg2.style.transform=tr;
     bl.style.opacity=q;bl.style.transform=tr;
   }
@@ -4001,6 +4001,9 @@ function warmMyGifts(){
     const s=x.upg&&x.upg.si;if(s&&!PG_WARM.has(s)){PG_WARM.add(s);pgLoad(s).then(i=>{if(i)(window.__symC||(window.__symC={}))[s]=i})}
   });
 }
+/* очередь отрисовки узоров: за кадр рисуем не больше ~5 мс, остальное — в следующих кадрах (раньше 9 новых карточек рисовались в одном кадре и прокрутка подвисала) */
+const PGQ=[];let pgQT=0;
+function pgQRun(){if(pgQT)return;pgQT=requestAnimationFrame(function f(){pgQT=0;const t0=performance.now();while(PGQ.length&&performance.now()-t0<5){try{PGQ.shift()()}catch(_){}}if(PGQ.length)pgQT=requestAnimationFrame(f)})}
 function pgDraw(cv){
   /* страница профиля скрыта (размер 0) — рисуем по расчётному размеру ячейки, ResizeObserver перерисует, если он изменится */
   let w=cv.clientWidth,h=cv.clientHeight;if(!w||!h){w=h=Math.max(60,(innerWidth-52)/3)}
@@ -4012,6 +4015,7 @@ function pgDraw(cv){
   cv.__busy=1;
   pgLoad(cv.dataset.si).then(im=>{
     cv.__busy=0;
+    PGQ.push(()=>{
     if(!cv.isConnected||cv.__W!==W)return;
     if(!im){const n=cv.__r=(cv.__r||0)+1;if(n<4)setTimeout(()=>{cv.__W=0;pgDraw(cv)},1200*n);return}   /* не загрузилось — пробуем ещё раз */
     cv.width=W;cv.height=H;
@@ -4033,6 +4037,7 @@ function pgDraw(cv){
     cx.restore();
     cv.__ok=1;
     try{const oc=document.createElement('canvas');oc.width=W;oc.height=H;oc.getContext('2d').drawImage(cv,0,0);const ks=Object.keys(PG_BMP);if(ks.length>=120)delete PG_BMP[ks[0]];PG_BMP[key]=oc}catch(_){}
+    });pgQRun();
   });
 }
 /* страховка от «чёрной дыры»: если обсервер по какой-то причине оставил карточку скрытой (.pgoff), хотя она на экране или рядом, возвращаем её */
@@ -8628,7 +8633,7 @@ renderMyGifts();
 :root{transition:--wh-cr .45s ease,--wh-cg .45s ease,--wh-cb .45s ease}
 body{--wh-k:0;transition:--wh-k .45s ease}
 body.hwear{--wh-k:1}
-#hdr .hb:not([data-a="save"]){
+#hdr .hb:not([data-a="save"]),#mtabs,#otabs{
   --wr:calc(var(--wh-cr)*.88 + 20);--wg:calc(var(--wh-cg)*.88 + 20);--wb:calc(var(--wh-cb)*.88 + 20);   /* цвет подарка (почти без серого) */
   --glass-w:calc(.6px - .15px*var(--wh-k));--glass2-spread:calc(.65px - .3px*var(--wh-k));--glass2-blur:1.5px;
   --glass-strong:calc(.13 + .1*var(--wh-k));--glass2-a:calc(.3 + .12*var(--wh-k));
@@ -8638,15 +8643,21 @@ body.hwear{--wh-k:1}
   --wh-prs:color-mix(in srgb,var(--hdr-press) calc((1 - var(--wh-k))*100%),rgba(255,255,255,.6));
   background-color:color-mix(in srgb,var(--hdr-bg) calc(100% - 100%*var(--wh-k)),transparent);   /* серая подложка уходит, вместо неё — тёмный оттенок цвета фона */
   background-image:linear-gradient(rgba(calc(var(--wh-cr)*.72),calc(var(--wh-cg)*.72),calc(var(--wh-cb)*.72),calc(.5*var(--wh-k))),rgba(calc(var(--wh-cr)*.72),calc(var(--wh-cg)*.72),calc(var(--wh-cb)*.72),calc(.5*var(--wh-k))));
-  -webkit-backdrop-filter:blur(10px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
-  backdrop-filter:blur(10px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
+  -webkit-backdrop-filter:blur(8px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
+  backdrop-filter:blur(8px) saturate(calc(1.2 + .1*var(--wh-k))) brightness(calc(1 - .12*var(--wh-k)));
   color:var(--wh-ink)}
+#mtabs,#otabs{--wh-k:0}   /* слайдеры лежат на обычном фоне страницы, а не на цветной шапке */
+#mtabs button,#otabs button,#mtabs button.on,#otabs button.on{color:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]) .gbl{color:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]) svg{fill:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]) svg.hs{fill:none;stroke:var(--wh-ink)}
 #hdr .hb:not([data-a="save"]).press,#hdr .hb:not([data-a="save"]).press .gbl{color:var(--wh-prs)}
 #hdr .hb:not([data-a="save"]).press svg{fill:var(--wh-prs)}
 #hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:var(--wh-prs)}
+/* производительность профиля: у плашки цены и значка «скрыт» в карточках нет размытия подложки — на сотнях подарков оно сильно тормозило прокрутку */
+.pgrid .pg .ppr,.pgrid .pg .peye{-webkit-backdrop-filter:none;backdrop-filter:none}
+.pgrid .pg .ppr{background:rgba(0,0,0,.4)}
+.pgrid .pg .peye{background:rgba(0,0,0,.42)}
 </style>
 <script>
 /* «Носить»: цвет фона подарка → переменные для кнопок хедера; режим включён, пока под хедером видна цветная шапка профиля */
@@ -8664,9 +8675,10 @@ body.hwear{--wh-k:1}
   function upd(){
     raf=0;let on=false;
     try{
-      const h=document.getElementById('hdr'),hb=h?h.getBoundingClientRect().bottom:0;
+      let hb=-1;
       for(const pg of document.querySelectorAll('#p-me.on,#p-settings.on')){
         const ph=pg.querySelector('.phead');if(!ph||!ph.classList.contains('wear'))continue;
+        if(hb<0){const h=document.getElementById('hdr');hb=h?h.getBoundingClientRect().bottom:0}
         if(ph.getBoundingClientRect().bottom-16>hb+2){on=true;break}
       }
     }catch(_){}
