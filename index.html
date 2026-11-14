@@ -4975,7 +4975,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=310,UGGO=170;   /* UGGO — через сколько подарок доезжает на место и стартует карусель */
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -5526,7 +5526,6 @@ renderMyGifts();
     const L=STEPS>=8?Math.round(STEPS*.84):0,T1=L?L/V*1000:0,T2=L?(STEPS-L)*1.95/V*1000:900,T=T1+T2;
     trk.style.setProperty('--iw',iw+'px');trk.style.transform='translateX('+tx0+'px)';
     /* подарок из предпросмотра остаётся на месте и медленно становится прозрачным, а карусель выезжает слева */
-    let GX=null;
     try{
       const car=trk.parentNode,tp=car.parentNode;
       tp.querySelectorAll('.ug-ghost').forEach(n=>n.remove());
@@ -5537,7 +5536,7 @@ renderMyGifts();
       if(bx)gh.appendChild(bx);else{gh.innerHTML=first?'<img src="'+first+'" alt="">':pk.emoji;gh.style.transform='scale(1)'}   /* картинка не увеличивалась — призрак того же размера */
       tp.insertBefore(gh,car);
       const rmG=()=>{try{lot&&lot.destroy()}catch(_){}if(gh.parentNode)gh.remove()};
-      gh.animate([{opacity:1},{opacity:0}],bx?{duration:280,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}:{duration:130,easing:'ease-out',fill:'forwards'}).onfinish=rmG;
+      gh.animate([{opacity:1},{opacity:0}],bx?{duration:280,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}:{duration:130,easing:'ease-out',fill:'forwards'}).onfinish=rmG;   /* статичная картинка пропадает быстро и сразу, как только начало открываться окно улучшения */
       setTimeout(rmG,500);
     }catch(_){}
     /* размер каждой модели зависит от расстояния до центра: увеличение к центру и уменьшение после него; задаётся сразу, ещё до старта, и для всех моделей */
@@ -5558,45 +5557,26 @@ renderMyGifts();
     const SV=(el,n,v)=>el.style.setProperty(n,(+v).toFixed(3));
     /* ровно как открытие предпросмотра: старое окно само растёт одной сплошной формой (контур и фон),
        новое проявляется поверх и едет за верхним краем; затемнение не накладывается второй раз */
-    let mfFrame=(k,t)=>{
+    const mfFrame=(k,t)=>{
       const kg=k,hh=uh+rise*kg,P=window.__sheetPath;
       const gp='path("'+P(sw2,hh,0,0)+'")';
       sh.style.height=hh.toFixed(2)+'px';sh.style.webkitClipPath=gp;sh.style.clipPath=gp;
       const pp='path("'+P(sw2,hh,0,gH-hh)+'")';
       ugS.style.webkitClipPath=pp;ugS.style.clipPath=pp;
       /* шапка старого окна едет вверх вместе с краем формы и совпадает с шапкой нового: модель, фон и кнопки — на одном месте, перекрёстного «наезда» нет */
-      SV(UG,'--gt',ss(cl(k,0,.45)));SV(UG,'--gk',ss(cl(k,.3,.85)));UG.style.setProperty('--go',((1-kg)*rise).toFixed(2)+'px');UG.style.setProperty('--gbo',(rise<0?(1-kg)*rise:0).toFixed(2)+'px');
-      SV(um,'--uf',1-ss(cl(k,0,.4)));SV(um,'--uk',1-ss(cl(k,.1,.6)));SV(um,'--ut2',1-ss(cl(k,.2,.7)));SV(um,'--umo',1-ss(cl(t||0,0,.85)));sh.style.setProperty('--uo',(rise<0?0:-rise*kg).toFixed(2)+'px');   /* при складывании содержимое предпросмотра уже едет вместе с верхним краем: дополнительный сдвиг опускал его вдвое быстрее и оставлял сверху полосу без подсветки */
+      SV(UG,'--gt',cl(k,.05,.35));SV(UG,'--gk',cl(k,.4,.8));UG.style.setProperty('--go',((1-kg)*rise).toFixed(2)+'px');UG.style.setProperty('--gbo',(rise<0?(1-kg)*rise:0).toFixed(2)+'px');
+      SV(um,'--uf',1-cl(k,0,.3));SV(um,'--uk',1-cl(k,.2,.5));SV(um,'--ut2',1-cl(k,.3,.65));SV(um,'--umo',1-ss(cl(t||0,0,.85)));sh.style.setProperty('--uo',(rise<0?0:-rise*kg).toFixed(2)+'px');   /* при складывании содержимое предпросмотра уже едет вместе с верхним краем: дополнительный сдвиг опускал его вдвое быстрее и оставлял сверху полосу без подсветки */
       /* стрелка уходит, крестик приходит: те же значения, что у возврата предпросмотр → подарок */
       SV(sh,'--ubo',1-cl(k,0,.3));SV(sh,'--ubs',1-.3*cl(k,0,.5));SV(sh,'--ua',1-cl(k,0,.2));
       SV(UG,'--gxo',cl(k,0,.12));SV(UG,'--gxs',1);SV(UG,'--gxa',cl(k,0,.12));
     };
-    let gxF=null;
-    const ghHand=()=>{
-      if(!GX||GX.done)return;GX.done=true;
-      try{const it=trk.children[N-1];
-        if(it){if(GX.bx){it.replaceChildren(GX.bx);it.__lot=GX.lot||null}it.style.opacity=''}}catch(_){}
-      GX.rmG();
-    };
-    try{
-      if(GX){
-        const cc=r=>({x:r.left+r.width/2,y:r.top+r.height/2});
-        const pr=cc(GX.pre.getBoundingClientRect());GX.gh.style.transform='none';
-        mfFrame(1);const b1=cc(GX.gh.getBoundingClientRect());mfFrame(0);const b0=cc(GX.gh.getBoundingClientRect());
-        gxF={pr:pr,b0:b0,b1:b1};
-      }
-    }catch(_){gxF=null}
-    const ghFrame=(k,t)=>{if(!gxF||!GX||GX.done)return;const pp=ss(Math.min(1,(t||0)*UGMF_MS/UGGO));const bx_=gxF.b0.x+(gxF.b1.x-gxF.b0.x)*k,by=gxF.b0.y+(gxF.b1.y-gxF.b0.y)*k;GX.gh.style.transform='translate('+((gxF.pr.x-bx_)*(1-pp)).toFixed(2)+'px,'+((gxF.pr.y-by)*(1-pp)).toFixed(2)+'px) scale('+(1+.12*pp).toFixed(3)+')'};
-    {const _mf=mfFrame;mfFrame=(k,t)=>{_mf(k,t);ghFrame(k,t)}}
     mfFrame(0);
-    setTimeout(()=>{ghHand()},UGMF_MS+900);
-    window.__ugGhKill=()=>{if(GX&&!GX.done){GX.done=true;GX.rmG();try{GX.lot&&GX.lot.destroy()}catch(_){}}};
     {const tm=performance.now();
       const stm=now=>{
-        const t=Math.min(1,(now-tm)/UGMF_MS);mfFrame(EASE(t),t);
+        const t=Math.min(1,(now-tm)/OPEN_MS);mfFrame(EASE(t),t);
         if(t<1)ugMf=requestAnimationFrame(stm);
         else{
-          ugMf=0;ghHand();ugLock=false;if(ugPend){ugPend=false;setTimeout(ugSkipNow,0)}
+          ugMf=0;ugLock=false;if(ugPend){ugPend=false;setTimeout(ugSkipNow,0)}
           const dm=UG.querySelector('.ug-dim');dm.style.transition='none';
           UG.classList.remove('morph');
           ['--gk','--gt','--go','--gbo','--gxo','--gxs','--gxa'].forEach(p=>UG.style.removeProperty(p));
@@ -5609,7 +5589,6 @@ renderMyGifts();
       try{cv.width=top.offsetWidth;cv.height=top.offsetHeight;cv.getContext('2d').drawImage($u('umPat'),0,0,cv.width,cv.height)}catch(_){}
       try{shapeBtn($u('ugSkip'))}catch(_){}
       ugLater(()=>{
-        ghHand();
         ugX=trk.animate(L?[
           {transform:'translateX('+tx0+'px)',offset:0,easing:'linear'},
           {transform:'translateX('+(tx0+L*iw)+'px)',offset:T1/T,easing:'cubic-bezier(.2,.39,.25,1)'},
@@ -5645,31 +5624,24 @@ renderMyGifts();
         if(window.giftAnim){const at=performance.now()+(L?T1-120:250);
           items.slice(0,Math.min(3,N)).forEach((o,q)=>{const el=trk.children[q];if(o.j&&el)ugLater(()=>giftAnim(el,o.j,q===0?{at,stop:true}:{once:true,at}),450+q*80)})}
         /* строки таблицы определяются чуть позже, чем выбор в шапке: фон (шапка выбирает его на 0.42·T), затем узор (+0.9 с), последней модель (карусель доезжает на T) */
-        const spB=T*.22+650+1300,spS=spB+600,spM=Math.max(spS+600,T+1300);   /* фон и узор выбираются раньше: строки таблицы останавливаются раньше */
+        const spB=T*.42+650+1300,spS=Math.max(spB+600,T*.42+900+1500),spM=Math.max(spS+600,T+1300);
         const dT=160;   /* таблица уже заполнена и к этому моменту проявилась; времена остановки не меняются */
         ugSpin($u('ugM'),pk.spl[0],pk.fm,spM-dT,dT);ugSpin($u('ugS'),pk.spl[1],pk.fs,spS-dT,dT);ugSpin($u('ugB'),pk.spl[2],pk.fb,spB-dT,dT);
         /* фон шапки следит за маской в центре: каждая новая — новый цвет; итоговая — финальный фон */
         const cl=pk.cols,fc=cl[cl.length-1];
         /* фон один на всю прокрутку: примерно на середине он плавно становится итоговым, чуть позже так же определяется узор */
-        /* за всю прокрутку — 4 фона (три промежуточных и итоговый) и 4 узора (три промежуточных и итоговый); и фон, и узор выбираются раньше */
-        const ta=performance.now(),tBg=T*.3,tPat=tBg+500;   /* 4 фона и 4 узора: 3 промежуточных и итоговый */
-        const tb=[0,tBg*.33,tBg*.66],tp=[0,tPat*.25,tPat*.5];
-        const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,3),
-              paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,3);
-        let bgS=-1,patS=-1,curC=fc,curSym=null;   /* curSym — узор на экране: при смене фона он тут же перекрашивается в цвет узора нового фона */
+        const nc=Math.max(1,cl.length-1);let lastK=-1;
+        /* до выбора фон и узор меняются каждые две модели (узор без анимации); итоговый фон выбирается на середине, итоговый узор — чуть позже фона и только он с анимацией */
+        const ta=performance.now(),tBg=T*.42,tPat=T*.42+900;
         const tick=()=>{
           if(!ugX||!UG.classList.contains('on'))return;
           let tx=tx0;try{const m=getComputedStyle(trk).transform;if(m&&m!=='none')tx=new DOMMatrix(m).m41}catch(_){}
           const q=Math.max(0,Math.min(N-1,Math.round((tx1-tx)/iw)));
-          {const el=performance.now()-ta;
-            if(!finBg){
-              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,650);if(curSym&&!finPat)ugPatSwap(curSym,fc.c3,false)}
-              else{const st=el>=tb[2]?2:el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,420);if(curSym&&!finPat)ugPatSwap(curSym,curC.c3,false)}}
-            }
-            if(!finPat){
-              if(el>=tPat){finPat=true;curSym=pk.sImg;ugPatSwap(pk.sImg,fc.c3,true)}
-              else{const st=el>=tp[2]?2:el>=tp[1]?1:0;if(st!==patS){patS=st;curSym=paSeq[st]||paSeq[0]||pk.sImg;ugPatSwap(curSym,(finBg?fc:curC).c3,false)}}
-            }}
+          /* фон и узор меняются в самом начале и затем каждые две модели; на итоговой — финальные */
+          {const el=performance.now()-ta,kk=Math.floor((N-1-q)/3),ch=kk!==lastK;if(ch)lastK=kk;
+            const c=cl[kk%nc],sy=(pk.sImgs&&pk.sImgs.length)?pk.sImgs[kk%pk.sImgs.length]:pk.sImg;
+            if(!finBg){if(el>=tBg){finBg=true;ugBgSlide(fc,650)}else if(ch)ugBgSlide(c,520)}
+            if(!finPat){if(el>=tPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}else if(ch)ugPatSwap(sy,finBg?fc.c3:c.c3,false)}}
           for(let z=1;z<3&&z<N;z++){
             const d=(tx+z*iw+iw/2-W/2)/iw,el=trk.children[z];if(!el)continue;
             if(el.__lot&&!el.__stp&&d>1.25){el.__stp=1;try{el.__lot.pause()}catch(_){}}
@@ -5678,7 +5650,7 @@ renderMyGifts();
         };
         ugRaf=requestAnimationFrame(tick);
         ugLater(()=>ugDone(x,pk,num,cl[cl.length-1]),Math.max(600,T-200));
-      },0);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
+      },0);
     });
   }
   function quietClose(){
@@ -5761,7 +5733,7 @@ renderMyGifts();
   /* поворот экрана / смена ширины: подарок остаётся по центру, узор перерисовывается по новому размеру */
   /* «Пропустить» при улучшении: сразу итог — модель, фон и узор, без прокрутки */
   function ugSkipNow(){
-    const q=ugCur;if(!q)return;ugCur=null;ugQuick=true;try{window.__ugGhKill&&__ugGhKill()}catch(_){}
+    const q=ugCur;if(!q)return;ugCur=null;ugQuick=true;
     ugT.forEach(clearTimeout);ugT=[];cancelAnimationFrame(ugRaf);
     try{ugX&&ugX.finish()}catch(_){}
     try{$u('ugTrack').getAnimations({subtree:true}).forEach(a=>{try{a.finish()}catch(_){}})}catch(_){}
