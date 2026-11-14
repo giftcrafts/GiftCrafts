@@ -1695,8 +1695,8 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #ug .ug-pill .ug-pi{flex:none;width:30px;height:30px;display:block}
 #ug .ug-pill .ug-pi svg{width:100%;height:100%;display:block}
 #ug .ug-pill .ug-pt{display:flex;flex-direction:column;gap:1px;min-width:0}
-#ug .ug-pill .ug-pt b{font-size:15px;font-weight:550;line-height:1.25}
-#ug .ug-pill .ug-pt span{font-size:14px;font-weight:400;line-height:1.14;color:rgba(255,255,255,.86)}
+#ug .ug-pill .ug-pt b{font-size:15px;font-weight:600;color:#fff;line-height:1.25}
+#ug .ug-pill .ug-pt span{font-size:14px;font-weight:450;line-height:1.28;color:#fff}
 </style>
 </head>
 <body>
@@ -4974,7 +4974,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=400;
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=340;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -5525,18 +5525,19 @@ renderMyGifts();
     const L=STEPS>=8?Math.round(STEPS*.84):0,T1=L?L/V*1000:0,T2=L?(STEPS-L)*1.95/V*1000:900,T=T1+T2;
     trk.style.setProperty('--iw',iw+'px');trk.style.transform='translateX('+tx0+'px)';
     /* подарок из предпросмотра остаётся на месте и медленно становится прозрачным, а карусель выезжает слева */
+    let GX=null;
     try{
       const car=trk.parentNode,tp=car.parentNode;
       tp.querySelectorAll('.ug-ghost').forEach(n=>n.remove());
       const gh=document.createElement('div');gh.className='ug-i ug-ghost';
-      gh.style.cssText='position:absolute;z-index:1;left:'+(car.offsetLeft+tx1)+'px;top:'+car.offsetTop+'px;width:'+iw+'px;transform:scale(1);pointer-events:none';
+      gh.style.cssText='position:absolute;z-index:3;left:'+(car.offsetLeft+tx1)+'px;top:'+car.offsetTop+'px;width:'+iw+'px;transform:scale(1);pointer-events:none';
       /* сам играющий подарок (Lottie) переезжает из предпросмотра сюда и продолжает играть, пока становится прозрачным; картинка подставляется только если анимации нет */
       const um_=$u('umModel'),bx=(um_.__box&&um_.contains(um_.__box))?um_.__box:null,lot=bx?um_.__lot:null;
       if(bx)gh.appendChild(bx);else{gh.innerHTML=first?'<img src="'+first+'" alt="">':pk.emoji;gh.style.transform='scale(1)'}   /* картинка не увеличивалась — призрак того же размера */
       tp.insertBefore(gh,car);
-      const rmG=()=>{try{lot&&lot.destroy()}catch(_){}if(gh.parentNode)gh.remove()};
-      gh.animate([{opacity:1},{opacity:0}],bx?{duration:280,easing:'cubic-bezier(.4,0,.6,1)',fill:'forwards'}:{duration:130,easing:'ease-out',fill:'forwards'}).onfinish=rmG;   /* статичная картинка пропадает быстро и сразу, как только начало открываться окно улучшения */
-      setTimeout(rmG,500);
+      /* подарок из предпросмотра не исчезает: он съезжает на место первой модели карусели и затем уезжает вправо вместе с остальными */
+      const rmG=()=>{if(gh.parentNode)gh.remove()};
+      GX={gh:gh,bx:bx,lot:lot,pre:um_,done:false,rmG:rmG};
     }catch(_){}
     /* размер каждой модели зависит от расстояния до центра: увеличение к центру и уменьшение после него; задаётся сразу, ещё до старта, и для всех моделей */
     /* размер модели зависит от расстояния до центра: растёт к центру и уменьшается после него.
@@ -5556,7 +5557,7 @@ renderMyGifts();
     const SV=(el,n,v)=>el.style.setProperty(n,(+v).toFixed(3));
     /* ровно как открытие предпросмотра: старое окно само растёт одной сплошной формой (контур и фон),
        новое проявляется поверх и едет за верхним краем; затемнение не накладывается второй раз */
-    const mfFrame=(k,t)=>{
+    let mfFrame=(k,t)=>{
       const kg=k,hh=uh+rise*kg,P=window.__sheetPath;
       const gp='path("'+P(sw2,hh,0,0)+'")';
       sh.style.height=hh.toFixed(2)+'px';sh.style.webkitClipPath=gp;sh.style.clipPath=gp;
@@ -5569,13 +5570,32 @@ renderMyGifts();
       SV(sh,'--ubo',1-cl(k,0,.3));SV(sh,'--ubs',1-.3*cl(k,0,.5));SV(sh,'--ua',1-cl(k,0,.2));
       SV(UG,'--gxo',cl(k,0,.12));SV(UG,'--gxs',1);SV(UG,'--gxa',cl(k,0,.12));
     };
+    let gxF=null;
+    const ghHand=()=>{
+      if(!GX||GX.done)return;GX.done=true;
+      try{const it=trk.children[N-1];
+        if(it){if(GX.bx){it.replaceChildren(GX.bx);it.__lot=GX.lot||null}it.style.opacity=''}}catch(_){}
+      GX.rmG();
+    };
+    try{
+      if(GX){
+        const cc=r=>({x:r.left+r.width/2,y:r.top+r.height/2});
+        const pr=cc(GX.pre.getBoundingClientRect());GX.gh.style.transform='none';
+        mfFrame(1);const b1=cc(GX.gh.getBoundingClientRect());mfFrame(0);const b0=cc(GX.gh.getBoundingClientRect());
+        gxF={pr:pr,b0:b0,b1:b1};
+      }
+    }catch(_){gxF=null}
+    const ghFrame=k=>{if(!gxF||!GX||GX.done)return;const bx_=gxF.b0.x+(gxF.b1.x-gxF.b0.x)*k,by=gxF.b0.y+(gxF.b1.y-gxF.b0.y)*k;GX.gh.style.transform='translate('+((gxF.pr.x-bx_)*(1-k)).toFixed(2)+'px,'+((gxF.pr.y-by)*(1-k)).toFixed(2)+'px) scale('+(1+.12*k).toFixed(3)+')'};
+    {const _mf=mfFrame;mfFrame=(k,t)=>{_mf(k,t);ghFrame(k)}}
     mfFrame(0);
+    setTimeout(()=>{ghHand()},UGMF_MS+900);
+    window.__ugGhKill=()=>{if(GX&&!GX.done){GX.done=true;GX.rmG();try{GX.lot&&GX.lot.destroy()}catch(_){}}};
     {const tm=performance.now();
       const stm=now=>{
         const t=Math.min(1,(now-tm)/UGMF_MS);mfFrame(EASE(t),t);
         if(t<1)ugMf=requestAnimationFrame(stm);
         else{
-          ugMf=0;ugLock=false;if(ugPend){ugPend=false;setTimeout(ugSkipNow,0)}
+          ugMf=0;ghHand();ugLock=false;if(ugPend){ugPend=false;setTimeout(ugSkipNow,0)}
           const dm=UG.querySelector('.ug-dim');dm.style.transition='none';
           UG.classList.remove('morph');
           ['--gk','--gt','--go','--gbo','--gxo','--gxs','--gxa'].forEach(p=>UG.style.removeProperty(p));
@@ -5588,6 +5608,7 @@ renderMyGifts();
       try{cv.width=top.offsetWidth;cv.height=top.offsetHeight;cv.getContext('2d').drawImage($u('umPat'),0,0,cv.width,cv.height)}catch(_){}
       try{shapeBtn($u('ugSkip'))}catch(_){}
       ugLater(()=>{
+        ghHand();
         ugX=trk.animate(L?[
           {transform:'translateX('+tx0+'px)',offset:0,easing:'linear'},
           {transform:'translateX('+(tx0+L*iw)+'px)',offset:T1/T,easing:'cubic-bezier(.2,.39,.25,1)'},
@@ -5653,7 +5674,7 @@ renderMyGifts();
         };
         ugRaf=requestAnimationFrame(tick);
         ugLater(()=>ugDone(x,pk,num,cl[cl.length-1]),Math.max(600,T-200));
-      },ugQuick?0:UGMF_MS-60);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
+      },ugQuick?0:UGMF_MS);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
     });
   }
   function quietClose(){
@@ -5736,7 +5757,7 @@ renderMyGifts();
   /* поворот экрана / смена ширины: подарок остаётся по центру, узор перерисовывается по новому размеру */
   /* «Пропустить» при улучшении: сразу итог — модель, фон и узор, без прокрутки */
   function ugSkipNow(){
-    const q=ugCur;if(!q)return;ugCur=null;ugQuick=true;
+    const q=ugCur;if(!q)return;ugCur=null;ugQuick=true;try{window.__ugGhKill&&__ugGhKill()}catch(_){}
     ugT.forEach(clearTimeout);ugT=[];cancelAnimationFrame(ugRaf);
     try{ugX&&ugX.finish()}catch(_){}
     try{$u('ugTrack').getAnimations({subtree:true}).forEach(a=>{try{a.finish()}catch(_){}})}catch(_){}
