@@ -5497,8 +5497,7 @@ renderMyGifts();
     /* ровно как открытие предпросмотра: старое окно само растёт одной сплошной формой (контур и фон),
        новое проявляется поверх и едет за верхним краем; затемнение не накладывается второй раз */
     const mfFrame=(k,t)=>{
-      /* если окно улучшения ниже предпросмотра (rise<0), складывание идёт быстрее остального: верхний край предпросмотра успевает опуститься до края нового окна раньше, чем проявится его содержимое, и серой полосы сверху не остаётся */
-      const kg=rise<0?ss(cl(k,0,.55)):k,hh=uh+rise*kg,P=window.__sheetPath;
+      const kg=k,hh=uh+rise*kg,P=window.__sheetPath;
       const gp='path("'+P(sw2,hh,0,0)+'")';
       sh.style.height=hh.toFixed(2)+'px';sh.style.webkitClipPath=gp;sh.style.clipPath=gp;
       const pp='path("'+P(sw2,hh,0,gH-hh)+'")';
