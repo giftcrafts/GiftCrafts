@@ -8618,20 +8618,35 @@ renderMyGifts();
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-w:.4px;--glass2-spread:.4px;--glw:.3px;--glass-strong:calc(.33 + .3*max(0,var(--ug-l) - .45));--glass2-a:calc(.61 + .25*max(0,var(--ug-l) - .45))}
 #ug .ug-x.glass::after,#ug .ug-more.glass::after,#um .um-back.glass::after,#um .um-xc.glass::after{box-shadow:inset 0 0 var(--glass2-blur) var(--glass2-spread) rgba(var(--glass2-rgb),var(--glass2-a)),inset 0 0 0 calc(var(--glass-w) + var(--glw)) var(--glc)}
 
-/* ===== «Носить»: кнопки хедера профиля подстраиваются под фон подарка (как кнопки Telegram), но лежат на слегка затемнённой подложке ===== */
-body.hwear #hdr .hb:not([data-a="save"]){
-  --glass-w:.5px;--glass2-spread:.4px;--glass-strong:.33;--glass2-a:.58;
-  --glass-rgb:calc(var(--wh-cr,120) + (255 - var(--wh-cr,120))*.5),calc(var(--wh-cg,100) + (255 - var(--wh-cg,100))*.5),calc(var(--wh-cb,150) + (255 - var(--wh-cb,150))*.5);
-  --glass2-rgb:calc(var(--wh-cr,120) + (255 - var(--wh-cr,120))*.62),calc(var(--wh-cg,100) + (255 - var(--wh-cg,100))*.62),calc(var(--wh-cb,150) + (255 - var(--wh-cb,150))*.62);
-  background-color:rgba(255,255,255,.1);
-  -webkit-backdrop-filter:blur(10px) brightness(.7) saturate(1.3);backdrop-filter:blur(10px) brightness(.7) saturate(1.3);
-  color:#fff;transition:transform .45s cubic-bezier(.25,.8,.25,1),background-color .3s ease}
-body.hwear #hdr .hb:not([data-a="save"]) .gbl{color:#fff}
-body.hwear #hdr .hb:not([data-a="save"]) svg{fill:#fff}
-body.hwear #hdr .hb:not([data-a="save"]) svg.hs{fill:none;stroke:#fff}
-body.hwear #hdr .hb:not([data-a="save"]).press,body.hwear #hdr .hb:not([data-a="save"]).press .gbl{color:rgba(255,255,255,.6)}
-body.hwear #hdr .hb:not([data-a="save"]).press svg{fill:rgba(255,255,255,.6)}
-body.hwear #hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:rgba(255,255,255,.6)}
+/* ===== кнопки хедера на всех страницах: один адаптивный стиль, без переключения между видами.
+   Стекло берёт цвет и яркость из того, что под кнопкой (размытие + saturate); обводка и засвет — полупрозрачные и серее фона.
+   --wh-k: 0 — обычный фон, 1 — цветная шапка носимого подарка (плавно, в такт с её появлением); --wh-cr/cg/cb — цвет фона подарка ===== */
+@property --wh-k{syntax:"<number>";inherits:true;initial-value:0}
+@property --wh-cr{syntax:"<number>";inherits:true;initial-value:120}
+@property --wh-cg{syntax:"<number>";inherits:true;initial-value:100}
+@property --wh-cb{syntax:"<number>";inherits:true;initial-value:150}
+:root{transition:--wh-cr .45s ease,--wh-cg .45s ease,--wh-cb .45s ease}
+body{--wh-k:0;transition:--wh-k .45s ease}
+body.hwear{--wh-k:1}
+#hdr .hb:not([data-a="save"]){
+  --wr:calc(var(--wh-cr)*.55 + 54);--wg:calc(var(--wh-cg)*.55 + 54);--wb:calc(var(--wh-cb)*.55 + 54);   /* цвет подарка, смешанный с серым */
+  --glass-w:calc(.6px - .15px*var(--wh-k));--glass2-spread:calc(.65px - .3px*var(--wh-k));--glass2-blur:1.5px;
+  --glass-strong:calc(.13 + .1*var(--wh-k));--glass2-a:calc(.3 + .12*var(--wh-k));
+  --glass-rgb:calc(104 + (var(--wr) + (255 - var(--wr))*.5 - 104)*var(--wh-k)),calc(106 + (var(--wg) + (255 - var(--wg))*.5 - 106)*var(--wh-k)),calc(114 + (var(--wb) + (255 - var(--wb))*.5 - 114)*var(--wh-k));
+  --glass2-rgb:calc(120 + (var(--wr) + (255 - var(--wr))*.55 - 120)*var(--wh-k)),calc(122 + (var(--wg) + (255 - var(--wg))*.55 - 122)*var(--wh-k)),calc(130 + (var(--wb) + (255 - var(--wb))*.55 - 130)*var(--wh-k));
+  --wh-ink:color-mix(in srgb,var(--hdr-ink) calc((1 - var(--wh-k))*100%),#fff);
+  --wh-prs:color-mix(in srgb,var(--hdr-press) calc((1 - var(--wh-k))*100%),rgba(255,255,255,.6));
+  background-color:color-mix(in srgb,var(--hdr-bg) calc(100% - 25%*var(--wh-k)),transparent);
+  background-image:linear-gradient(rgba(150,150,156,calc(.1*var(--wh-k))),rgba(150,150,156,calc(.1*var(--wh-k))));
+  -webkit-backdrop-filter:blur(10px) saturate(calc(1.2 - .15*var(--wh-k))) brightness(calc(1 - .25*var(--wh-k)));
+  backdrop-filter:blur(10px) saturate(calc(1.2 - .15*var(--wh-k))) brightness(calc(1 - .25*var(--wh-k)));
+  color:var(--wh-ink)}
+#hdr .hb:not([data-a="save"]) .gbl{color:var(--wh-ink)}
+#hdr .hb:not([data-a="save"]) svg{fill:var(--wh-ink)}
+#hdr .hb:not([data-a="save"]) svg.hs{fill:none;stroke:var(--wh-ink)}
+#hdr .hb:not([data-a="save"]).press,#hdr .hb:not([data-a="save"]).press .gbl{color:var(--wh-prs)}
+#hdr .hb:not([data-a="save"]).press svg{fill:var(--wh-prs)}
+#hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:var(--wh-prs)}
 </style>
 <script>
 /* «Носить»: цвет фона подарка → переменные для кнопок хедера; режим включён, пока под хедером видна цветная шапка профиля */
@@ -8640,7 +8655,7 @@ body.hwear #hdr .hb:not([data-a="save"]).press svg.hs{fill:none;stroke:rgba(255,
   const px=h=>{h=String(h||'').trim();let m=h.match(/^#([0-9a-f]{3})$/i);if(m)h='#'+m[1].replace(/./g,x=>x+x);m=h.match(/^#([0-9a-f]{6})$/i);if(m){const n=parseInt(m[1],16);return[(n>>16)&255,(n>>8)&255,n&255]}m=h.match(/(\d+)[ ,]+(\d+)[ ,]+(\d+)/);return m?[+m[1],+m[2],+m[3]]:[90,70,180]};
   window.__whCol=function(c1,c2){
     try{
-      if(!c1||!c2){['--wh-cr','--wh-cg','--wh-cb'].forEach(k=>R.style.removeProperty(k));return}
+      if(!c1||!c2)return;
       const a=px(c1),b=px(c2);   /* у кромки шапки преобладает внешний цвет градиента, по углам фон ещё слегка затемнён */
       ['--wh-cr','--wh-cg','--wh-cb'].forEach((k,i)=>R.style.setProperty(k,((.25*a[i]+.75*b[i])*.85).toFixed(1)));
     }catch(_){}
