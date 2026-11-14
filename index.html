@@ -5651,24 +5651,24 @@ renderMyGifts();
         /* фон шапки следит за маской в центре: каждая новая — новый цвет; итоговая — финальный фон */
         const cl=pk.cols,fc=cl[cl.length-1];
         /* фон один на всю прокрутку: примерно на середине он плавно становится итоговым, чуть позже так же определяется узор */
-        /* за всю прокрутку — 5 фонов (четыре промежуточных и итоговый) и 5 узоров (четыре промежуточных и итоговый); и фон, и узор выбираются раньше */
-        const ta=performance.now(),tBg=T*.4,tPat=tBg+500;   /* 5 фонов и 5 узоров: 4 промежуточных и итоговый */
-        const tb=[0,tBg*.25,tBg*.5,tBg*.75],tp=[0,tPat*.2,tPat*.4,tPat*.6];
-        const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,4),
-              paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,4);
-        let bgS=-1,patS=-1,curC=fc;
+        /* за всю прокрутку — 4 фона (три промежуточных и итоговый) и 4 узора (три промежуточных и итоговый); и фон, и узор выбираются раньше */
+        const ta=performance.now(),tBg=T*.3,tPat=tBg+500;   /* 4 фона и 4 узора: 3 промежуточных и итоговый */
+        const tb=[0,tBg*.33,tBg*.66],tp=[0,tPat*.25,tPat*.5];
+        const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,3),
+              paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,3);
+        let bgS=-1,patS=-1,curC=fc,curSym=null;   /* curSym — узор на экране: при смене фона он тут же перекрашивается в цвет узора нового фона */
         const tick=()=>{
           if(!ugX||!UG.classList.contains('on'))return;
           let tx=tx0;try{const m=getComputedStyle(trk).transform;if(m&&m!=='none')tx=new DOMMatrix(m).m41}catch(_){}
           const q=Math.max(0,Math.min(N-1,Math.round((tx1-tx)/iw)));
           {const el=performance.now()-ta;
             if(!finBg){
-              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,650)}
-              else{const st=el>=tb[3]?3:el>=tb[2]?2:el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,420)}}
+              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,650);if(curSym&&!finPat)ugPatSwap(curSym,fc.c3,false)}
+              else{const st=el>=tb[2]?2:el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,420);if(curSym&&!finPat)ugPatSwap(curSym,curC.c3,false)}}
             }
             if(!finPat){
-              if(el>=tPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}
-              else{const st=el>=tp[3]?3:el>=tp[2]?2:el>=tp[1]?1:0;if(st!==patS){patS=st;ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,(finBg?fc:curC).c3,false)}}
+              if(el>=tPat){finPat=true;curSym=pk.sImg;ugPatSwap(pk.sImg,fc.c3,true)}
+              else{const st=el>=tp[2]?2:el>=tp[1]?1:0;if(st!==patS){patS=st;curSym=paSeq[st]||paSeq[0]||pk.sImg;ugPatSwap(curSym,(finBg?fc:curC).c3,false)}}
             }}
           for(let z=1;z<3&&z<N;z++){
             const d=(tx+z*iw+iw/2-W/2)/iw,el=trk.children[z];if(!el)continue;
