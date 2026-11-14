@@ -628,7 +628,7 @@ html,body{overscroll-behavior:none}
 #um .um-pat{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0;-webkit-mask-image:radial-gradient(ellipse 75% 80% at 50% 45%,#000 35%,rgba(0,0,0,.4) 100%);mask-image:radial-gradient(ellipse 75% 80% at 50% 45%,#000 35%,rgba(0,0,0,.4) 100%)}
 #um .um-tint::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 80% at 50% 45%,rgba(0,0,0,0) 30%,rgba(0,0,0,.4) 100%)}
 #um .um-back{position:absolute;top:16px;left:16px;z-index:3;width:var(--hdr-h);height:var(--hdr-h);border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0;color:#fff;cursor:pointer}
-#um .um-back,#um .um-var{--glass-rgb:196,198,206;--glass-strong:.285;--glass2-rgb:206,208,216;--glass2-a:.585}
+#um .um-back,#um .um-var{--glass-rgb:196,198,210;--glass-strong:.285;--glass2-rgb:206,208,220;--glass2-a:.585}
 #um .um-var{border:0;background:rgba(200,202,210,.34);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 #um .um-back{box-shadow:inset 0 0 0 .6px rgba(0,0,0,.14);background:rgba(255,255,255,.23);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);opacity:var(--ubo,0);transform:scale(var(--ubs,0));will-change:transform,opacity}
 #um .um-back svg{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;opacity:var(--ua,0)}
@@ -8230,7 +8230,7 @@ renderMyGifts();
   const ug=document.getElementById('ug');if(!ug)return;
   const R=18,SM=.5,T=.4,T2=.72;
   /* засвет рядом с обводкой: полоса GW px сразу внутри обводки (после T px), цвет GC темнее обводки, GA — насыщенность */
-  const GW=.7,GC='#b4b6c2',GA=.2,GM=T+GW/2;
+  const GW=.7,GC='#b4b6c6',GA=.2,GM=T+GW/2;
   function shape(b){
     if(!window.squircle)return;
     const cs=getComputedStyle(b);let w=parseFloat(cs.width),h=parseFloat(cs.height);
@@ -8283,7 +8283,7 @@ renderMyGifts();
 /* окно улучшенного подарка: пока меняется фон (fxon — улучшение, ugsw — смена фона/перелистывание), размытие под стеклянными кнопками выключено,
    иначе браузер на время оставляет под ними старый фон. Раньше это отключение перебивалось более поздним правилом .glass;
    затемнение brightness заменено эквивалентной полупрозрачной подложкой, чтобы цвет кнопок не скакал при возврате блюра */
-#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(184,184,184,.2845)}
+#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(184,184,188,.2845)}
 /* без backdrop-filter Safari перестаёт обрезать фон кнопки по clip-path (squircle) — фон становился прямоугольным; форму держит маска по тому же контуру */
 #ug.fxon .ug-a.glass.sm,#ug.ugsw .ug-a.glass.sm{border-radius:18px!important}
 #ug.fxon .mk-sale.glass,#ug.ugsw .mk-sale.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(175,175,175,.313)}
@@ -8292,13 +8292,16 @@ renderMyGifts();
 /* засвет крестика и «⋯» уже на 0.2px (было 0.7px) */
 #ug .ug-x,#ug .ug-more{--glass2-spread:.5px}
 /* кнопки окон предпросмотра улучшения / улучшения / уникального подарка чуть прозрачнее (было .235 / .215 / .34) */
-#ug .ug-a.glass{background-color:rgba(255,255,255,.205)}
-#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(255,255,255,.185)}
-#um .um-var{background:rgba(200,202,210,.30)}
+#ug .ug-a.glass{background-color:rgba(251,251,255,.205)}
+#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(251,251,255,.185)}
+#um .um-var{background:rgba(200,202,214,.30)}
 /* при складывании (окно улучшения ниже предпросмотра) фон нового окна едет вверх вместе с краем формы и должен быть виден выше его рамки; видимую часть режет clip-path, поэтому overflow на время анимации снимаем */
 #ug.morph .ug-sheet{overflow:visible}
 /* при складывании крестик и «⋯» едут вместе с верхним краем окна, а не стоят на финальном месте, пока окно ещё складывается */
 #ug.morph .ug-x,#ug.morph .ug-more{transform:translate3d(0,var(--gbo,0px),0)}
+/* цвет обводки и засвета кнопок окон предпросмотра улучшения / улучшения / уникального подарка холоднее: синий канал +4 (0, 0, +4) */
+#ug .ug-a.glass{--glass-rgb:calc(164 + var(--ug-d) + var(--ug-w)),calc(166 + var(--ug-d) + var(--ug-w)),calc(180 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(174 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w))}
+#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-rgb:calc(176 + var(--ug-d) + var(--ug-w)),calc(178 + var(--ug-d) + var(--ug-w)),calc(192 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(188 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w)),calc(204 + var(--ug-d) + var(--ug-w))}
 </style>
 </body>
 </html>
