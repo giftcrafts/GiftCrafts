@@ -1685,7 +1685,8 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #um .um-bal:active{transform:translate(-50%,0) scale(.97)}
 #um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:450;color:var(--text,#fff)}
 #um .um-bal .ub-l img{width:17px;height:17px;display:block}
-#um .um-bal .ub-l b{font-weight:550;font-size:14px;margin-left:-2px}
+#um .um-bal .ub-l b{font-weight:550;font-size:15px;margin-left:-2px}
+#um .um-bal .ub-l b small{font-size:inherit}
 #um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:15px;font-weight:450;color:var(--accent,#4ba3f0)}
 #um .um-bal .ub-a svg{width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
@@ -2503,6 +2504,7 @@ function go(p,instant,back,o){
   // страницы не помнят позицию: всегда открываются сверху и с первой вкладкой
   if(mkKeep){const sv=window.__mkSave,pu=()=>{try{inc.__mpinUpd&&inc.__mpinUpd()}catch(_){}};inc.__mpinHold=sv;clearTimeout(inc.__mpinHT);inc.__mpinHT=setTimeout(()=>{inc.__mpinHold=0;pu()},NAV_MS+600);inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu();requestAnimationFrame(()=>{inc.scrollTop=sv;pu()})})}   /* затемнение под хедером обновляется сразу, без мигания */
   else if(p!==prev||instant){inc.scrollTop=0;if(dir===0)resetTabs()}   /* при анимации сброс вкладок и перерисовка — после первого кадра (heavy) */
+  if(p==='me'){[350,900,1700].forEach(t=>setTimeout(()=>{if(cur==='me'&&!navFin){try{meFillSpace()}catch(_){}try{window.meSync&&meSync()}catch(_){}}},NAV_MS+t))}   /* страховка от «запомненного» состояния: запас прокрутки и кнопка пересчитываются, когда всё перерисовалось */
   if(p==='me'){const _f=()=>{try{pgPaint($('#pGrid'))}catch(_){}if(dir===0)meFillSpace()};dir!==0?requestAnimationFrame(()=>requestAnimationFrame(_f)):requestAnimationFrame(_f)}   /* после первого кадра, а не до старта анимации; пересчёт запаса — после анимации */
   if(prev==='me'&&p!=='me')setTimeout(()=>{if(cur!=='me'){try{renderMyGifts(true)}catch(_){}}},NAV_MS+150);   /* ушли из профиля — оставляем в нём только первую порцию карточек */
   const later=[];
@@ -2517,7 +2519,7 @@ function go(p,instant,back,o){
   if(dfr){later.push(()=>{
     window.__opLim=0;
     try{if(cur==='stars')__opMore()}catch(_){}
-    try{if(cur==='gifts'){SPg.start();PS.kick()}else if(cur==='stars')SPs.start();else if(cur==='market'){SPm.start();PS.kick()}else if(cur==='me')meFillSpace()}catch(_){}
+    try{if(cur==='gifts'){SPg.start();PS.kick()}else if(cur==='stars')SPs.start();else if(cur==='market'){SPm.start();PS.kick()}else if(cur==='me'){meFillSpace();window.meSync&&meSync()}}catch(_){}
   })}
   if(dir!==0){
     const top=dir>0?inc:out,bot=dir>0?out:inc,bar=$('#bar');
@@ -3368,7 +3370,7 @@ function clearAppCache(){ location.reload(); }
   window.__slideGuard=(el,on)=>{clearTimeout(el.__sg);if(!on)return;el.__sg=setTimeout(()=>{try{if(!el.classList.contains('show'))return;const m=new DOMMatrix(getComputedStyle(el).transform);if(Math.abs(m.m42)>.5){el.style.transition='none';el.style.transform='none';void el.offsetWidth;el.style.transition='';el.style.transform=''}}catch(_){}},700)};
   function syncSend(){
     const want=!!(M&&pg.classList.contains('on')&&(pg.scrollTop+off)>=M.tabsAt-3);
-    if(want===sOn)return;sOn=want;if(want)hdFill();hd.classList.toggle('on',want);try{window.hdrFilter&&hdrFilter(want)}catch(_){}
+    if(want===sOn&&want===sw.classList.contains('show'))return;sOn=want;if(want)hdFill();hd.classList.toggle('on',want);try{window.hdrFilter&&hdrFilter(want)}catch(_){}
     if(want&&window.shapeBtn)try{shapeBtn(sb)}catch(_){}
     sw.classList.toggle('show',want);sw.setAttribute('aria-hidden',want?'false':'true');try{__slideGuard(sw,want)}catch(_){}
   }
@@ -3475,7 +3477,12 @@ function clearAppCache(){ location.reload(); }
   window.meUnshift=()=>{if(!touching&&!raf2&&performance.now()-lsT>350)shiftOff()};   /* не посреди прокрутки: сброс сдвига обрывает инерцию */
   const shiftOff=()=>{if(!off)return;const o=off;off=0;pg._off=0;phd.style.marginTop='';pg.scrollTop+=o;M=null;requestAnimationFrame(upd)};
   /* принудительный сброс при входе в профиль (не зависит от касаний/инерции): иначе сдвиг шапки мог остаться от прошлого захода и сломать раскладку */
-  window.meHardReset=()=>{try{stopAnim();unfreeze();capOff()}catch(_){}off=0;pg._off=0;phd.style.marginTop='';M=null;lp=-2;try{requestAnimationFrame(upd)}catch(_){}};
+  window.meHardReset=()=>{try{stopAnim();unfreeze();capOff()}catch(_){}clearTimeout(sett);off=0;pg._off=0;phd.style.marginTop='';M=null;lp=-2;
+    /* кнопка «Отправить подарки» и шапка не помнят прошлый заход: состояние сбрасывается и пересчитывается по текущей прокрутке */
+    if(sOn||sw.classList.contains('show')||hd.classList.contains('on')){sOn=false;clearTimeout(sw.__sg);sw.classList.remove('show');sw.setAttribute('aria-hidden','true');hd.classList.remove('on');window.__meStuck=false;try{window.hdrFilter&&hdrFilter(false,true)}catch(_){}}
+    try{requestAnimationFrame(upd)}catch(_){}};
+  /* пересинхронизация (после перерисовки подарков и конца анимации перехода): заново замер и проверка кнопки */
+  window.meSync=()=>{if(!pg.classList.contains('on')||touching||raf2)return;M=null;lp=-2;requestAnimationFrame(()=>{try{upd();syncSend()}catch(_){}})};
   /* прокрутка профиля в самое начало (с учётом сдвига «ступеньки») */
   window.meTop=()=>{try{stopAnim();shiftOff();pg.scrollTo({top:0,behavior:'smooth'})}catch(_){pg.scrollTop=0}};
   let sett=0;
@@ -5522,7 +5529,7 @@ renderMyGifts();
     ugTrkClear(trk);trk.innerHTML=items.map((o,q)=>'<div class="ug-i"'+(q===N-1?' style="transform:scale(1.12)"':'')+'>'+(o.s?'<img src="'+o.s+'" alt="">':pk.emoji)+'</div>').join('');
     /* скорость как в оригинале: ~15 моделей в секунду ровным ходом, затем торможение на последних пяти */
     try{trk.children[N-1].style.opacity='0'}catch(_){}
-    const STEPS=N-1,V=12.5,W=top.offsetWidth,iw=Math.round(W*.56),tx1=W/2-iw/2,tx0=tx1-STEPS*iw,D=STEPS*iw;
+    const STEPS=N-1,V=14.5,W=top.offsetWidth,iw=Math.round(W*.56),tx1=W/2-iw/2,tx0=tx1-STEPS*iw,D=STEPS*iw;
     const L=STEPS>=8?Math.round(STEPS*.84):0,T1=L?L/V*1000:0,T2=L?(STEPS-L)*1.95/V*1000:900,T=T1+T2;
     trk.style.setProperty('--iw',iw+'px');trk.style.transform='translateX('+tx0+'px)';
     /* подарок из предпросмотра остаётся на месте и медленно становится прозрачным, а карусель выезжает слева */
