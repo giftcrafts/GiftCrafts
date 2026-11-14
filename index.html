@@ -766,7 +766,7 @@ html,body{overscroll-behavior:none}
 /* таблица — те же размеры, цвета и шрифты, что в окне подарка */
 #ug .ug-tbl{margin:20px 16px 0;border:1px solid var(--line);border-radius:19px;text-align:left}
 #ug .ug-r{height:40px;font-size:15px;font-weight:400}
-#ug .ug-r+.ug-r{border-top:.5px solid var(--line)}
+#ug .ug-r+.ug-r{border-top:1px solid var(--line)}   /* разделители такой же толщины, как контур таблицы */
 #ug .ug-k{width:102px;padding:0 10px 0 12px;background:var(--el);font-weight:500;border-right:0}
 #ug .ug-v{padding:0 12px;gap:7px;border-left:1px solid var(--line)}
 #ug .ug-v.c{padding:0}
@@ -2009,7 +2009,7 @@ window.__hap=function(t){try{const h=window.Telegram&&Telegram.WebApp&&Telegram.
       <div class="ug-r"><div class="ug-k">Символ</div><div class="ug-v" id="ugS"></div></div>
       <div class="ug-r"><div class="ug-k">Фон</div><div class="ug-v" id="ugB"></div></div>
       <div class="ug-r"><div class="ug-k">Выпущено</div><div class="ug-v" id="ugAv"></div></div>
-      <div class="ug-r"><div class="ug-k">Цена</div><div class="ug-v" id="ugVal"></div></div>
+      <div class="ug-r" style="display:none"><div class="ug-k">Цена</div><div class="ug-v" id="ugVal"></div></div>   <!-- строка «Цена» скрыта; элемент оставлен, его заполняет скрипт -->
       <div class="ug-r ug-c" id="ugCm" style="display:none"></div>
     </div>
     <div class="ug-note"><svg viewBox="0 0 512 512"><use href="#i-eyeoff"/></svg><span>Этот подарок не виден в профиле.</span></div>
