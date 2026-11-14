@@ -1690,7 +1690,7 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:14px;font-weight:450;color:var(--accent,#4ba3f0)}
 #um .um-bal .ub-a svg{transform:translateY(.8px);width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
-#ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:11px;padding:8px 18px 8px 13px;border-radius:27px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:11px;padding:8px 18px 8px 13px;border-radius:27px;background:#1a1a1a;translate:var(--px,0px) var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 #ug .ug-pill .ug-pi{flex:none;width:28px;height:28px;display:block}
@@ -5723,9 +5723,29 @@ renderMyGifts();
   function ugPillShape(){if(!ugPill||!window.squircle)return;const w=ugPill.offsetWidth,h=ugPill.offsetHeight;if(!w||!h)return;const v='path("'+squircle(w,h,27,.6)+'")';ugPill.style.webkitClipPath=v;ugPill.style.clipPath=v}
   function ugPillPos(){if(!ugPill)return;ugPillShape();const r=ugS.getBoundingClientRect(),h=ugPill.offsetHeight||72;ugPill.style.top=Math.round(r.top-h-8)+'px'}
   try{if(window.ResizeObserver&&ugPill)new ResizeObserver(ugPillShape).observe(ugPill)}catch(_){}
-  function ugPillShow(){if(!ugPill||!UG.classList.contains('on')||ugClosing)return;ugPill.classList.remove('on');ugPill.classList.add('dr');ugPill.style.removeProperty('--pd');ugPillPos();void ugPill.offsetWidth;ugPill.classList.remove('dr');ugPill.classList.add('on')}
+  function ugPillShow(){if(!ugPill||!UG.classList.contains('on')||ugClosing)return;ugPillStop();ugPill.style.removeProperty('--px');ugPill.classList.remove('on');ugPill.classList.add('dr');ugPill.style.removeProperty('--pd');ugPillPos();void ugPill.offsetWidth;ugPill.classList.remove('dr');ugPill.classList.add('on')}
   try{if(window.ResizeObserver&&ugPill)new ResizeObserver(()=>{if(ugPill.classList.contains('on'))ugPillPos()}).observe(ugS)}catch(_){}
-  function ugPillHide(){if(ugPill)ugPill.classList.remove('on')}
+  /* плашка закрывается вместе с окном: уезжает вниз с тем же временем и кривой, что и шторка (крестик, затемнение, «ОК», свайп вниз) */
+  let pAw=null,pAwT=0,pillSw=0;
+  function ugPillStop(){clearTimeout(pAwT);if(pAw){try{pAw.cancel()}catch(_){}pAw=null}}
+  function ugPillEnd(){if(!ugPill)return;ugPillStop();ugPill.style.transition='none';ugPill.classList.remove('on','dr');ugPill.style.removeProperty('--pd');ugPill.style.removeProperty('--px');void ugPill.offsetWidth;ugPill.style.transition=''}
+  function ugPillCur(){try{const t=getComputedStyle(ugS).transform;return(t&&t!=='none')?new DOMMatrix(t).m42:0}catch(_){return 0}}
+  function ugPillAway(cur){
+    if(!ugPill||!ugPill.classList.contains('on'))return;
+    if(!ugPill.animate){ugPillEnd();return}
+    const cs=getComputedStyle(ugS),dur=Math.max(120,(parseFloat(cs.transitionDuration)||.74)*1000),ease=cs.transitionTimingFunction||'ease',to=ugS.offsetHeight+6;
+    ugPillStop();ugPill.classList.add('dr');
+    pAw=ugPill.animate([{translate:'0px '+cur+'px'},{translate:'0px '+to+'px'}],{duration:dur,easing:ease,fill:'forwards'});
+    pAwT=setTimeout(ugPillEnd,dur+60);
+  }
+  function ugPillHide(){if(!ugPill||pillSw)return;if(pAw){ugPillEnd();return}ugPill.classList.remove('on')}
+  /* перелистывание подарков свайпом: плашка едет в сторону вместе с окном и пропадает, когда окно уехало */
+  window.__ugPillSw={
+    on:()=>{pillSw=1},
+    x:px=>{if(!ugPill||!ugPill.classList.contains('on'))return;ugPill.classList.add('dr');ugPill.style.setProperty('--px',px.toFixed(1)+'px')},
+    settle:()=>{pillSw=0;if(!ugPill||!ugPill.classList.contains('on'))return;ugPill.style.removeProperty('--px');ugPill.classList.remove('dr')},
+    gone:()=>{pillSw=0;ugPillEnd()}
+  };
   function ugDone(x,pk,num,c){
     ugLater(ugPillShow,0);   /* плашка появляется в тот же момент, что и конфетти */
     ugCur=null;ugFinalSet(pk,c,ugQuick?0:300);
@@ -5830,11 +5850,11 @@ renderMyGifts();
   function ugClose(force){
     if(!UG.classList.contains('on')||ugClosing)return;
     if((ugLock||ugCur)&&!force)return;   /* пока идёт анимация улучшения, закрыть окно нельзя */
-    ugClosing=true;ugPillHide();
+    ugClosing=true;const pcur=ugPillCur();
     ugT.forEach(clearTimeout);ugT=[];clearTimeout(ugBg);ugCur=null;ugPend=false;cancelAnimationFrame(ugRaf);cancelAnimationFrame(ugMf);
     
     ugS.style.transition='';ugS.style.transform='';ugS.style.opacity='';
-    UG.classList.remove('on');UG.setAttribute('aria-hidden','true');
+    UG.classList.remove('on');UG.setAttribute('aria-hidden','true');ugPillAway(pcur);
     setTimeout(()=>{UG.classList.remove('fxon');ugS.querySelectorAll('.ug-t3').forEach(n=>n.remove());ugS.style.clipPath='';ugS.style.webkitClipPath='';upBusy=false;ugClosing=false;ugLock=false;if(ugX){try{ugX.cancel()}catch(_){}ugX=null}ugTrkClear($u('ugTrack'));ugS.querySelectorAll('.ug-ghost').forEach(n=>n.remove())},880);
   }
   $u('ugX').onclick=()=>ugClose();UG.querySelector('.ug-dim').onclick=()=>ugClose();
@@ -5970,17 +5990,18 @@ renderMyGifts();
   /* плавное движение с учётом скорости пальца: начальная скорость совпадает со скоростью отпускания, к концу гаснет (кубический Эрмит) */
   const herm=(q,m)=>{const q2=q*q,q3=q2*q;return (q3-2*q2+q)*m+(-2*q3+3*q2)};
   function glide(items,delta,v,done){
-    const dist=Math.abs(delta);if(dist<1){items.forEach(it=>{it.el.style.translate=(it.from+delta).toFixed(2)+'px 0'});done();return}
+    const dist=Math.abs(delta);if(dist<1){items.forEach(it=>{it.el.style.translate=(it.from+delta).toFixed(2)+'px 0'});try{__ugPillSw.x(items[0].from+delta)}catch(_){}done();return}
     const ms=Math.round(170+100*Math.min(1,dist/(Wd()+20))),m=Math.max(0,Math.min(2.5,v*Math.sign(delta)*ms/dist)),t0=performance.now();
     const g=gl={raf:0,items,delta,done};
     const f=now=>{const q=Math.min(1,(now-t0)/ms),h=herm(q,m);
       items.forEach(it=>{it.el.style.translate=(it.from+delta*h).toFixed(2)+'px 0'});
+      try{__ugPillSw.x(items[0].from+delta*h)}catch(_){}
       if(q<1)g.raf=requestAnimationFrame(f);else{gl=null;done()}};
     g.raf=requestAnimationFrame(f);
   }
   /* новое касание во время анимации: она мгновенно доезжает до конца, и можно листать дальше без ожидания */
   let gl=null;
-  function snap(){const g=gl;if(!g)return;gl=null;cancelAnimationFrame(g.raf);g.items.forEach(it=>{it.el.style.translate=(it.from+g.delta).toFixed(2)+'px 0'});g.done()}
+  function snap(){const g=gl;if(!g)return;gl=null;cancelAnimationFrame(g.raf);g.items.forEach(it=>{it.el.style.translate=(it.from+g.delta).toFixed(2)+'px 0'});try{__ugPillSw.x(g.items[0].from+g.delta)}catch(_){}g.done()}
   /* «призрак» текущего окна: копия шторки, которая остаётся, пока в оригинале показывается соседний подарок */
   function ghostOf(sh,tx){
     const g=sh.cloneNode(true);
@@ -6022,6 +6043,7 @@ renderMyGifts();
   function place(s){
     if(s.pv){s.pv.gh.style.translate=s.tx.toFixed(1)+'px 0';s.pv.ns.style.translate=(s.tx+s.pv.D).toFixed(1)+'px 0'}
     else s.sheet.style.translate=s.tx.toFixed(1)+'px 0';
+    try{__ugPillSw.x(s.tx)}catch(_){}   /* плашка «Подарок стал коллекционным» едет вместе с окном */
   }
   const velo=s=>{const sm=s.sm,l=sm[sm.length-1];if(!l)return 0;let f=sm[0];for(const q of sm)if(l.t-q.t<=100){f=q;break}return l.t>f.t?(l.x-f.x)/(l.t-f.t):0};
   /* страховка: если жест перетаскивания оборвался (потерян touchend/touchcancel, появился второй палец, ушли на другое окно),
@@ -6029,6 +6051,7 @@ renderMyGifts();
   function recover(){
     const s=last;last=null;st=null;clearInterval(wd);
     try{if(gl){cancelAnimationFrame(gl.raf);gl=null}}catch(_){}
+    try{__ugPillSw.settle()}catch(_){}
     if(s){
       try{s.done=true;if(s.raf){cancelAnimationFrame(s.raf);s.raf=0}}catch(_){}
       try{if(s.pv)revert(s)}catch(_){}
@@ -6057,7 +6080,7 @@ renderMyGifts();
     const t=e.touches[0],dx=t.clientX-st.x,dy=t.clientY-st.y;
     if(!st.axis){
       if(Math.abs(dx)<8&&Math.abs(dy)<8)return;
-      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;window.__swNoAnim=true;clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},4000);st.box.style.overflow='hidden';clearInterval(wd);wd=setInterval(()=>{if(!st||st.done){clearInterval(wd);return}if(performance.now()-lt>2500)recover()},400)}else{st=null;last=null;return}
+      if(Math.abs(dx)>Math.abs(dy)){st.axis='x';window.__swX=true;try{__ugPillSw.on()}catch(_){}window.__swNoAnim=true;clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false},4000);st.box.style.overflow='hidden';clearInterval(wd);wd=setInterval(()=>{if(!st||st.done){clearInterval(wd);return}if(performance.now()-lt>2500)recover()},400)}else{st=null;last=null;return}
     }
     st.dx=dx;
     const has=!!ord()[st.i+(dx<0?1:-1)],lim=Wd()+20;
@@ -6088,7 +6111,7 @@ renderMyGifts();
     giftAnim(el,x.upg.mj,{stop:true});
   }catch(_){}}
   const swOff=()=>{clearTimeout(window.__swNoT);window.__swNoT=setTimeout(()=>{window.__swNoAnim=false;setTimeout(settle,60)},80)};
-  function finish(s){if(last===s)last=null;s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
+  function finish(s){try{__ugPillSw.settle()}catch(_){}if(last===s)last=null;s.sheet.style.translate='';s.box.style.overflow='';anim=false;until=performance.now()+120;swOff()}
   function up(e){
     if(!st)return;const s=st;st=null;clearInterval(wd);
     if(s.tg&&s.tg!==s.sheet){s.tg.removeEventListener('touchmove',move);s.tg.removeEventListener('touchend',up);s.tg.removeEventListener('touchcancel',up)}
@@ -6101,7 +6124,7 @@ renderMyGifts();
     if(commit&&s.pv&&s.pv.n===n){
       const pv=s.pv,D=pv.D;
       glide([{el:pv.gh,from:s.tx},{el:pv.ns,from:s.tx+D}],-D-s.tx,v,()=>{
-        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';if(last===s)last=null;anim=false;until=performance.now()+120;swOff();
+        pv.gh.remove();pv.ns.style.translate='';pv.nb.style.overflow='';s.box.style.overflow='';s.box.style.visibility='';s.box.style.zIndex='';try{__ugPillSw.gone()}catch(_){}if(last===s)last=null;anim=false;until=performance.now()+120;swOff();
       });
       return;
     }
