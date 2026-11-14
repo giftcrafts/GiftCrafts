@@ -8578,7 +8578,7 @@ renderMyGifts();
 /* окно улучшенного подарка: пока меняется фон (fxon — улучшение, ugsw — смена фона/перелистывание), размытие под стеклянными кнопками выключено,
    иначе браузер на время оставляет под ними старый фон. Раньше это отключение перебивалось более поздним правилом .glass;
    затемнение brightness заменено эквивалентной полупрозрачной подложкой, чтобы цвет кнопок не скакал при возврате блюра */
-#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(247,247,255,.12)}
+#ug.fxon .ug-a.glass,#ug.ugsw .ug-a.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(247,247,255,.08)}
 /* без backdrop-filter Safari перестаёт обрезать фон кнопки по clip-path (squircle) — фон становился прямоугольным; форму держит маска по тому же контуру */
 #ug.fxon .ug-a.glass.sm,#ug.ugsw .ug-a.glass.sm{border-radius:18px!important}
 #ug.fxon .mk-sale.glass,#ug.ugsw .mk-sale.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background-color:rgba(175,175,179,.313)}
@@ -8587,9 +8587,9 @@ renderMyGifts();
 /* засвет крестика и «⋯» уже на 0.2px (было 0.7px) */
 #ug .ug-x,#ug .ug-more{--glass2-spread:.5px}
 /* кнопки окон предпросмотра улучшения / улучшения / уникального подарка чуть прозрачнее (было .235 / .215 / .34) */
-#ug .ug-a.glass{background-color:rgba(247,247,255,.12)}
-#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(247,247,255,.11)}
-#um .um-var{background:rgba(247,247,255,.14)}
+#ug .ug-a.glass{background-color:rgba(247,247,255,.08)}
+#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{background-color:rgba(247,247,255,.08)}
+#um .um-var{background:rgba(247,247,255,.10)}
 /* при складывании (окно улучшения ниже предпросмотра) фон нового окна едет вверх вместе с краем формы и должен быть виден выше его рамки; видимую часть режет clip-path, поэтому overflow на время анимации снимаем */
 #ug.morph .ug-sheet{overflow:visible}
 /* при складывании крестик и «⋯» едут вместе с верхним краем окна, а не стоят на финальном месте, пока окно ещё складывается */
@@ -8597,8 +8597,8 @@ renderMyGifts();
 /* цвет обводки и засвета кнопок окон предпросмотра улучшения / улучшения / уникального подарка холоднее: синий канал ещё +4 (итого +8 к исходному); фон кнопок: красный и зелёный −4, т.к. синий уже 255 */
 #ug .ug-a.glass{--glass-rgb:calc(164 + var(--ug-d) + var(--ug-w)),calc(166 + var(--ug-d) + var(--ug-w)),calc(184 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(174 + var(--ug-d) + var(--ug-w)),calc(176 + var(--ug-d) + var(--ug-w)),calc(194 + var(--ug-d) + var(--ug-w))}
 #ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass,#um .um-xc.glass{--glass-rgb:calc(176 + var(--ug-d) + var(--ug-w)),calc(178 + var(--ug-d) + var(--ug-w)),calc(196 + var(--ug-d) + var(--ug-w));--glass2-rgb:calc(188 + var(--ug-d) + var(--ug-w)),calc(190 + var(--ug-d) + var(--ug-w)),calc(208 + var(--ug-d) + var(--ug-w))}
-/* кнопки ближе к цвету фона под ними: белая подложка слабее, размытый фон просвечивает и даёт оттенок; затемнение .86 → .94, цвет чуть насыщеннее */
-#ug .ug-a.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass{-webkit-backdrop-filter:blur(6px) brightness(.94) saturate(1.15);backdrop-filter:blur(6px) brightness(.94) saturate(1.15)}
+/* как в Telegram: кнопка лишь чуть светлее фона под ней и сохраняет его цвет (без затемнения и обесцвечивания), без тёмной линии по краю; обводку и засвет рисует стекло */
+#ug .ug-a.glass,#ug .ug-x.glass,#ug .ug-more.glass,#um .um-back.glass{-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);box-shadow:none}
 </style>
 </body>
 </html>
