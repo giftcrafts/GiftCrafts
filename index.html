@@ -327,6 +327,8 @@ mask-image:radial-gradient(ellipse 70vw 190px at 50% calc(320px + var(--ava-top)
 /* переходы между страницами как в Telegram */
 .page.tr{position:absolute;left:0;top:0;width:100%;background:var(--bg);will-change:transform,opacity}
 .page.tr.top{z-index:2}
+/* страница на время анимации — контейнер для fixed-детей и прокручивается вместе с ними: затемнение под хедером опускаем на величину прокрутки, чтобы оно не уезжало за экран */
+#p-market.tr #mktPin,#p-mkg.tr #mkgPin,#p-gifts.tr #gftPin{top:var(--pst,0px)}
 body.buyover #p-me{z-index:2100;background:var(--bg)}   /* после покупки профиль выезжает ПОВЕРХ закрывающегося модального окна (#bm z-index:2000) */
 body.buyover #hdr{z-index:2200}                      /* кнопки хедера тоже поверх окна */
 body.navanim #bar{z-index:1}
@@ -1678,7 +1680,7 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
 /* кнопка «Баланс» над окном предпросмотра улучшения: фон как у окна, по центру между кнопками Telegram и верхом окна */
-#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 16px 8px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
+#um .um-bal{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-6px);display:flex;flex-direction:column;align-items:center;gap:2px;padding:8.5px 16px 8.5px;border:0;border-radius:999px;background:#1a1a1a;color:#fff;font:inherit;line-height:1.15;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .3s ease,transform .4s cubic-bezier(.25,.8,.25,1),visibility 0s linear .4s}
 #um .um-bal.on{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0);transition-delay:0s}
 #um .um-bal:active{transform:translate(-50%,0) scale(.97)}
 #um .um-bal .ub-l{display:flex;align-items:center;gap:4px;font-size:15px;font-weight:450;color:var(--text,#fff)}
@@ -1687,14 +1689,14 @@ html[data-theme=light] #um.cl .um-xg svg{stroke:var(--gl-ink)}
 #um .um-bal .ub-a{display:flex;align-items:center;gap:3px;font-size:15px;font-weight:450;color:var(--accent,#4ba3f0)}
 #um .um-bal .ub-a svg{width:6px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 /* плашка над окном улучшенного подарка: появляется, когда модель уже выпала; закреплена над верхом окна */
-#ug .ug-pill{position:absolute;left:18px;right:18px;top:0;z-index:6;display:flex;align-items:center;gap:14px;padding:9px 18px 9px 16px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
+#ug .ug-pill{position:absolute;left:16px;right:16px;top:0;z-index:6;display:flex;align-items:center;gap:13px;padding:9px 18px 9px 15px;border-radius:28px;background:#1a1a1a;translate:0 var(--pd,0px);color:#fff;pointer-events:none;opacity:0;visibility:hidden;transform:translateY(-10px) scale(.98);transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),translate .35s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.dr{transition:opacity .35s ease,transform .5s cubic-bezier(.25,.8,.25,1),visibility 0s linear .5s}
 #ug .ug-pill.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
 #ug .ug-pill .ug-pi{flex:none;width:30px;height:30px;display:block}
 #ug .ug-pill .ug-pi svg{width:100%;height:100%;display:block}
 #ug .ug-pill .ug-pt{display:flex;flex-direction:column;gap:1px;min-width:0}
 #ug .ug-pill .ug-pt b{font-size:15px;font-weight:550;line-height:1.25}
-#ug .ug-pill .ug-pt span{font-size:14px;font-weight:400;line-height:1.28;color:rgba(255,255,255,.86)}
+#ug .ug-pill .ug-pt span{font-size:14px;font-weight:400;line-height:1.14;color:rgba(255,255,255,.86)}
 </style>
 </head>
 <body>
@@ -2520,6 +2522,7 @@ function go(p,instant,back,o){
   if(dir!==0){
     const top=dir>0?inc:out,bot=dir>0?out:inc,bar=$('#bar');
     document.body.classList.add('navanim');try{SP.hold(8,true)}catch(_){}
+    [inc,out].forEach(e=>{try{e.style.setProperty('--pst',((e.__mpinHold&&e.scrollTop<=1?e.__mpinHold:e.scrollTop)||0)+'px')}catch(_){}});
     inc.classList.add('tr');out.classList.add('tr');top.classList.add('top');
     const o2={duration:NAV_MS,easing:NAV_EASE,fill:'both'};
     const a1=top.animate(dir>0?[{transform:'translateX(100%)'},{transform:'translateX(0)'}]:[{transform:'translateX(0)'},{transform:'translateX(100%)'}],o2);
@@ -2530,7 +2533,7 @@ function go(p,instant,back,o){
     if(dir<0&&hadNo&&!wantNo)a3=bar.animate([{transform:'translateX('+off+'px)'},{transform:'translateX(0)'}],o2);
     navFin=()=>{a1.cancel();a2.cancel();if(a3)a3.cancel();
       document.body.classList.remove('navanim');try{SP.hold(8,false)}catch(_){}
-      $$('.page.tr').forEach(e=>e.classList.remove('tr','top'));out.classList.remove('on');
+      $$('.page.tr').forEach(e=>{e.classList.remove('tr','top');e.style.removeProperty('--pst')});out.classList.remove('on');
       if(dir>0){document.body.classList.toggle('nobar',wantNo)}
       later.forEach(f=>f())};
     a1.onfinish=()=>{if(cur===p)navDone()};
@@ -2656,7 +2659,7 @@ $$('[data-s]').forEach(e=>e.onclick=()=>soon(e.dataset.s));
 'Все варианты':'All variants','Уведомления':'Notifications','Менеджер подарков':'Gift Manager','Выбрать действие':'Choose an action','Выберите действие':'Choose an action','Выбранные':'Selected','Все':'All','Не улучшенные':'Not upgraded','Здесь пока пусто':'Nothing here yet','Цена':'Price','Модель':'Model','Фон':'Backdrop','Узор':'Symbol','Предложений пока нет':'No offers yet',
 'Купить подарок за':'Buy gift for','Купить подарок':'Buy gifts','Купить':'Buy','Редкий подарок можно превратить':'A rare gift can be turned','в коллекционный и затем подарить':'into a collectible and then given','другому пользователю.':'to another user.',
 'Коллекционные подарки скоро появятся':'Collectible gifts are coming soon','Коллекционные':'Collectibles','Коллекционный подарок можно отправить любому пользователю.':'A collectible gift can be sent to any user.',
-'Звёзды GiftCrafts нужны для покупки уникальных и коллекционных подарков, а также для прочих услуг.':'GiftCrafts Stars are used to buy unique and collectible gifts, as well as for other services.','Звезды нужны для покупки подарков, уникальных имён и номеров.':'Stars are used to buy gifts, unique usernames and numbers.','Отправить звёзды':'Send stars','Звёзды GiftCrafts':'GiftCrafts Stars','Звёзды':'Stars','Задания скоро появятся':'Tasks are coming soon','Звезды можно купить или заработать, выполняя задания.':'Stars can be bought or earned by completing tasks.','Посмотреть задания':'View tasks','Задания':'Tasks','Ваш баланс':'Your balance','Подарить звёзды друзьям':'Gift stars to friends',
+'Звёзды GiftCrafts нужны для покупки уникальных и коллекционных подарков, а также для прочих услуг.':'GiftCrafts Stars are used to buy unique and collectible gifts, as well as for other services.','Звезды нужны для покупки подарков, уникальных имён и номеров.':'Stars are used to buy gifts, unique usernames and numbers.','Отправить звёзды':'Send stars','Звёзды GiftCrafts':'GiftCrafts Stars','Звёзды':'Stars','Задания скоро появятся':'Tasks are coming soon','Звезды можно купить или заработать, выполняя задания.':'Stars can be bought or earned by completing tasks.','Посмотреть задания':'View tasks','Задания':'Tasks','Ваш баланс':'Your balance','Пополнить баланс':'Top up balance','Подарок стал коллекционным':'Your gift is now a collectible','Вы получили уникальный номер, модель, фон и символ для подарка.':'You received a unique number, model, backdrop and symbol for the gift.','Подарить звёзды друзьям':'Gift stars to friends',
 'Мой профиль':'My Profile','УВЕДОМЛЕНИЯ':'NOTIFICATIONS','СТАТИСТИКА':'STATISTICS','Количество потраченных вами звёзд.':'Number of stars you have spent.','Общая статистика по покупкам всех подарков и обменам на звёзды.':'Overall statistics on purchases of all gifts and exchanges for stars.','Отображение имени пользователя.':'Username display.','Звёзд потрачено':'Stars spent','Количество потраченных звезд в приложении.':'Number of stars spent in the app.','Общая статистика по покупкам и продажам всех подарков, обменам на звёзды.':'Overall statistics on purchases and sales of all gifts and exchanges for stars.','Общая статистика':'Overall statistics','ИМЯ ПОЛЬЗОВАТЕЛЯ':'USERNAME','Не отображать':'Hide','Отображать':'Show','Настройте отображение имени пользователя.':'Set how your username is displayed.','Вы можете изменить настройки конфиденциальности приложения.':'You can change the app’s privacy settings.','Время захода':'Last seen','Раздел «О себе»':'About section','Никто':'Nobody','Нет':'None','передать':'transfer','ТЕМА ПРИЛОЖЕНИЯ':'APP THEME','По умолчанию':'Default','Ночная':'Night','Светлая':'Light','Выберите подходящую тему приложения.':'Choose a suitable app theme.','Настроить анимации':'Customize animations','Анимации звёзд':'Star animations','Анимации подарков':'Gift animations','Отключение анимаций приложения может улучшить производительность.':'Turning off app animations may improve performance.','Сохранить изменения':'Save changes','Добавить коллекцию':'Add collection','Выбранная тема':'Selected theme','Ночная тема':'Night theme','GiftCrafts Premium':'GiftCrafts Premium','Вопросы о GiftCrafts':'GiftCrafts FAQ','Возможности GiftCrafts':'GiftCrafts Features','Статистика':'Statistics','Деньги':'Money','Мои звёзды':'My Stars','Конфиденциальность':'Privacy','Помощь':'Help','Доб. в коллекцию':'Add to collection','Назад':'Back','Новая коллекция':'New collection','Предпросмотр ожидаемой награды за ввод промокода на звёзды или подарок.':'Preview of the expected reward for entering a promo code for stars or a gift.','Изготовить':'Craft','Сжечь подарок':'Burn gift','Сжечь':'Burn','Сжигание подарка':'Burn gift','Изготовление недоступно':'Crafting unavailable','Этот подарок нельзя использовать для изготовления.':'This gift can’t be used for crafting.','Введите промокод на звёзды или подарок.':'Enter a promo code for stars or a gift.','Введите промокод':'Enter promo code','ВВОД ПРОМОКОДА':'PROMO CODE','Ожидаемая награда':'Expected reward','не найдено':'not found','Используйте промокод':'Use a promo code','Подтверждение получения':'Confirm receipt','Получить':'Claim','Активация промокода':'Promo code activation','Промокод':'Promo code','Язык':'Language','ЯЗЫК ПРИЛОЖЕНИЯ':'APP LANGUAGE','Выберите язык приложения.':'Choose the app language.','Язык уведомлений':'Notification language','Настройте язык системных уведомлений о продаже уникальных подарков.':'Set the language of system notifications about sales of unique gifts.','Язык приложения':'App language','Оформление':'Appearance','Чёрная':'Black','Анимации подарков':'Gift animations','Анимация звёзд':'Star animation',
 'Коллекции скоро':'Collectibles are coming soon','Коллекции':'Collectibles','В данный момент эта функция находится в разработке.':'This feature is currently under development.','Отправка подарков':'Sending gifts','Отправка звёзд':'Sending stars','Изготовление подарка':'Craft Gift','Изготовить':'Craft','Выберите подарки':'Select gifts','Ваши подарки':'Your gifts','в продаже':'for sale','У Вас нет других подарков из этой коллекции':'You have no other gifts from this collection','Предложений пока нет':'No offers yet','Добавьте до':'Add up to',', чтобы изготовить':' to craft','В случае неудачи эти подарки пропадут.':'If crafting fails, these gifts will be lost.','Модели, которые могут выпасть':'Models you can get','Вероятность успеха':'Success chance','Справка':'Help','Изготовление':'Crafting','в сети':'online','мобильный':'mobile','коллекционный номер':'collectible number','имя пользователя':'username','Отправить подарки':'Send gifts','Подарки':'Gifts','Маркет':'Market','Купленный подарок':'Purchased gift','Посмотреть':'View',
 'Скрыть моё имя и сообщение от посетителей профиля.':'Hide my name and message from profile visitors.','Скрыть моё имя':'Hide my name','Когда все подарки будут проданы, вы больше не сможете их купить.':'When all gifts are sold, you will no longer be able to buy them.',
@@ -4904,7 +4907,7 @@ renderMyGifts();
     cx.globalAlpha=1;
   }
   /* бесконечный цикл: когда анимация модели доиграла, сразу подставляется следующий случайный набор (модель, фон, узор) и снова играет */
-  let cyc=0,curG=null,ring=[],ri=0;
+  let cyc=0,curG=null,ring=[],ri=0,ringG=null;
   /* пять наборов (модель, фон, узор) грузятся один раз, дальше цикл идёт по кругу: 1 → 2 → … → 5 → 1 … без новых загрузок */
   function fillRing(g){
     if(g!==curG)return;
@@ -4949,7 +4952,7 @@ renderMyGifts();
   function apply(p,o){
     o=o||{};const top=$u('umTop'),my=++cyc;
     if(p.model){const mi=p.model.cloneNode(true);mi.alt='';$u('umModel').replaceChildren(mi);if(p.modelJ){if(window.__gA===false)giftAnimDur(p.modelJ).then(d=>setTimeout(()=>onDone(my),(o.delay||0)+d*1000));else if(o.delay){/* тяжёлая Lottie-сборка — только когда окно уже открылось, чтобы не рвать анимацию */setTimeout(()=>{if(my===cyc&&um.classList.contains('on'))giftAnim($u('umModel'),p.modelJ,{delay:80,onComplete:()=>onDone(my)})},o.delay)}else giftAnim($u('umModel'),p.modelJ,{delay:o.delay,onComplete:()=>onDone(my)})}}
-    if(!o.keep){ring=[p];ri=0;{const gg=curG;setTimeout(()=>fillRing(gg),o.delay?o.delay+150:0)}
+    if(!o.keep){if(!o.reuse){ring=[p];ri=0;ringG=curG;{const gg=curG;setTimeout(()=>fillRing(gg),o.delay?o.delay+150:0)}}
       $u('umMini').innerHTML=p.minis.map(m=>'<span class="mm"><img src="'+m.i.src+'" alt=""></span>').join('');
           }
     if(p.cols.c1)top.style.setProperty('--um-c1',p.cols.c1);
@@ -4971,7 +4974,7 @@ renderMyGifts();
     return 3*(1-u)*(1-u)*u*y1+3*(1-u)*u*u*y2+u*u*u;
   };
   /* кривая и длительность сняты с референса покадрово (60 fps): медленный старт, пик скорости на 4-6 кадре, длинный хвост ≈ 350 мс */
-  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310;
+  const EASE=bez(.35,.3,.15,1),EASE_C=EASE,OPEN_MS=310,CLOSE_MS=310,UGMF_MS=400;
   const cl=(x,a,b)=>x<=a?0:x>=b?1:(x-a)/(b-a);
   const SET=(st,n,v)=>st.setProperty(n,(+v).toFixed(3));
   const ss=t=>t*t*(3-2*t);
@@ -5018,7 +5021,7 @@ renderMyGifts();
   window.umPrefetch=x=>{const g=gid(x);if(g)prep(g)};
   /* набор (модель, фон, узор) грузится, пока открыто окно подарка, и удаляется, когда окно закрылось или подарок перелистнули */
   let held=null;
-  const release=g=>{delete ready[g];if(curG===g&&!um.classList.contains('on')){ring=[];ri=0}};
+  const release=g=>{delete ready[g];if(curG===g&&!um.classList.contains('on')){ring=[];ri=0;ringG=null;pkP=null;pkK=null}};   /* окно подарка закрыто — наборы сбрасываются, при следующем открытии будут другие */
   new MutationObserver(()=>{try{
     if(um.classList.contains('on')||busy)return;
     const x=window.__gmCur,on=gmEl.classList.contains('on'),g=(on&&x&&!x.sold&&!x.uc&&!x.up&&!x.upg)?gid(x):null;
@@ -5044,14 +5047,14 @@ renderMyGifts();
     b.style.backgroundColor='transparent';b.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';b.style.backgroundSize='100% 100%';
     if(!b.__sv){b.__sv=1;if(window.ResizeObserver)new ResizeObserver(()=>shapeVar()).observe(b)}
   }
-  function start(x,p,g){
+  function start(x,p,g,reuse){
     const tk=token;
     um.style.visibility='';sh.style.transition='';sh.style.transform='';
     um.classList.remove('cl');reset(x);$u('umChk').classList.remove('on');$u('umPrice').textContent=String(PRICE);
     um.style.height=Math.max(window.innerHeight,(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.viewportStableHeight)||0)+'px';
     um.classList.add('pre');
     measure();closing=false;
-    if(p)apply(p,{delay:OPEN_MS+60});
+    if(p)apply(p,{delay:OPEN_MS+60,reuse:reuse});
     try{shapeBtn($u('umGo'))}catch(_){}
     try{smoothFit($u('umVar'),'pill',true,1)}catch(_){}
     try{shapeVar()}catch(_){}
@@ -5068,12 +5071,14 @@ renderMyGifts();
     busy=true;const tk=++token,g=gid(x);curG=g;
     try{const gi=document.getElementById('gmImg');if(gi){if(gi.__lot)gi.__lot.pause();gi.style.transition='opacity .3s ease';gi.style.opacity='0'}}catch(_){}
     /* набор уже готов — открываем сразу, без ожидания */
-    const pr=g?prep(g):null,p=(pr&&pr.v)||null;
-    if(g&&p)delete ready[g];
-    start(x,p,g);
-    pkK=x;pkP=null;
+    /* «Улучшить» → «назад» → «Улучшить»: те же уже загруженные наборы (модель, фон, узор), первым берётся случайный из них */
+    const reuse=!!(g&&ringG===g&&ring.length);
+    const pr=(g&&!reuse)?prep(g):null,p=reuse?ring[(ri=Math.floor(Math.random()*ring.length))]:((pr&&pr.v)||null);
+    if(g&&p&&!reuse)delete ready[g];
+    start(x,p,g,reuse);
+    if(pkK!==x){pkK=x;pkP=null}
     setTimeout(()=>{if(tk===token&&!upBusy&&pkK===x&&!pkP&&um.classList.contains('on')){try{pkP=ugPick(g,x)}catch(_){pkP=null}}},1500);
-    if(g){
+    if(g&&!reuse){
       if(p)setTimeout(()=>prep(g),500);            /* следующий набор грузим заранее, чтобы и при повторном открытии не было задержки */
       else pr.then(q=>{if(tk===token&&q){delete ready[g];apply(q);prep(g)}});
     }
@@ -5558,8 +5563,8 @@ renderMyGifts();
       const pp='path("'+P(sw2,hh,0,gH-hh)+'")';
       ugS.style.webkitClipPath=pp;ugS.style.clipPath=pp;
       /* шапка старого окна едет вверх вместе с краем формы и совпадает с шапкой нового: модель, фон и кнопки — на одном месте, перекрёстного «наезда» нет */
-      SV(UG,'--gt',cl(k,.05,.35));SV(UG,'--gk',cl(k,.4,.8));UG.style.setProperty('--go',((1-kg)*rise).toFixed(2)+'px');UG.style.setProperty('--gbo',(rise<0?(1-kg)*rise:0).toFixed(2)+'px');
-      SV(um,'--uf',1-cl(k,0,.3));SV(um,'--uk',1-cl(k,.2,.5));SV(um,'--ut2',1-cl(k,.3,.65));SV(um,'--umo',1-ss(cl(t||0,0,.85)));sh.style.setProperty('--uo',(rise<0?0:-rise*kg).toFixed(2)+'px');   /* при складывании содержимое предпросмотра уже едет вместе с верхним краем: дополнительный сдвиг опускал его вдвое быстрее и оставлял сверху полосу без подсветки */
+      SV(UG,'--gt',ss(cl(k,0,.45)));SV(UG,'--gk',ss(cl(k,.3,.85)));UG.style.setProperty('--go',((1-kg)*rise).toFixed(2)+'px');UG.style.setProperty('--gbo',(rise<0?(1-kg)*rise:0).toFixed(2)+'px');
+      SV(um,'--uf',1-ss(cl(k,0,.4)));SV(um,'--uk',1-ss(cl(k,.1,.6)));SV(um,'--ut2',1-ss(cl(k,.2,.7)));SV(um,'--umo',1-ss(cl(t||0,0,.85)));sh.style.setProperty('--uo',(rise<0?0:-rise*kg).toFixed(2)+'px');   /* при складывании содержимое предпросмотра уже едет вместе с верхним краем: дополнительный сдвиг опускал его вдвое быстрее и оставлял сверху полосу без подсветки */
       /* стрелка уходит, крестик приходит: те же значения, что у возврата предпросмотр → подарок */
       SV(sh,'--ubo',1-cl(k,0,.3));SV(sh,'--ubs',1-.3*cl(k,0,.5));SV(sh,'--ua',1-cl(k,0,.2));
       SV(UG,'--gxo',cl(k,0,.12));SV(UG,'--gxs',1);SV(UG,'--gxa',cl(k,0,.12));
@@ -5567,7 +5572,7 @@ renderMyGifts();
     mfFrame(0);
     {const tm=performance.now();
       const stm=now=>{
-        const t=Math.min(1,(now-tm)/OPEN_MS);mfFrame(EASE(t),t);
+        const t=Math.min(1,(now-tm)/UGMF_MS);mfFrame(EASE(t),t);
         if(t<1)ugMf=requestAnimationFrame(stm);
         else{
           ugMf=0;ugLock=false;if(ugPend){ugPend=false;setTimeout(ugSkipNow,0)}
@@ -5625,8 +5630,8 @@ renderMyGifts();
         const cl=pk.cols,fc=cl[cl.length-1];
         /* фон один на всю прокрутку: примерно на середине он плавно становится итоговым, чуть позже так же определяется узор */
         /* за всю прокрутку — только 3 фона (два промежуточных и итоговый) и 3 узора (два промежуточных и итоговый); и фон, и узор выбираются раньше */
-        const ta=performance.now(),tBg=T*.26,tPat=tBg+750;   /* чуть медленнее прежнего */
-        const tb=[0,tBg*.5],tp=[0,tPat*.45];
+        const ta=performance.now(),tBg=T*.26;   /* чуть медленнее прежнего */
+        const tb=[0,tBg*.5];
         const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,2),
               paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,2);
         let bgS=-1,patS=-1,curC=fc;
@@ -5635,13 +5640,10 @@ renderMyGifts();
           let tx=tx0;try{const m=getComputedStyle(trk).transform;if(m&&m!=='none')tx=new DOMMatrix(m).m41}catch(_){}
           const q=Math.max(0,Math.min(N-1,Math.round((tx1-tx)/iw)));
           {const el=performance.now()-ta;
+            /* фон и узор меняются вместе: узор сразу берёт цвет нового фона, поэтому жёлтый фон не остаётся с зелёным узором */
             if(!finBg){
-              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,800)}
-              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,540)}}
-            }
-            if(!finPat){
-              if(el>=tPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}
-              else{const st=el>=tp[1]?1:0;if(st!==patS){patS=st;ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,(finBg?fc:curC).c3,false)}}
+              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,800);if(!finPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}}
+              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,540);if(!finPat)ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,curC.c3,true)}}
             }}
           for(let z=1;z<3&&z<N;z++){
             const d=(tx+z*iw+iw/2-W/2)/iw,el=trk.children[z];if(!el)continue;
@@ -5651,7 +5653,7 @@ renderMyGifts();
         };
         ugRaf=requestAnimationFrame(tick);
         ugLater(()=>ugDone(x,pk,num,cl[cl.length-1]),Math.max(600,T-200));
-      },0);
+      },ugQuick?0:UGMF_MS-60);   /* тяжёлый расчёт кадров карусели не мешает складыванию окна */
     });
   }
   function quietClose(){
