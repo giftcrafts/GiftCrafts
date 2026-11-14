@@ -5454,7 +5454,11 @@ renderMyGifts();
     ugLater(()=>go.classList.add('busy'),120);
     umFxStart();
     const t0=performance.now();
-    const pp=(pkP&&pkK===x)?pkP:ugPick(curG||gid(x),x);pkP=null;pkK=null;
+    /* пока модели и фон не загрузились, анимация не начинается: набор подгружается заново (до 5 попыток), чтобы карусель не была короткой */
+    const good=pk=>!!(pk&&pk.fImg&&(pk.mSet||[]).length>=Math.min(10,(pk.lm||[]).length));
+    const first=(pkP&&pkK===x)?pkP:null;pkP=null;pkK=null;
+    const tryPick=n=>(n===0&&first?first:ugPick(curG||gid(x),x)).then(pk=>(good(pk)||n>=4)?pk:new Promise(rs=>setTimeout(rs,600)).then(()=>tryPick(n+1)));
+    const pp=tryPick(0);
     pp.then(pk=>{ugLater(()=>{ugShow(x,pk)},Math.max(0,CHG-(performance.now()-t0)))});
   }
   /* строка «Подарок от … для …» в таблице: только если при улучшении отмечено «С именем отправителя» */
@@ -5522,7 +5526,7 @@ renderMyGifts();
     ugTrkClear(trk);trk.innerHTML=items.map((o,q)=>'<div class="ug-i"'+(q===N-1?' style="transform:scale(1.12)"':'')+'>'+(o.s?'<img src="'+o.s+'" alt="">':pk.emoji)+'</div>').join('');
     /* скорость как в оригинале: ~15 моделей в секунду ровным ходом, затем торможение на последних пяти */
     try{trk.children[N-1].style.opacity='0'}catch(_){}
-    const STEPS=N-1,V=12.5,W=top.offsetWidth,iw=Math.round(W*.56),tx1=W/2-iw/2,tx0=tx1-STEPS*iw,D=STEPS*iw;
+    const STEPS=N-1,V=15,W=top.offsetWidth,iw=Math.round(W*.56),tx1=W/2-iw/2,tx0=tx1-STEPS*iw,D=STEPS*iw;
     const L=STEPS>=8?Math.round(STEPS*.84):0,T1=L?L/V*1000:0,T2=L?(STEPS-L)*1.95/V*1000:900,T=T1+T2;
     trk.style.setProperty('--iw',iw+'px');trk.style.transform='translateX('+tx0+'px)';
     /* подарок из предпросмотра остаётся на месте и медленно становится прозрачным, а карусель выезжает слева */
@@ -5652,7 +5656,7 @@ renderMyGifts();
         const cl=pk.cols,fc=cl[cl.length-1];
         /* фон один на всю прокрутку: примерно на середине он плавно становится итоговым, чуть позже так же определяется узор */
         /* за всю прокрутку — только 3 фона (два промежуточных и итоговый) и 3 узора (два промежуточных и итоговый); и фон, и узор выбираются раньше */
-        const ta=performance.now(),tBg=T*.26;   /* чуть медленнее прежнего */
+        const ta=performance.now(),tBg=T*.375;   /* чуть медленнее прежнего */
         const tb=[0,tBg*.5];
         const bgSeq=shuf((cl.slice(0,-1)).filter(q=>q&&q.c1!==fc.c1)).slice(0,2),
               paSeq=shuf(((pk.sImgs&&pk.sImgs.length)?pk.sImgs:[pk.sImg]).filter(q=>q&&q!==pk.sImg)).slice(0,2);
@@ -5664,8 +5668,8 @@ renderMyGifts();
           {const el=performance.now()-ta;
             /* фон и узор меняются вместе: узор сразу берёт цвет нового фона, поэтому жёлтый фон не остаётся с зелёным узором */
             if(!finBg){
-              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,800);if(!finPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}}
-              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,540);if(!finPat)ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,curC.c3,false)}}
+              if(el>=tBg){finBg=true;curC=fc;ugBgSlide(fc,950);if(!finPat){finPat=true;ugPatSwap(pk.sImg,fc.c3,true)}}
+              else{const st=el>=tb[1]?1:0;if(st!==bgS){bgS=st;curC=bgSeq[st]||bgSeq[0]||fc;ugBgSlide(curC,680);if(!finPat)ugPatSwap(paSeq[st]||paSeq[0]||pk.sImg,curC.c3,false)}}
             }}
           for(let z=1;z<3&&z<N;z++){
             const d=(tx+z*iw+iw/2-W/2)/iw,el=trk.children[z];if(!el)continue;
